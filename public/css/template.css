@@ -1,0 +1,22 @@
+body{
+    background-color: #2aabd2;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 100px;
+    height:100%;
+}
+
+.container{
+    height: 100%;
+    width: inherit;
+}
+
+ footer{
+    position: relative;
+    width:98%;
+    height:80px;   /* Height of the footer */
+    background: #66ccff;
+    padding-left: 30px;
+    padding-right: 30px;
+    display: block;
+    }
