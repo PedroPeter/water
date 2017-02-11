@@ -55,7 +55,7 @@ class CasaController extends Controller
             $cliente=\App\Cliente::findOrFail($input['id']);
             $cliente->casa()->create($input);
             $cliente->save();
-           return route('user.index');
+           return redirect()->route('user.index');
         }
     }
 

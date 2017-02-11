@@ -15,14 +15,14 @@ class CreateCasasTable extends Migration
     {
         Schema::create('casas', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('cliente_id');
+            $table->foreign('cliente_id')->references('id')->on('clientes')->onDelete('cascade');
             $table->string('bairro');
             $table->string('rua_avenida');
             $table->string('descricao');
             $table->integer('numero_casa');
-            $table->integer('cliente_id');
-            $table->foreign('cliente_id')->references('id')->on('clientes')->onDelete('cascade');
             $table->timestamps();
-        });
+             });
     }
 
     /**

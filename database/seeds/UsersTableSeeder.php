@@ -16,7 +16,7 @@ class UsersTableSeeder extends Seeder
         foreach (range(1,20) as $index) {
             DB::table('users')->insert([
                 'nome' => $faker->name,
-                'apelido' => $faker->name,
+                'apelido' => $faker->lastName,
                 'celular1' => $faker->phoneNumber,
                 'celular2' => $faker->phoneNumber,
                 'email' => $faker->email,

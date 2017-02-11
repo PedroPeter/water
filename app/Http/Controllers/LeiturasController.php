@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Agua;
-use App\Cliente;
+
+use App\Factura;
+use App\Leitura;
 use Validator;
 use Illuminate\Http\Request;
 use View;
+use Carbon\Carbon;
+
 class LeiturasController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -16,13 +20,33 @@ class LeiturasController extends Controller
      */
     public function index()
     {
-        $clientes=\App\User::with('cliente')->get();
-        if(count((array)$clientes)>0){
-            return View::make('gerente.leiturasIndex')->with('clientes',$clientes);
-        }else{
-            return View::make('gerente.leiturasIndex')->with('message','Leituras de todos clientes efectuados no presente mes.');
-
+        $time = Carbon::now()->startOfMonth();
+        $numero_leitura = Leitura::all()->max('numero_leitura');
+        $cliente = array();
+        $casa=array();
+        $leitura_cliente = Leitura::where([
+            ['numero_leitura', '=', $numero_leitura], ['updated_at', '>=', $time], ['efectuado', '=', false]
+        ])->get();
+        foreach ($leitura_cliente as $lc) {
+            //casa
+                $casa[] = [
+                    'casa_bairro' => $lc->casa->bairro,
+                    'casa_rua' => $lc->casa->rua_avenida,
+                    'casa_numero' => $lc->casa->numero_casa,
+                    'casa_descricao' => $lc->casa->descricao,
+                ];
+            $cliente[] = [
+                'cliente_nome'=>$lc->casa->cliente->user->nome,
+                'id'=>$lc->id,
+                'casa' => $casa,
+            ];
+            $casa=array();
         }
+            if (count((array)$cliente) > 0) {
+                return View::make('gerente.leiturasIndex')->with('clientes', $cliente);
+            } else {
+                return View::make('gerente.leiturasIndex')->with('message', 'Leituras de todos clientes efectuados para o presente mes.');
+            }
     }
 
     /**
@@ -30,55 +54,50 @@ class LeiturasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create()
     {
-
-        return View::make('gerente.leituraShow')->with('id',$id);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $rules=[
-            'consumo' => 'required|numeric',
-            'id'=>'required'
-        ];
-        $message=[
-            'consumo.required'=>'O consumo é obrigatório.',
-             ];
-        $validate=Validator::make($request->all(),$rules,$message);
-        if($validate->fails()){
+        $validate = Validator::make($request->all(), $this->rules(), $this->message());
+        if ($validate->fails()) {
             return redirect()->back()->withInput()->withErrors($validate);
-        }else{
-            $input=$request->all();
-            $cliente=Cliente::findOrFail($input['id']);
-            $agua=Agua::all()->first();
-            $cliente->casa()->attach($agua->id, ['consumo' => $input['consumo']]);
-            return $this->index();
-
+        } else {
+            $input = $request->all();
+            $leitura = Leitura::find($input['id']);
+            $leitura->efectuado = true;
+            $leitura->consumo = $input['consumo'];
+            $leitura->save();
+            $factura=new Factura();
+            $factura->l_actual=$input['consumo'];
+            $factura->leitura()->associate($leitura);
+            $factura->save();
+            return redirect()->route('leitura.index');
         }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+        return View::make('gerente.leituraShow')->with('id', $id);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -89,8 +108,8 @@ class LeiturasController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -101,7 +120,7 @@ class LeiturasController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -109,7 +128,24 @@ class LeiturasController extends Controller
         //
     }
 
-    public function proximaLeitura($dateTime){
-        return $dateTime->addMonth(1);
+    public function rules()
+    {
+        return [
+            'consumo' => 'required|numeric'
+        ];
     }
+
+    public function message()
+    {
+        return [
+            'consumo.required' => 'O consumo é obrigatório.'
+        ];
+    }
+
+    /**
+     * Prepars resource from storage to the Moth_reader.
+     *
+     * @return the number of the reader
+     */
+
 }

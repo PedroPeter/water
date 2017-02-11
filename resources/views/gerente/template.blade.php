@@ -11,18 +11,14 @@
     {{ Html::style('plugins/pace/pace-theme-big-counter.css')}}
     {{ Html::style('css/style.css')}}
     {{ Html::style('css/main-style.css')}}
-    {{ Html::style('jQuery-File-Upload/css/jquery.fileupload.css')}}
     <!-- Page-Level CSS -->
     {{ Html::style('plugins/social-buttons/social-buttons.css')}}
     <!-- Core Scripts - Include with every page -->
-    {{ Html::script('plugins/jquery-1.10.2.js')}}
     {{ Html::script('js/jquery-3.1.1.min.js')}}
     {{ Html::script('plugins/bootstrap/bootstrap.min.js')}}
     {{ Html::script('plugins/metisMenu/jquery.metisMenu.js')}}
     {{ Html::script('plugins/pace/pace.js')}}
     {{ Html::script('scripts/siminta.js')}}
-    {{ Html::script('jQuery-File_Upload/js/vendor/jquery.ui.widget.js')}}
-    {{ Html::script('jQuery-File_Upload/js/jquery.fileupload.js')}}
     @yield('hMais')
 </head>
 
@@ -40,7 +36,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="index.blade.php">
-                    <img src="{{asset('img/logo.jpg')}}" alt="" />
+                    <img src="{{asset('img/logo.png')}}" alt="" />
                 </a>
             </div>
             <!-- end navbar-header -->
@@ -312,10 +308,7 @@
                                 <a href="{{route('user.index')}}">Novos clientes</a>
                             </li>
                             <li>
-                                <a href="buttons.blade.php">Cancelar contracto</a>
-                            </li>
-                            <li>
-                                <a href="notifications.blade.php">Alterar contracto</a>
+                                <a href="{{route('cliente.index')}}">Contractos</a>
                             </li>
                         </ul>
                         <!-- second-level-items -->
@@ -324,10 +317,10 @@
                         <a href="#"><i class="fa fa-wrench fa-fw"></i>Facturas<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="panels-wells.blade.php">Emitir</a>
+                                <a href="{{route('factura.index')}}">Emitir</a>
                             </li>
                             <li>
-                                <a href="buttons.blade.php">Facturas pendentes</a>
+                                <a href="{{route('factura.index')}}">Facturas pendentes</a>
                             </li>
                         </ul>
                         <!-- second-level-items -->

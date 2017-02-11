@@ -18,7 +18,6 @@ class CreateProdutosTable extends Migration
             $table->string('nome');
             $table->float('preco');
             $table->float('descricao');
-            $table->rememberToken();
             $table->timestamps();
         });
     }

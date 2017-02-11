@@ -65,12 +65,10 @@
                     <div class="input-group">
                         <label class="col-md-4 control-label"></label>
                         <div class="col-md-4">
-
                             <button type="submit" class="btn btn-success" >Registar Casa <span class="glyphicon glyphicon-send"></span></button>
                         </div>
                     </div>
 
-            {{--</form>--}}
             {!! Form::close() !!}
 
         </div>

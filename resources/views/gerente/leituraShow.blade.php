@@ -8,7 +8,7 @@
     @stop
 
     <div class="container">
-        <h1>Cadastro de Clientes</h1>
+        <h1>Leitura</h1>
         <div class="row">
             <div class="col-sm-12" style="background-color:darkgray;">
 
@@ -42,7 +42,6 @@
                         <div class="input-group">
                             <label class="col-md-4 control-label"></label>
                             <div class="col-md-4">
-
                                 <button type="submit" class="btn btn-success" >Registar consumo <span class="glyphicon glyphicon-send"></span></button>
                             </div>
                         </div>
