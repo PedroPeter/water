@@ -45,14 +45,21 @@ Route::get('dashboard/', function(){
 
 Route::get('dashboard/casa/add/{cliente_id}', function($id){
     return View::make('gerente.clientecasa')->with('id',$id);;})->name('addCasa');
-Route::get('dashboard/factura/imprimir/{id}','FacturaController@factura')->name('invoice.imprimir');
-Route::get('dashboard/recibo/imprimir/{id}','FacturaController@recibo')->name('recibo.imprimir');
+Route::post('dashboard/factura/imprimir/{id}','FacturaController@factura')->name('invoice.imprimir');
+Route::post('dashboard/recibo/imprimir/{id}','FacturaController@recibo')->name('recibo.imprimir');
 
 Route::get('porta','LoginController@Porta')->name('porta');
 Route::get('cliente/{user_id}','ClienteController@create')->name('create.cliente');
 Route::get('leitura/{user_id}','LeiturasController@create')->name('leitura.create');
-
+Route::get('dashboard/leitura/pendente','LeiturasController@pendentes')->name('leituras.pendentes');
+Route::get('dashboard/factura/pendente','FacturaController@pendentes')->name('facturas.pendentes');
+Route::get('dashboard/factura/emitidas','FacturaController@pendentes')->name('facturas.emetidas');
+Route::get('dashboard/admin/casa/link','CasaController@link')->name('casa.link');
+Route::get('dashboard/admin/casa/{casa_id}/fontenaria/{fontenaria_id}',[
+    'as'=>'casa.linkar', 'uses'=>'CasaController@linkar'
+]);
 Route::resource('dashboard/leitura','LeiturasController');
+Route::resource('dashboard/fontenaria','FontenariaController');
 Route::resource('dashboard/gerente', 'GerenteController');
 Route::resource('user','UserController');
 Route::resource('dashboard/admin', 'AdminController');

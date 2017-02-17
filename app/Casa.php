@@ -17,4 +17,8 @@ class Casa extends Model
     {
         return $this->hasMany('App\Leitura');
     }
+    public function fontenarias()
+    {
+        return $this->belongsToMany('App\Fontenaria');
+    }
 }

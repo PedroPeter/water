@@ -289,14 +289,18 @@
                         </ul>
                         <!-- second-level-items -->
                     </li>
-                     <li>
-                        <a href="timeline.blade.php"><i class="fa fa-flask fa-fw"></i>Reclamações </a>
-                    </li>
                     <li>
-                        <a href="tables.blade.php"><i class="fa fa-table fa-fw"></i>Recibo</a>
-                    </li>
-                    <li>
-                        <a href="{{route('leitura.index')}}"><i class="fa fa-edit fa-fw"></i>Leituras</a>
+                        <a href="#"><i class="fa fa-wrench fa-fw"></i>Fontenaria<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="{{route('fontenaria.create')}}">Registar</a>
+                            </li>
+                            <li>
+                                <a href="{{route('fontenaria.index')}}">Mais operacoes</a>
+                            </li>
+
+                        </ul>
+                        <!-- second-level-items -->
                     </li>
                     <li>
                         <a href="#"><i class="fa fa-wrench fa-fw"></i>Pedidos<span class="fa arrow"></span></a>
@@ -314,17 +318,25 @@
                         <!-- second-level-items -->
                     </li>
                     <li>
+                        <a href="{{route('leitura.index')}}"><i class="fa fa-edit fa-fw"></i>Leituras</a>
+                    </li>
+                    <li>
                         <a href="#"><i class="fa fa-wrench fa-fw"></i>Facturas<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
                                 <a href="{{route('factura.index')}}">Emitir</a>
                             </li>
                             <li>
-                                <a href="{{route('factura.index')}}">Facturas pendentes</a>
+                                <a href="{{route('facturas.pendentes')}}">Facturas pendentes</a>
                             </li>
                         </ul>
                         <!-- second-level-items -->
                     </li>
+
+                    <li>
+                        <a href="timeline.blade.php"><i class="fa fa-flask fa-fw"></i>Reclamações </a>
+                    </li>
+
                     <li>
                         <a href="#"><i class="fa fa-wrench fa-fw"></i>SMS<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
@@ -337,22 +349,6 @@
                             <li>
                                 <a href="buttons.blade.php">Pagamentos por SMS</a>
                             </li>
-                        </ul>
-                        <!-- second-level-items -->
-                    </li>
-                     <li>
-                        <a href="#"><i class="fa fa-wrench fa-fw"></i>Fontenaria<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="panels-wells.blade.php">Registar</a>
-                            </li>
-                            <li>
-                                <a href="buttons.blade.php">Registar suas ramificacoes</a>
-                            </li>
-                            <li>
-                                <a href="buttons.blade.php">Alterar dados</a>
-                            </li>
-
                         </ul>
                         <!-- second-level-items -->
                     </li>

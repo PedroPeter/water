@@ -2,11 +2,12 @@
 @extends('gerente.template')
 
 @section('content')
+
 <div class="container">
-    <h1>Cadastro da Casa do Cliente</h1>
+    <h1>Cadastro da Fontenária </h1>
     <div class="row">
         <div class="col-sm-12" style="background-color:darkgray;">
-            {!! Form::open(['id'=>'contact_form','class'=>'well form-horizontal','route'=>'casa.store'])!!}
+            {!! Form::open(['id'=>'contact_form','class'=>'well form-horizontal','route'=>'fontenaria.store'])!!}
 
                 @if (count($errors) > 0)
                     <div class="alert alert-danger">
@@ -19,7 +20,16 @@
                     @endif
                     <!-- Form Name -->
                     <br>
-                    <!-- Bairro-->
+                    <!-- Nome-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Nome:</label>
+                        <div class="col-md-4 inputGroupContainer">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                                <input name="nome" class="form-control"  type="text">
+                            </div>
+                        </div>
+                    </div><!-- Bairro-->
                     <div class="form-group">
                         <label class="col-md-4 control-label">Bairro:</label>
                         <div class="col-md-4 inputGroupContainer">
@@ -41,11 +51,21 @@
                     </div>
                     <!-- Numero da casa-->
                     <div class="form-group">
-                        <label class="col-md-4 control-label">Numero da Casa:</label>
+                        <label class="col-md-4 control-label">Numero:</label>
                         <div class="col-md-4 inputGroupContainer">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                                <input name="numero_casa" class="form-control"  type="number">
+                                <input name="numero" class="form-control"  type="number">
+                            </div>
+                        </div>
+                    </div>
+                <!-- Numero da casa-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Numero maximo de clientes:</label>
+                        <div class="col-md-4 inputGroupContainer">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                                <input name="max_clientes" class="form-control"  type="number">
                             </div>
                         </div>
                     </div>
@@ -59,13 +79,10 @@
                             </div>
                         </div>
                     </div>
-                   <!-- hidden input-->
-                    <input name="id"  type="hidden" value="{{$id}}">
                     <div class="input-group">
                         <label class="col-md-4 control-label"></label>
                         <div class="col-md-4">
-
-                            <button type="submit" class="btn btn-success" >Registar Casa <span class="glyphicon glyphicon-send"></span></button>
+                            <button type="submit" class="btn btn-success" >Registar Fontenaria <span class="glyphicon glyphicon-send"></span></button>
                         </div>
                     </div>
 

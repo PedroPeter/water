@@ -12,7 +12,7 @@
         @else
         <div class="row">
             <div class="col-sm-12" style="background-color:lightgray;">
-                    <h3> Dados previamente disponibilizados <br>
+                    <h3> Dados dos clientes <br>
                         @if(isset($message))
                             <div class="alert alert-success">
                                 <h3>{{$message}}</h3>
@@ -40,7 +40,7 @@
                                 <td>{{ $cliente->user->email}}</td>
                                 <td>
                                     {!! Form::open(array('route'=>['addCasa',$cliente->id], 'method'=>'GET'))!!}
-                                    <button class="btn btn-success" type="submit">Addicionar contracto </button>
+                                    <button class="btn btn-success" type="submit">Addicionar Casa </button>
                                     {!! Form::close() !!}
                                 </td>
                                 <td>

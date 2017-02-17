@@ -128,6 +128,39 @@ class LeiturasController extends Controller
         //
     }
 
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function pendentes()
+    {
+        $cliente = array();
+        $casa=array();
+        $leitura_cliente = Leitura::where('efectuado', '=', false)->get();
+        foreach ($leitura_cliente as $lc) {
+            //casa
+            $casa[] = [
+                'casa_bairro' => $lc->casa->bairro,
+                'casa_rua' => $lc->casa->rua_avenida,
+                'casa_numero' => $lc->casa->numero_casa,
+                'casa_descricao' => $lc->casa->descricao,
+            ];
+            $cliente[] = [
+                'cliente_nome'=>$lc->casa->cliente->user->nome,
+                'id'=>$lc->id,
+                'casa' => $casa,
+            ];
+            $casa=array();
+        }
+        if (count((array)$cliente) > 0) {
+            return View::make('gerente.leiturasPendentes')->with('clientes', $cliente);
+        } else {
+            return View::make('gerente.leiturasPendentes')->with('message', 'Nenhuma leitura pendente.');
+        }
+    }
+
     public function rules()
     {
         return [

@@ -46,22 +46,23 @@
                                             Descricao
                                         </td>
                                         <td>
-                                            Data
+                                            Operacao
                                         </td>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     @foreach($cliente['casa'] as $casa)
+                                        <tr>
                                             <td>{{ $casa['casa_bairro']}}</td>
                                             <td>{{ $casa['casa_rua']}}</td>
                                             <td>{{ $casa['casa_numero']}}</td>
                                             <td>{{ $casa['casa_descricao']}}</td>
-                                            <td>{{ $casa['data']}}</td>
                                             <td>
-                                                <a href="{{route('leitura.create',$casa['id'])}}">
-                                                    <button class="btn btn-warning">Efectuar Leitura</button>
-                                                </a>
+                                                {!! Form::open(array('route'=>['leitura.show',$cliente['id']], 'method'=>'GET'))!!}
+                                                <button class="btn btn-success" type="submit">Efectuar Leitura </button>
+                                                {!! Form::close() !!}
                                             </td>
+                                        </tr>
                                     @endforeach
                                     </tbody>
                                 </table>

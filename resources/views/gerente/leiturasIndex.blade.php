@@ -6,7 +6,10 @@
             <div class="col-sm-12" style="background-color:darkgray;">
                     <div class="alert alert-danger">
                         <ul>
-                            <li>{{ $message }}</li>
+                            <li>{{ $message }}</li> <br>
+                            <a href="{{route('leituras.pendentes')}}">
+                                <button>Ver leituras pendentes</button>
+                            </a>
                         </ul>
                     </div>
                     <br>

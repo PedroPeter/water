@@ -6,7 +6,7 @@
             <div class="col-sm-12" style="background-color:darkgray;">
                     <div class="alert alert-danger">
                         <ul>
-                            <li>{{ $message }}</li>
+                            <li>{{ $message }}</li><br>
                         </ul>
                     </div>
                     <br>
@@ -50,18 +50,12 @@
                                 {{$factura['obs']}}
                             </td>
                             <td>
-                                {!! Form::open(array('route'=>['factura.show',$factura['numero']], 'method'=>'GET'))!!}
-                                <button class="btn btn-success" type="submit">Alterar dados </button>
-                                {!! Form::close() !!}
-                                <br>
-                                {!! Form::open(array('route'=>['invoice.imprimir',$factura['numero']], 'method'=>'POST'))!!}
+                                {!! Form::open(array('route'=>['invoice.imprimir',$factura['numero']], 'method'=>'GET'))!!}
                                 <button class="btn btn-success" type="submit">Imprimir </button>
                                 {!! Form::close() !!}
-                                <br>
-                                {!! Form::open(array('route'=>['recibo.imprimir',$factura['numero']], 'method'=>'POST'))!!}
-                                <button class="btn btn-success" type="submit">Pagar </button>
+                                {!! Form::open(array('route'=>['recibo.imprimir',$factura['numero']], 'method'=>'GET'))!!}
+                                <button class="btn btn-success" type="submit">Recibo </button>
                                 {!! Form::close() !!}
-
                             </td>
                         </tr>
                         @endforeach

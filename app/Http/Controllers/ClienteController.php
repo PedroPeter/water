@@ -119,8 +119,10 @@ class ClienteController extends Controller
      */
     public function destroy($id)
     {
-        \App\Cliente::destroy($id);
-        return redirect('cliente.show');
+        $c=\App\Cliente::find($id);
+        $c->activo=false;
+        $c->save();
+        return redirect('cliente.index');
     }
 
 
