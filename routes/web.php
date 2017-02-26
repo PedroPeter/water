@@ -12,63 +12,84 @@
 */
 
 
-
+//now middlewares neccessary
 Route::get('/', function () {
     return view('user.index');
 });
+Route::get('/index', function () {
+    return view('user.index');
+})->name('paginainicial');
 
 Route::get('/user/resposta', function () {
-    return view('user.createR');})->name('replyUser');
-
-Route::get('/index', function () {
-    return view('user.index');})->name('paginainicial');
+    return view('user.createR');
+})->name('replyUser');
 
 Route::get('/contracto', function () {
-    return view('user.contracto');})->name('contracto');
+    return view('user.contracto');
+})->name('contracto');
 
 Route::get('/createuser', function () {
-    return view('user.create');})->name('createuser');
+    return view('user.create');
+})->name('createuser');
+Route::resource('sistema/login', 'LoginController');
 
-Route::get('dashboard/cadastro', function(){
-    return view('gerente.cadastro');});
+//middlewares necessary
 
-Route::get('dashboard/index', function(){
-    return view('gerente.template');});
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('dashboard/cadastro', function () {
+        return view('gerente.cadastro');
+    });
 
-Route::get('dashboard/user', 'UserController@index')->name('userindex');
+    Route::get('dashboard', function () {
+        return view('gerente.template');
+    })->name('dashboard');
+    Route::get('dashboard/cliente', function () {
+        return view('cliente.template');
+    })->name('cliente.dashboard');
+    Route::get('login/out/true', function () {
+        Auth::logout;
+        redirect()->route('paginainicial');
+    })->name('login.out');
 
-Route::get('dashboard/login', function(){
-    return view('gerente.login');})->name('entrarnosistema');
+    Route::get('dashboard/user', 'UserController@index')->name('userindex');
 
-Route::get('dashboard/', function(){
-    return view('gerente.login');});
+    Route::get('dashboard/casa/add/{cliente_id}', function ($id) {
+        return View::make('gerente.clientecasa')->with('id', $id);;
+    })->name('addCasa');
+    Route::post('dashboard/factura/imprimir/{id}', 'FacturaController@factura')->name('invoice.imprimir');
+    Route::post('dashboard/recibo/imprimir/{id}', 'FacturaController@recibo')->name('recibo.imprimir');
+    Route::post('sistema/login/check/', 'LoginController@check')->name('login.check');
 
-Route::get('dashboard/casa/add/{cliente_id}', function($id){
-    return View::make('gerente.clientecasa')->with('id',$id);;})->name('addCasa');
-Route::post('dashboard/factura/imprimir/{id}','FacturaController@factura')->name('invoice.imprimir');
-Route::post('dashboard/recibo/imprimir/{id}','FacturaController@recibo')->name('recibo.imprimir');
+    Route::get('cliente/{user_id}', 'ClienteController@create')->name('create.cliente');
+    Route::get('dashboard/admin/contratcto/upload', function () {
+        return view('gerente.contracto');
+    })->name('contracto.crt');
 
-Route::get('porta','LoginController@Porta')->name('porta');
-Route::get('cliente/{user_id}','ClienteController@create')->name('create.cliente');
-Route::get('leitura/{user_id}','LeiturasController@create')->name('leitura.create');
-Route::get('dashboard/leitura/pendente','LeiturasController@pendentes')->name('leituras.pendentes');
-Route::get('dashboard/factura/pendente','FacturaController@pendentes')->name('facturas.pendentes');
-Route::get('dashboard/factura/emitidas','FacturaController@pendentes')->name('facturas.emetidas');
-Route::get('dashboard/admin/casa/link','CasaController@link')->name('casa.link');
-Route::get('dashboard/admin/casa/{casa_id}/fontenaria/{fontenaria_id}',[
-    'as'=>'casa.linkar', 'uses'=>'CasaController@linkar'
-]);
-Route::resource('dashboard/leitura','LeiturasController');
-Route::resource('dashboard/fontenaria','FontenariaController');
-Route::resource('dashboard/gerente', 'GerenteController');
-Route::resource('user','UserController');
-Route::resource('dashboard/admin', 'AdminController');
-Route::resource('dashboard/factura', 'FacturaController');
-Route::resource('dashboard/contracto', 'ContractoController');
-Route::resource('dashboard/agua', 'AguaController');
-Route::resource('dashboard/produto', 'ProdutosController');
-Route::resource('dashboard/cliente', 'ClienteController',['only' => ['index', 'show','destroy','store']]);
-Route::resource('dashboard/admin/casa', 'CasaController');
+    Route::get('leitura/{user_id}', 'LeiturasController@create')->name('leitura.create');
+    Route::post('dashboard/contracto/upload', 'GerenteController@contracto')->name('contracto.up');
+    Route::get('dashboard/leitura/pendente', 'LeiturasController@pendentes')->name('leituras.pendentes');
+    Route::get('dashboard/factura/pendente', 'FacturaController@pendentes')->name('facturas.pendentes');
+    Route::get('dashboard/factura/emitidas', 'FacturaController@pendentes')->name('facturas.emetidas');
+    Route::get('dashboard/admin/casa/link', 'CasaController@link')->name('casa.link');
+    Route::get('dashboard/admin/fontenarias/detalhes', 'FontenariaController@links')->name('fontenaria.detalhes');
+    Route::get('dashboard/admin/estatisticas', 'AdminController@estatisticas')->name('estatisticas');
+    Route::get('dashboard/admin/casa/{casa_id}/fontenaria/{fontenaria_id}', [
+        'as' => 'casa.linkar', 'uses' => 'CasaController@linkar'
+    ]);
+    Route::resource('sistema/admin', 'AdminController');
+    Route::resource('dashboard/leitura', 'LeiturasController');
+    Route::resource('dashboard/fontenaria', 'FontenariaController');
+    Route::resource('dashboard/gerente', 'GerenteController');
+    Route::resource('user', 'UserController');
+    Route::resource('dashboard/admin', 'AdminController');
+    Route::resource('dashboard/factura', 'FacturaController');
+    Route::resource('dashboard/contracto', 'ContractoController');
+    Route::resource('dashboard/agua', 'AguaController');
+    Route::resource('dashboard/produto', 'ProdutosController');
+    Route::resource('dashboard/cliente', 'ClienteController', ['only' => ['index', 'show', 'destroy', 'store']]);
+    Route::resource('dashboard/admin/casa', 'CasaController');
+
+});
 
 Auth::routes();
 Route::get('/home', 'HomeController@index');

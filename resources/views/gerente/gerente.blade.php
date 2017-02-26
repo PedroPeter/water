@@ -2,13 +2,20 @@
 @extends('gerente.template')
 
 @section('content')
+    <script src="{{asset('js/jquery.inputmask.bundle.min.js')}}"></script>
+    <script>
+        $(document).ready(function () {
+            $("#celular1").inputmask("99 999-9999");
+            $("#celular2").inputmask("99 999-9999");
+        });
+    </script>
 
     <div class="container">
-        <h1>Cadastro de Gerentes</h1>
+        <h1>Gestao de Gerentes</h1>
         <div class="row">
             <div class="col-sm-12" style="background-color:darkgray;">
 
-                {!! Form::open(['id'=>'contact_form','class'=>'well form-horizontal','url'=>'gerente'])!!}
+                {!! Form::open(['id'=>'contact_form','class'=>'well form-horizontal','route'=>'gerente.store'])!!}
                 <fieldset>
                     @if (count($errors) > 0)
                         <div class="alert alert-danger">
@@ -63,28 +70,28 @@
                         <!-- Text input-->
 
                         <div class="form-group">
-                            <label class="col-md-4 control-label">Celular Principal#</label>
+                            <label class="col-md-4 control-label">Celular Principal</label>
                             <div class="col-md-4 inputGroupContainer">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
-                                    <input name="celular1" id="celular1" placeholder="(82/84/86)#######" class="form-control" type="number">
+                                    <input name="celular1" id="celular1" placeholder="## ### ####" class="form-control" type="text">
                                 </div>
                             </div>
                         </div>
                         <!-- Text input-->
 
                         <div class="form-group">
-                            <label class="col-md-4 control-label">Celular secundario#</label>
+                            <label class="col-md-4 control-label">Celular secundario</label>
                             <div class="col-md-4 inputGroupContainer">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
-                                    <input name="celular2" id="celular2" placeholder="(82/84/86)#######" class="form-control" type="number">
+                                    <input name="celular2" id="celular2" placeholder="## ### ####" class="form-control" type="text">
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-md-4 control-label">User name#</label>
+                            <label class="col-md-4 control-label">User name</label>
                             <div class="col-md-4 inputGroupContainer">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
@@ -94,7 +101,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="col-md-4 control-label">Password#</label>
+                            <label class="col-md-4 control-label">Password</label>
                             <div class="col-md-4 inputGroupContainer">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
@@ -108,7 +115,7 @@
                             <div class="col-md-4 inputGroupContainer">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
-                                    <input name="passwrordR" id="passwr" placeholder="Repita o password" class="form-control" type="password">
+                                    <input name="passwordR" id="passwr" placeholder="Repita o password" class="form-control" type="password">
                                 </div>
                             </div>
                         </div>
@@ -128,7 +135,7 @@
             <div class="col-sm-12" style="background-color:lightgray;">
                 <h1>Remover Gerentes</h1>
 
-                @if (isset($gerentes))
+                @if (isset($gerentes) && count($gerentes)>0)
                     <div class="alert alert-success">
                         <ul class="list-group">
                             @foreach ($gerentes as $gerente)
@@ -144,12 +151,12 @@
                         </ul>
                     </div>
                  @else
-                    <h1>Nenhum gerente registado</h1>
-
+                    <h1>Nenhum gerente registado...</h1>
                 @endif
 
             </div>
 
         </div>
     </div>
+
 @stop

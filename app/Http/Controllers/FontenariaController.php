@@ -121,11 +121,12 @@ class FontenariaController extends Controller
         $fontenarias=Fontenaria::all();
         foreach($fontenarias as $fontenaria){
             $data[]=[
-                'fontenaria_nome'=>$fontenaria->nome,
+                'nome'=>$fontenaria->nome,
                 'numero_clientes'=>count($fontenaria->casas),
                 'max_clientes'=>$fontenaria->max_clientes,
             ];
         }
+        return View::make('gerente.fontenariaDetalhes')->with('data', $data);
 
     }
     public function rules(){

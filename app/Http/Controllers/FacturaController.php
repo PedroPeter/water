@@ -130,6 +130,7 @@ class FacturaController extends Controller
             $input = $request->all();
             $factura = Factura::find($id);
             $factura->l_actual = $input['l_actual'];
+            $factura->val_pagarl = $factura->l_actual -$factura->l_anterior;
             $factura->observacao = $input['observacao'];
             $factura->save();
             return redirect()->route('factura.index');

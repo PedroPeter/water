@@ -18,26 +18,6 @@
     <script src="{{asset('plugins/bootstrap/bootstrap.min.js')}}"></script>
     <script src="{{asset('plugins/metisMenu/jquery.metisMenu.js')}}"></script>
     <script src="{{asset('js/inputmask.js')}}"></script>
-    <script>
-        $(document).ready(function(){
-            $("#nome").inputmask("Regex");
-            $("#username").inputmask("Regex");
-            $("#password").inputmask("Regex");
-            $("#apelido").inputmask("Regex");
-            $("#email").inputmask("{1,20}@{1,20}.{3}[.{2}]");
-            $("#celular1").inputmask("999999999");
-            $("#celular2").inputmask("999999999");
-
-            $('form').submit(function(){
-                if ($('#pass').getValue().length<5){
-                    document.getElementById("pls").innerHTML = "<div class='alert alert-danger' role='alert'> <strong>Oh snap!</strong> <a href='#' class='alert-link'>Quantidade de caracteres para o password tem de ser maior que 5 </div>";
-                }else if( $('#pass').getValue() != $('#cpass').getValue()){
-                    document.getElementById("pls").innerHTML = "<div class='alert alert-danger' role='alert'> <strong>Oh snap!</strong> <a href='#' class='alert-link'>Os passwords introduzidos nao sao identicos </div>";
-                }
-            });
-        });
-    </script>
-
 </head>
 
 <body class="body-Login-back">
@@ -85,10 +65,10 @@
                                     <input class="form-control" placeholder="User name" name="username" type="text" autofocus>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Password" name="password" type="password" value="" id="pass">
+                                    <input class="form-control" placeholder="Password" name="password" type="password" >
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Repita o Password" name="password" type="password" value="" id="cpass">
+                                    <input class="form-control" placeholder="Repita o Password" name="password" type="passwordR">
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
                                 <button type="submit" class="btn btn-lg btn-success btn-block" id="in">Entrar <span class="glyphicon glyphicon-send"></span></button>

@@ -13,18 +13,24 @@
     @yield('hMais')
 </head>
 <body>
-<nav class="navbar navbar-inverse  navbar-fixed-top">
+<div class="alert-info" style="font-size: 72px; text-align: center;">
+    Águas Guessane
+</div>
+<nav class="navbar navbar-inverse  navbar-fixed-top" style="height: 100px; padding-top: 20px;">
     <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">Aguas Zavala</a>
-        </div>
-        <ul class="nav navbar-nav">
-            <li class="active"><a href="{{route('paginainicial')}}">Home</a></li>
-            <li><a href="#">Auxilio na instalacao</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="{{route('createuser')}}"><span class="glyphicon glyphicon-user"></span> Criar uma conta</a></li>
-            <li><a href="{{route('entrarnosistema')}}"><span class="glyphicon glyphicon-log-in"></span> Entrar</a></li>
+        <ul class="nav justify-content-center">
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('paginainicial')}}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Auxilio na instalacao <br> Brevemente</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="{{route('createuser')}}"><span class="glyphicon glyphicon-user"></span>Criar conta</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('login.index')}}"><span class="glyphicon glyphicon-log-in"></span>Entrar</a>
+            </li>
         </ul>
     </div>
 </nav>
@@ -33,14 +39,13 @@
     @yield('content')
 </div>
 
-<footer>
-<p>
-   <a href="#">Fale connosco</a>
-</p>
-    <br/>
-  <p>Av. Josina MAchel numero 1352 . Maputo, Mocambique </p>
-</footer>
-
+<div style="padding-top: 50px;">
+    <footer>
+        <a href="#">Fale connosco</a>
+        <br/>
+        <p>Av. Josina Machel numero 1352 . Maputo, Mocambique </p>
+    </footer>
+</div>
 </body>
 </html>
     

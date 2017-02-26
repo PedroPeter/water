@@ -24,7 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command('leitura:do')->monthlyOn(20);
+         //$schedule->command('leitura:do')->monthlyOn(20);
+         $schedule->command('leitura:do')->everyMinute();
     }
 
     /**

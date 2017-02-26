@@ -31,4 +31,13 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Cliente');
     }
+
+    /**
+     * Get the user for the sms.
+     */
+    public function sms()
+    {
+        return $this->belongsTo('App\Sms');
+    }
+
 }

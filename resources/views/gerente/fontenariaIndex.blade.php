@@ -55,7 +55,7 @@
                             </tbody>
                     @endforeach
                             </table>
-                <a><button type="button" class="btn btn-info">Mais informacoes</button></a>
+                <a href="{{route('fontenaria.detalhes')}}"><button type="button" class="btn btn-info">Mais informacoes</button></a>
                         </div>
                 </div>
         @endif

@@ -1,18 +1,18 @@
 <!DOCTYPE html>
+{{--@if(!\Illuminate\Support\Facades\Auth::check())
+    {{ redirect()->route('paginainicial')}}
+@endif--}}
 <html>
-
 <head>
     <meta charset="utf-8">
         <title>Area Administrativa - Aguas Zavala | Admin Dashboad</title>
-    </meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Core CSS - Include with every page -->
     {{ Html::style('plugins/bootstrap/bootstrap.css')}}
     {{ Html::style('font-awesome/css/font-awesome.css')}}
     {{ Html::style('plugins/pace/pace-theme-big-counter.css')}}
     {{ Html::style('css/style.css')}}
     {{ Html::style('css/main-style.css')}}
-    <!-- Page-Level CSS -->
-    {{ Html::style('plugins/social-buttons/social-buttons.css')}}
     <!-- Core Scripts - Include with every page -->
     {{ Html::script('js/jquery-3.1.1.min.js')}}
     {{ Html::script('plugins/bootstrap/bootstrap.min.js')}}
@@ -240,7 +240,7 @@
                         <li><a href="#"><i class="fa fa-user fa-fw"></i>Profile</a>
 
                         <li class="divider"></li>
-                        <li><a href="{{url('dashboard/login')}}"><i class="fa fa-sign-out fa-fw"></i>Sair</a>
+                        <li><a href="{{route('login.out')}}"><i class="fa fa-sign-out fa-fw"></i>Sair</a>
                         </li>
                     </ul>
                     <!-- end dropdown-user -->
@@ -265,16 +265,18 @@
                                 <img src="{{asset('img/user.jpg')}}" alt="">
                             </div>
                             <div class="user-info">
-                                <div>Pedro<strong>Peter</strong></div>
+                                @if(isset($username))
+                                <div><strong>{{$username}}</strong></div>
                                 <div class="user-text-online">
                                     <span class="user-circle-online btn btn-success btn-circle "></span>&nbsp;Online
                                 </div>
+                                @endif
                             </div>
                         </div>
                         <!--end user image section-->
                     </li>
                     <li class="">
-                        <a href="{{url('/dashboard/index')}}"><i class="fa fa-dashboard fa-fw"></i>Administração</a>
+                        <a href="{{route('dashboard')}}"><i class="fa fa-dashboard fa-fw"></i>Administração</a>
                     </li>
                     <li>
                         <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>Recursos<span class="fa arrow"></span></a>
@@ -285,6 +287,9 @@
                             </li>
                             <li>
                                 <a href="{{route('produto.index')}}">Gerir Produtos</a>
+                            </li>
+                            <li>
+                                <a href="{{route('contracto.crt')}}">Submeter contracto</a>
                             </li>
                         </ul>
                         <!-- second-level-items -->
@@ -334,7 +339,7 @@
                     </li>
 
                     <li>
-                        <a href="timeline.blade.php"><i class="fa fa-flask fa-fw"></i>Reclamações </a>
+                        <a href=""><i class="fa fa-flask fa-fw"></i>Reclamações </a>
                     </li>
 
                     <li>
@@ -353,18 +358,18 @@
                         <!-- second-level-items -->
                     </li>
                     <li >
-                        <a href="#"><i class="fa fa-files-o fa-fw"></i>Estatísticas <span ></span></a>
+                        <a href="{{route('estatisticas')}}"><i class="fa fa-files-o fa-fw"></i>Estatísticas <span ></span></a>
                         <!-- second-level-items -->
                     </li>
                     <li >
-                        <a href="{{url('gerente/create')}}"><i class="fa fa-files-o fa-fw"></i>Gerir gerentes <span ></span></a>
+                        <a href="{{route('gerente.create')}}"><i class="fa fa-files-o fa-fw"></i>Gerir gerentes <span ></span></a>
                         <!-- second-level-items -->
                     </li>
                     <li class="active">
                         <a href="#"><i class="fa fa-files-o fa-fw"></i>Mais<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="../login.blade.php">Entrar como outro usuario</a>
+                                <a href="{{route('login.index')}}">Entrar como outro usuario</a>
                             </li>
                         </ul>
                         <!-- second-level-items -->
