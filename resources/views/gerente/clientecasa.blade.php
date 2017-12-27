@@ -3,6 +3,13 @@
 
 @section('content')
 <div class="container">
+    @if(isset($message))
+        <div class="alert-info" style="font-size: 72px; text-align: center;">
+            Cliente registado com sucesso. Suas credenciais: <br>
+            {{$message}}
+        </div>
+    @endif
+
     <h1>Cadastro da Casa do Cliente</h1>
     <div class="row">
         <div class="col-sm-12" style="background-color:darkgray;">

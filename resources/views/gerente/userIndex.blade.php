@@ -5,7 +5,7 @@
         @if(isset($message))
             <div class="alert alert-danger">
                 <h3>{{$message}}</h3>
-                <a href="{{route('createuser')}}">
+                <a href="{{route('createuser')}}" target="_blank">
                     <button>Registar</button>
                 </a>
             </div>

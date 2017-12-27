@@ -25,12 +25,10 @@
                             <thead>
                             <div class="alert alert-info"><h3>Clintes</h3></div>
                             <tr>
-                                <th>Clientes activos</th>
-                                <th>Clientes inactivos</th>
-                                <th>Facturas pagas</th>
-                                <th>Facturas nao pagas</th>
-                                <th>Reclamacoes feitas</th>
-                                <th>Pedidos feitos</th>
+                                <th><a href="{{route('cliente.index')}}" target="_blank">Clientes activos</a></th>
+                                <th><a href="{{route('cliente.index2')}}" target="_blank">Clientes inactivos(Contractos cancelados)</a></th>
+                                <th><a href="{{route('facturas.emetidas')}}" target="_blank">Facturas pagas</a></th>
+                                <th><a href="{{route('facturas.pendentes')}}" target="_blank">Facturas nao pagas</a></th>
                                 <th>Valor total das facturas pagas </th>
                                 <th>Valor pendente das facturas nao pagas </th>
                             </tr>
@@ -41,8 +39,6 @@
                                 <td>{{ $data['clt_inactivos']}}</td>
                                 <td>{{ $data['fac_pagas']}}</td>
                                 <td>{{ $data['fac_Npagas']}}</td>
-                                <td>{{ $data['rcl']}}</td>
-                                <td>{{ $data['pdd']}}</td>
                                 <td>{{ $data['val_total']}}</td>
                                 <td>{{ $data['val_pendente']}}</td>
                             </tr>

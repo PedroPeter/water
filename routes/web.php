@@ -12,7 +12,7 @@
 */
 
 
-//now middlewares neccessary
+//no middlewares neccessary
 Route::get('/', function () {
     return view('user.index');
 });
@@ -32,10 +32,13 @@ Route::get('/createuser', function () {
     return view('user.create');
 })->name('createuser');
 Route::resource('sistema/login', 'LoginController');
+Route::post('sistema/login/check/', 'LoginController@check')->name('login.check');
+
 
 //middlewares necessary
 
 Route::group(['middleware' => 'auth'], function () {
+    Route::resource('dashboard/user', 'UserController');
     Route::get('dashboard/cadastro', function () {
         return view('gerente.cadastro');
     });
@@ -51,14 +54,17 @@ Route::group(['middleware' => 'auth'], function () {
         redirect()->route('paginainicial');
     })->name('login.out');
 
-    Route::get('dashboard/user', 'UserController@index')->name('userindex');
+    Route::get('dashboard/user', 'UserController@index')->name('user.index');
 
     Route::get('dashboard/casa/add/{cliente_id}', function ($id) {
-        return View::make('gerente.clientecasa')->with('id', $id);;
+        return View::make('gerente.clientecasa')->with('id', $id);
     })->name('addCasa');
     Route::post('dashboard/factura/imprimir/{id}', 'FacturaController@factura')->name('invoice.imprimir');
+    Route::post('dashboard/factura/definir/operacoes/', 'FacturaController@operacoes')->name('factura.operacoes');
+    Route::put('dashboard/factura/definir/operacoes/', 'FacturaController@operacoesUpdate')->name('factura.operacoes');
+    Route::get('dashboard/factura/definir/operacoes/update', 'FacturaController@create')->name('facturaOperacoes.update');
+    Route::get('dashboard/factura/definir/operacoes', 'FacturaController@operacoesCreate')->name('factura.operacoes');
     Route::post('dashboard/recibo/imprimir/{id}', 'FacturaController@recibo')->name('recibo.imprimir');
-    Route::post('sistema/login/check/', 'LoginController@check')->name('login.check');
 
     Route::get('cliente/{user_id}', 'ClienteController@create')->name('create.cliente');
     Route::get('dashboard/admin/contratcto/upload', function () {
@@ -69,7 +75,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('dashboard/contracto/upload', 'GerenteController@contracto')->name('contracto.up');
     Route::get('dashboard/leitura/pendente', 'LeiturasController@pendentes')->name('leituras.pendentes');
     Route::get('dashboard/factura/pendente', 'FacturaController@pendentes')->name('facturas.pendentes');
-    Route::get('dashboard/factura/emitidas', 'FacturaController@pendentes')->name('facturas.emetidas');
+    Route::get('dashboard/factura/emitidas', 'FacturaController@emetidas')->name('facturas.emetidas');
     Route::get('dashboard/admin/casa/link', 'CasaController@link')->name('casa.link');
     Route::get('dashboard/admin/fontenarias/detalhes', 'FontenariaController@links')->name('fontenaria.detalhes');
     Route::get('dashboard/admin/estatisticas', 'AdminController@estatisticas')->name('estatisticas');
@@ -80,13 +86,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('dashboard/leitura', 'LeiturasController');
     Route::resource('dashboard/fontenaria', 'FontenariaController');
     Route::resource('dashboard/gerente', 'GerenteController');
-    Route::resource('user', 'UserController');
     Route::resource('dashboard/admin', 'AdminController');
     Route::resource('dashboard/factura', 'FacturaController');
     Route::resource('dashboard/contracto', 'ContractoController');
     Route::resource('dashboard/agua', 'AguaController');
     Route::resource('dashboard/produto', 'ProdutosController');
     Route::resource('dashboard/cliente', 'ClienteController', ['only' => ['index', 'show', 'destroy', 'store']]);
+    Route::get('dashboard/clientes/inactivos/', 'ClienteController@index2')->name('cliente.index2');
+    Route::get('dashboard/clientes/situacao/', 'ClienteController@situacao')->name('clientes.situacao');
     Route::resource('dashboard/admin/casa', 'CasaController');
 
 });

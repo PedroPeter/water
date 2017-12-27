@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Aguas Zavala</title>
+    <title>Águas Zavala</title>
 
     <link rel="stylesheet" href="{{asset('css/bootstrap.css')}}">
     <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
@@ -16,20 +16,17 @@
 <div class="alert-info" style="font-size: 72px; text-align: center;">
     Águas Guessane
 </div>
-<nav class="navbar navbar-inverse  navbar-fixed-top" style="height: 100px; padding-top: 20px;">
+<nav class="navbar navbar-inverse  navbar-fixed-top" style="height: 100px; padding-top: 10px; font-size: 40px;">
     <div class="container-fluid">
-        <ul class="nav justify-content-center">
+        <ul class="nav justify-content-center"  >
             <li class="nav-item">
-                <a class="nav-link" href="{{route('paginainicial')}}">Home</a>
+                <a class="nav-link" href="{{route('paginainicial')}}" >Pagina Inicial</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link disabled" href="#">Auxilio na instalacao <br> Brevemente</a>
+                <a class="nav-link " href="{{route('createuser')}}"><span class="glyphicon glyphicon-user"></span>Criar conta/Tornar-se Cliente</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="{{route('createuser')}}"><span class="glyphicon glyphicon-user"></span>Criar conta</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{route('login.index')}}"><span class="glyphicon glyphicon-log-in"></span>Entrar</a>
+                <a class="nav-link" href="{{route('login.create')}}" ><span class="glyphicon glyphicon-log-in"></span>Entrar</a>
             </li>
         </ul>
     </div>

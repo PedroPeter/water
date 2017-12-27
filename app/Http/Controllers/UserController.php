@@ -6,6 +6,7 @@ use App\User;
 use  Illuminate\Http\Request;
 use View;
 use Validator;
+use Route;
 
 class UserController extends Controller
 {
@@ -53,7 +54,7 @@ class UserController extends Controller
             $input = $request->all();
             $input['cargo'] = $this->CARGO;
             User::create($input);
-            return redirect('user/resposta');
+            return redirect()->route('replyUser');
         }
     }
 

@@ -22,31 +22,26 @@ class LeiturasController extends Controller
     {
         $time = Carbon::now()->startOfMonth();
         $numero_leitura = Leitura::all()->max('numero_leitura');
-        $cliente = array();
-        $casa=array();
+        $data = array();
         $leitura_cliente = Leitura::where([
             ['numero_leitura', '=', $numero_leitura], ['updated_at', '>=', $time], ['efectuado', '=', false]
         ])->get();
-        foreach ($leitura_cliente as $lc) {
-            //casa
-                $casa[] = [
-                    'casa_bairro' => $lc->casa->bairro,
-                    'casa_rua' => $lc->casa->rua_avenida,
-                    'casa_numero' => $lc->casa->numero_casa,
-                    'casa_descricao' => $lc->casa->descricao,
-                ];
-            $cliente[] = [
-                'cliente_nome'=>$lc->casa->cliente->user->nome,
-                'id'=>$lc->id,
-                'casa' => $casa,
-            ];
-            $casa=array();
+        if (count($leitura_cliente) < 1) {
+            return View::make('gerente.leiturasIndex')->with('message', 'Leituras de todos clientes efectuados para o presente mes.');
         }
-            if (count((array)$cliente) > 0) {
-                return View::make('gerente.leiturasIndex')->with('clientes', $cliente);
-            } else {
-                return View::make('gerente.leiturasIndex')->with('message', 'Leituras de todos clientes efectuados para o presente mes.');
-            }
+        foreach ($leitura_cliente as $lc) {
+            //data
+            $data[] = [
+                'casa_bairro' => $lc->casa->bairro,
+                'casa_rua' => $lc->casa->rua_avenida,
+                'casa_numero' => $lc->casa->numero_casa,
+                'casa_descricao' => $lc->casa->descricao,
+                'cliente_nome' => $lc->casa->cliente->user->nome,
+                'id' => $lc->id,
+            ];
+        }
+        return View::make('gerente.leiturasIndex')->with('data', $data);
+
     }
 
     /**
@@ -75,8 +70,8 @@ class LeiturasController extends Controller
             $leitura->efectuado = true;
             $leitura->consumo = $input['consumo'];
             $leitura->save();
-            $factura=new Factura();
-            $factura->l_actual=$input['consumo'];
+            $factura = new Factura();
+            $factura->l_actual = $input['consumo'];
             $factura->leitura()->associate($leitura);
             $factura->save();
             return redirect()->route('leitura.index');
@@ -136,29 +131,23 @@ class LeiturasController extends Controller
      */
     public function pendentes()
     {
-        $cliente = array();
-        $casa=array();
+        $data = array();
         $leitura_cliente = Leitura::where('efectuado', '=', false)->get();
+        if (count($leitura_cliente) < 1) {
+            return View::make('gerente.leiturasPendentes')->with('message', 'Nenhuma leitura pendente.');
+        }
         foreach ($leitura_cliente as $lc) {
             //casa
-            $casa[] = [
+            $data[] = [
                 'casa_bairro' => $lc->casa->bairro,
                 'casa_rua' => $lc->casa->rua_avenida,
                 'casa_numero' => $lc->casa->numero_casa,
                 'casa_descricao' => $lc->casa->descricao,
+                'cliente_nome' => $lc->casa->cliente->user->nome,
+                'id' => $lc->id
             ];
-            $cliente[] = [
-                'cliente_nome'=>$lc->casa->cliente->user->nome,
-                'id'=>$lc->id,
-                'casa' => $casa,
-            ];
-            $casa=array();
         }
-        if (count((array)$cliente) > 0) {
-            return View::make('gerente.leiturasPendentes')->with('clientes', $cliente);
-        } else {
-            return View::make('gerente.leiturasPendentes')->with('message', 'Nenhuma leitura pendente.');
-        }
+        return View::make('gerente.leiturasPendentes')->with('data', $data);
     }
 
     public function rules()

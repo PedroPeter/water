@@ -10,8 +10,7 @@
 
         <h1>Proximo passo</h1>
         <p>Para terminar o processo é necessário que traga ao nosso estabelecimento uma cópia de um documento (BI, Passaporte, etc.)
-            que comprove os dados anteriormente inseridos durante o cadastro. Mais detalhes serão-lhe enviados no seu celular e/ou email. </p>
-        {{--<p><a class="btn btn-primary btn-lg" href="asset('user/auxilio'" role="button">Saber mais sobre a instalacao da agua</a></p>--}}
+            que comprove os dados anteriormente inseridos durante o cadastro. Mais detalhes lhe serão enviados no seu celular e/ou email. </p>
         <p><a class="btn btn-primary btn-lg" href="{{route('paginainicial')}}" role="button">Voltar a pagina principal</a></p>
     </div>
 

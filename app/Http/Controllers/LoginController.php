@@ -19,9 +19,10 @@ class LoginController extends Controller
     {
         if (User::all()->count() > 0) {
             return View::make('login');
-        } else {
-            return View::make('admin.admin');
         }
+
+        return View::make('admin.admin');
+
     }
 
     /**
@@ -31,7 +32,7 @@ class LoginController extends Controller
      */
     public function create()
     {
-        //
+        return view("auth.login");
     }
 
     /**
@@ -92,29 +93,42 @@ class LoginController extends Controller
 
     public function check(Request $request)
     {
-        $rules = [
-            'username' => 'required',
-            'password' => 'required',
-        ];
-        $message = [
-            'username.required' => 'Nome de usuario incorrecto.',
-            'password' => 'Password incorrecto.',
-        ];
 
-        $validate = Validator::make($request->all(), $rules, $message);
+        $validate = Validator::make($request->all(), $this->rules(), $this->message());
+        $username = $request->username;
+        $password = $request->password;
         if ($validate->fails()) {
             return redirect()->back()->withInput()->exceptInput('password')->withErrors($validate);
+        } elseif (Auth::attempt(['username' => $username, 'password' => $password])) {
+            /*$user = Auth::user();*/
+            /*if (strcmp($user->cargo, 'Gerente') || strcmp($user->cargo, 'admin')) {*/
+            return redirect()->route('dashboard')->with('username', $username);
+            /* }*/
+            /*else {
+                return redirect()->route('cliente.dashboard')->with('username', $username);
+            }*/
         } else {
-            $username = $request->username;
-            $password = $request->password;
-            if (Auth::attempt(['username' => $username, 'password' => $password, 'cargo' => 'Gerente']) || Auth::attempt(['username' => $username, 'password' => $password, 'cargo' => 'Admin'])) {
-                return redirect()->route('dashboard')->with('username',$username);
-            } elseif (Auth::attempt(['username' => $username, 'password' => $password, 'cargo' => 'Cliente'])) {
-                return redirect()->route('cliente.dashboard')->with('username',$username);
-            } else {
-                return redirect()->back()->withInput()->exceptInput('password')->with('message', "Usuario nao registado no sistema!");
-            }
+            return redirect()->back()->with('message', "Usuario nao registado no sistema!")->withInput()->exceptInput('password');
         }
     }
+
+    public
+    function rules()
+    {
+        return $rules = [
+            'username' => 'required',
+            'password' => 'required'];
+
+    }
+
+    public
+    function message()
+    {
+        return $message = [
+            'username.required' => 'Nome de usuario incorrecto.',
+            'password.required' => 'Password incorrecto.'
+        ];
+    }
+
 
 }

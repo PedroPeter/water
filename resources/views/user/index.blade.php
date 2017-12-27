@@ -1,15 +1,12 @@
 @extends('user.template')
 
 @section('content')
-    <img src="{{URL::asset('/img/water_desktop_wallpaper.jpg')}}" alt="profile Pic" height="400" width="1100">
+    <img src="{{URL::asset('/img/water_desktop_wallpaper.jpg')}}" alt="profile Pic" height="400" width="1250">
     <div style="color: white">
-
         <p>
-            As águas Zavala, SA, é uma empresa que se dedica na distribuição de água nas Áreas da Matola, Machava
-            Socimol, Km-18 desde 2016.
+            As águas Zavala, SA, é uma empresa que se dedica na distribuição de água nas Áreas da Machava, Km-18, desde 2016.
         </p>
         <br>
-
         <p>
             O crescimento da empresa no período acima referido foi marcado por várias situações, alguma delas adversas e
             de caracter interno

@@ -18,6 +18,11 @@
 <div class="container">
 
     <div class="row">
+        @if(isset($message))
+            <div class="alert-info" style="font-size: 72px; text-align: center;">
+                {{$message}}
+            </div>
+        @endif
         @if (count($errors) > 0)
             <div class="alert alert-danger">
                 <ul>
@@ -27,12 +32,6 @@
                 </ul>
             </div>
         @endif
-        @if(isset($message))
-            <div class="alert-info" style="font-size: 72px; text-align: center;">
-                {{$message}}
-            </div>
-        @endif
-
         <div class="col-md-4 col-md-offset-4 text-center logo-margin ">
             <img src="{{asset('img/user.jpg')}}" alt=""/>
         </div>
@@ -46,10 +45,11 @@
                     {!! Form::open(['id'=>'contact_form','class'=>'well form-horizontal','route'=>'login.check','role'=>'form'])!!}
                     <fieldset>
                         <div class="form-group">
-                            <input class="form-control" placeholder="Nome do usuario" name="username" type="text" autofocus>
+                            <input class="form-control" placeholder="Nome do usuario" name="username" type="text"
+                                   autofocus>
                         </div>
                         <div class="form-group">
-                            <input class="form-control" placeholder="Password" name="password" type="password" >
+                            <input class="form-control" placeholder="Password" name="password" type="password">
                         </div>
                         <!-- Change this to a button or input when using this as a form -->
                         <div class="form-group">

@@ -18,7 +18,7 @@
         @else
             <div class="row">
                 <div class="col-sm-12" style="background-color:lightgray;">
-                    <h3> Clientes</h3>
+                    <h3> Leituras pendentes</h3>
                     <table class="table table-bordered">
                         <thead>
                         <tr>
@@ -27,10 +27,10 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($clientes as $cliente)
+                        @foreach($data as $dt)
                         <tr>
                             <td>
-                                {{$cliente['cliente_nome']}}
+                                {{$dt['cliente_nome']}}
                             </td>
                             <td >
                                 <table class="table table-bordered">
@@ -54,19 +54,17 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($cliente['casa'] as $casa)
                                         <tr>
-                                            <td>{{ $casa['casa_bairro']}}</td>
-                                            <td>{{ $casa['casa_rua']}}</td>
-                                            <td>{{ $casa['casa_numero']}}</td>
-                                            <td>{{ $casa['casa_descricao']}}</td>
+                                            <td>{{ $dt['casa_bairro']}}</td>
+                                            <td>{{ $dt['casa_rua']}}</td>
+                                            <td>{{ $dt['casa_numero']}}</td>
+                                            <td>{{ $dt['casa_descricao']}}</td>
                                             <td>
-                                                {!! Form::open(array('route'=>['leitura.show',$cliente['id']], 'method'=>'GET'))!!}
+                                                {!! Form::open(array('route'=>['leitura.show',$dt['id']], 'method'=>'GET'))!!}
                                                 <button class="btn btn-success" type="submit">Efectuar Leitura </button>
                                                 {!! Form::close() !!}
                                             </td>
                                         </tr>
-                                    @endforeach
                                     </tbody>
                                 </table>
                             </td>

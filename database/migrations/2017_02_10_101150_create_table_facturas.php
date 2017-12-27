@@ -21,6 +21,7 @@ class CreateTableFacturas extends Migration
             $table->float('l_actual')->default(0);
             $table->float('val_pagar')->default(0);
             $table->tinyInteger('paga')->default(0);
+            $table->smallInteger('num_multas')->default(0);
             $table->string('observacao')->default('Nenhuma observacao feita!');
             $table->timestamps();
         });

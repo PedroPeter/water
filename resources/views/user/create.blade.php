@@ -21,7 +21,7 @@
 @stop
 
 @section('content')
-    {!! Form::open(['id'=>'contact_form','class'=>'well form-horizontal','url'=>'user'])!!}
+    {!! Form::open(['id'=>'contact_form','class'=>'well form-horizontal','route'=>'user.store'])!!}
     <fieldset>
         @if (count($errors) > 0)
             <div class="alert alert-danger">

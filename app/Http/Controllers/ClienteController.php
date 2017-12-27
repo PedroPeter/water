@@ -11,7 +11,7 @@ use Validator;
 class ClienteController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of active the resource.
      *
      * @return \Illuminate\Http\Response
      */
@@ -19,13 +19,47 @@ class ClienteController extends Controller
 
     public function index()
     {
-        $clientes = Cliente::where('activo', true)->get();
+        return $this->indexGeral(true, 'Nenhum Cliente registado no sistema.');
+    }
+
+    /**
+     * Display a listing of active the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function index2()
+    {
+        return $this->indexGeral(false, 'Nenhum Cliente cancelou contracto.');
+    }
+
+    public function indexGeral($bol, $message)
+    {
+        $clientes = Cliente::where('activo', $bol)->get();
         if (count((array)$clientes) > 0) {
             return View::make('gerente.clienteIndex')->with('clientes', $clientes);
-        } else {
-            return view('gerente.clienteIndex')->with('message', 'Nenhum Cliente registado no sistema.');
+        }
+        return view('gerente.clienteIndex')->with('message', $message);
+    }
+/**
+     * Display a listing of active the resource situation.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function situacao()
+    {
+        $clientes = Cliente::where('activo', true)->get();
+        $data=array();
+        if (count((array)$clientes) > 0) {
+
+            return View::make('gerente.clienteSituacao')->with('clientes', $clientes);
+        }else{
+            return view('gerente.clienteSituacao')->with('message', "Nao ha clientes activos.");
         }
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -62,8 +96,10 @@ class ClienteController extends Controller
                 'contracto' => $fileNameContracto,
                 'doc' => $fileNameDoc,
             ]);
+            /*$user->username=$user->nome.$user->apelido;
+            $user->password=bcrypt($user->apelido.$user->nome);*/
             $user->save();
-            return View::make('gerente.clientecasa')->with('id', $user->cliente->id);
+            return View::make('gerente.clientecasa'); /*->with('id', $user->cliente->id);*/
         }
     }
 
@@ -119,8 +155,8 @@ class ClienteController extends Controller
      */
     public function destroy($id)
     {
-        $c=\App\Cliente::find($id);
-        $c->activo=false;
+        $c = \App\Cliente::find($id);
+        $c->activo = false;
         $c->save();
         return redirect('cliente.index');
     }
@@ -139,14 +175,14 @@ class ClienteController extends Controller
         return [
             'doc.required' => 'requiered',
             'contracto.required' => 'requiered',
-             ];
+        ];
     }
 
     public function message()
     {
         return [
-            'doc.required' => 'O nome é obrigatório. ',
-            'contracto.required' => 'O apelido é obrigatório. ',
-             ];
+            'doc.required' => 'O documeno é obrigatório. ',
+            'contracto.required' => 'O contracto é obrigatório. ',
+        ];
     }
 }

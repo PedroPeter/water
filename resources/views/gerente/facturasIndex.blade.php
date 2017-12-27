@@ -22,7 +22,8 @@
                             <th>Numero da factura</th>
                             <th>Leitura anterior</th>
                             <th>Leitura actual</th>
-                            <th>Metros cubicos</th>
+                            <th>Metros cubicos consumidos</th>
+                            <th>Valor unitario</th>
                             <th>Valor a pagar</th>
                             <th>Observacao</th>
                             <th>Operacao</th>
@@ -42,6 +43,9 @@
                             </td>
                             <td>
                                 {{$factura['metros_cubicos']}}
+                            </td>
+                            <td>
+                                {{$factura['preco_unitario']}}
                             </td>
                             <td>
                                 {{$factura['val_pagar']}}

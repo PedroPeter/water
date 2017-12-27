@@ -15,7 +15,7 @@
         @else
             <div class="row">
                 <div class="col-sm-12" style="background-color:lightgray;">
-                    <h3> Clientes</h3>
+                    <h3> Leituras pendentes</h3>
                     <table class="table table-bordered">
                         <thead>
                         <tr>

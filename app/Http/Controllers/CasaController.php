@@ -8,6 +8,7 @@ use App\Fontenaria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use View;
+
 class CasaController extends Controller
 {
     /**
@@ -33,27 +34,27 @@ class CasaController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $validator=Validator::make($request->all(),$this->rules(),$this->menssages());
-        if($validator->fails()){
+        $validator = Validator::make($request->all(), $this->rules(), $this->menssages());
+        if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
-        }else{
-            $input=$request->all();
-            $cliente=\App\Cliente::findOrFail($input['id']);
+        } else {
+            $input = $request->all();
+            $cliente = \App\Cliente::findOrFail($input['id']);
             $cliente->casa()->create($input);
             $cliente->save();
-           return redirect()->route('casa.link');
+            return redirect()->route('casa.link');
         }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -64,7 +65,7 @@ class CasaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -75,8 +76,8 @@ class CasaController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -87,7 +88,7 @@ class CasaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -95,35 +96,65 @@ class CasaController extends Controller
         //
     }
 
-    public function rules(){
+    public function rules()
+    {
         return [
-            'bairro'=>'required',
-            'rua_avenida'=>'required',
-            'numero_casa'=>'required',
-            'descricao'=>'required',
-            'id'=>'required',
-        ];
-    }
-    public function menssages(){
-        return [
-            'bairro.required'=>'O Bairro é obrigatório. ',
-            'rua_avenida.required'=>'A Rua/Avenida é obrigatório. ',
-            'numero_casa.required'=>'O numero da casa é obrigatório. ',
-            'descricao.required'=>'A descricao é obrigatório. ',
+            'bairro' => 'required',
+            'rua_avenida' => 'required',
+            'numero_casa' => 'required',
+            'descricao' => 'required',
+            'id' => 'required',
         ];
     }
 
-    public function link(){
-        $clintes=Cliente::all();
-        $data=array();
-        foreach($clintes as $cliente){
-            $data[]= $cliente->casa;
-        }
-        $data['fontenarias']=Fontenaria::all();
-        return View::make('gerente.link')->with('data',$data);
+    public function menssages()
+    {
+        return [
+            'bairro.required' => 'O Bairro é obrigatório. ',
+            'rua_avenida.required' => 'A Rua/Avenida é obrigatório. ',
+            'numero_casa.required' => 'O numero da casa é obrigatório. ',
+            'descricao.required' => 'A descricao é obrigatório. ',
+        ];
     }
-    public function linkar($id1,$id2){
-        $casa=Casa::find($id1);
+
+    public function link()
+    {
+        $casas = Casa::all();
+        $dataLinked = array();
+        $dataNotLinked = array();
+        foreach ($casas as $casa) {
+            if ($casa->fontenarias()->exists()) {
+                $dataLinked[]=[
+                "nome" => $casa->cliente->user->nome,
+                "apelido" => $casa->cliente->user->apelido,
+                "num_casa" => $casa->numero_casa,
+                "bairro" => $casa->bairro,
+                "rua_avenida" => $casa->rua_avenida,
+                "fontenaria" => $casa->fontenarias()->get()->first()->nome
+                ];
+            } else {
+                $dataNotLinked[]=[
+                    "nome" => $casa->cliente->user->nome,
+                    "apelido" => $casa->cliente->user->apelido,
+                    "num_casa" => $casa->numero_casa,
+                    "bairro" => $casa->bairro,
+                    "rua_avenida" => $casa->rua_avenida,
+                    "id" => $casa->id
+                ];
+            }
+        }
+        $data = [
+            "dataNotLinked" => $dataNotLinked,
+            "dataLinked" => $dataLinked,
+            "fontenarias"=>Fontenaria::all()
+        ];
+        return View::make('gerente.link')->with('data', $data);
+    }
+
+    public function linkar($id1, $id2)
+    {
+        $casa = Casa::find($id1);
         $casa->fontenarias()->attach($id2);
+        return redirect()->back();
     }
 }

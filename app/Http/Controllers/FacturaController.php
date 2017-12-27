@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Agua;
 use App\Casa;
 use App\Factura;
+use App\FacturaOperacoes;
 use App\Recibo;
 use PDF;
 use Carbon\Carbon;
@@ -12,9 +13,12 @@ use Illuminate\Http\Request;
 use App\Leitura;
 use View;
 use Validator;
+use Illuminate\Support\Facades\DB;
 
 class FacturaController extends Controller
 {
+    private $facturasOperacoestable = 'facturaOperacoes';
+
     /**
      * Display a listing of the resource.
      *
@@ -23,29 +27,26 @@ class FacturaController extends Controller
     public function index()
     {
         $time = Carbon::now()->startOfMonth();
-        $last_time = $time->subMonth(1);
+        $last_leitura_day = Leitura::all()->max('created_at');
         $numero_leitura = Leitura::all()->max('numero_leitura');
         $casas = Casa::all();
         if (count($casas) > 0) {
             foreach ($casas as $casa) {
                 $leitura_anterior = $casa->leituras()->where([
-                    ['numero_leitura', '=', $numero_leitura - 1], ['updated_at', '>=', $last_time], ['updated_at', '<=', $time], ['efectuado', '=', true]])->first();
-                $factura = $casa->leituras->where('updated_at', '>', $time)->first()->factura;
-                if (is_null($leitura_anterior)) {
-                    $factura->l_anterior = 0;
-                } else {
+                    ['numero_leitura', '=', $numero_leitura - 1], ['efectuado', '=', true]])->first();
+                if (!is_null($leitura_anterior)) {
+                    $factura = $leitura_anterior->factura;
                     $factura->l_anterior = $leitura_anterior->consumo;
                 }
-
             }
             $agua = Agua::first();
             $preco_minimo = $agua->metros_cubicos_minimos * $agua->preco_unitario;
             $facturas = Factura::where([
-                ['updated_at', '>=', $time], ['paga', '=', false]
+                ['updated_at', '>=', $last_leitura_day], ['paga', '=', false]
             ])->get();
             $facturas_data = array();
             foreach ($facturas as $factura) {
-                $metros_cubicos = $factura->l_actual - $factura->l_anteriro;
+                $metros_cubicos = $factura->l_actual - $factura->l_anterior;
                 if ($metros_cubicos <= $agua->metros_cubicos_minimos) {
                     $val_pagar = $preco_minimo;
                 } else {
@@ -56,6 +57,7 @@ class FacturaController extends Controller
                     'l_anterior' => $factura->l_anterior,
                     'l_actual' => $factura->l_actual,
                     'metros_cubicos' => $factura->l_actual - $factura->l_anterior,
+                    'preco_unitario' => $agua->preco_unitario,
                     'val_pagar' => $val_pagar,
                     'obs' => $factura->observacao,
                 ];
@@ -78,7 +80,24 @@ class FacturaController extends Controller
      */
     public function create()
     {
-        //
+        $operacoes = FacturaOperacoes::all()->first();
+        return view('gerente.FacturaOperacoesEdit')->with("operacoes", $operacoes);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function operacoesCreate()
+    {
+        $operacoes = FacturaOperacoes::all();
+        if (count($operacoes) < 1) {
+            return view('gerente.FacturaOperacoes');
+        } else {
+            return view('gerente.FacturaOperacoes')->with("message", "Definicoes das operacoes sobre as facturas feitas.");
+        }
+
     }
 
     /**
@@ -90,6 +109,63 @@ class FacturaController extends Controller
     public function store(Request $request)
     {
         //
+    }
+
+    /**
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function operacoes(Request $request)
+    {
+        $rules = [
+            'percentagem' => 'required|digits_between:1,100.',
+            'ultimo_dia' => 'required|digits_between:1,31.',
+        ];
+        $message = [
+            'percentagem.required' => 'A percentagem é obrigatória.',
+            'ultimo_dia.required' => 'A observacao é obrigatória.',
+        ];
+        $validate = Validator::make($request->all(), $rules, $message);
+        if ($validate->fails()) {
+            return redirect()->back()->withInput()->withErrors($validate);
+        } else {
+            $facturaOp = new FacturaOperacoes();
+            $facturaOp->percentagem = $request->percentagem;
+            $facturaOp->ultimo_dia = $request->ultimo_dia;
+            $facturaOp->save();
+            return redirect()->view('gerenre.FacturaOperacoes')->with("message", "Definicoes efectuadas com sucesso.");
+        }
+
+    }
+
+    /**
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function operacoesUpdate(Request $request, $id)
+    {
+        $rules = [
+            'percentagem' => 'required|digits_between:1,100.',
+            'ultimo_dia' => 'required|digits_between:1,31.',
+        ];
+        $message = [
+            'percentagem.required' => 'O consumo é obrigatório.',
+            'ultimo_dia.required' => 'O ultimo dia de leitura é obrigatório.',
+        ];
+        $validate = Validator::make($request->all(), $rules, $message);
+        if ($validate->fails()) {
+            return redirect()->back()->withInput()->withErrors($validate);
+        } else {
+            $facturaOp = FacturaOperacoes::find($id);
+            $facturaOp->percentagem = $request->percentagem;
+            $facturaOp->ultimo_dia = $request->ultimo_dia;
+            $facturaOp->save();
+            return redirect()->route('factura.operacoes')->with("message", "Definicoes alteradas com sucesso.");
+        }
+
     }
 
     /**
@@ -130,7 +206,7 @@ class FacturaController extends Controller
             $input = $request->all();
             $factura = Factura::find($id);
             $factura->l_actual = $input['l_actual'];
-            $factura->val_pagarl = $factura->l_actual -$factura->l_anterior;
+            $factura->val_pagarl = $factura->l_actual - $factura->l_anterior;
             $factura->observacao = $input['observacao'];
             $factura->save();
             return redirect()->route('factura.index');
@@ -183,13 +259,14 @@ class FacturaController extends Controller
         $factura->paga = true;
         $recibo = new Recibo();
         $recibo->factura()->associate($factura);
-        $factura->save();
-        $recibo->save();
         $nome = $factura->leitura->casa->cliente->user->nome;
         $apelido = $factura->leitura->casa->cliente->user->apelido;
         $p_unit = $factura->leitura->agua->preco_unitario;
         $total = ($factura->l_actual - $factura->l_anterior) * $p_unit;
         $time = Carbon::now()->format('d/m/Y');
+        $factura->save();
+        $factura->val_pagar = $total;
+        $recibo->save();
         $data = [
             'numero' => $recibo->id,
             'factura' => $factura->id,
@@ -203,7 +280,7 @@ class FacturaController extends Controller
 
     public function pendentes()
     {
-        $facturas_data[] = $this->factura_geral(false);
+        $facturas_data = $this->factura_geral(false);
         if (count((array)$facturas_data) > 0) {
             return View::make('gerente.facturaspendentes')->with('facturas_data', $facturas_data);
         } else {
@@ -213,7 +290,7 @@ class FacturaController extends Controller
 
     public function emetidas()
     {
-            $facturas_data[] = $this->factura_geral(true);
+        $facturas_data[] = $this->factura_geral(true);
         if (count((array)$facturas_data) > 0) {
             return View::make('gerente.facturasEmitidas')->with('facturas_data', $facturas_data);
         } else {
@@ -234,7 +311,7 @@ class FacturaController extends Controller
             } else {
                 $val_pagar = ($factura->l_actual - $factura->l_anterior) * $agua->preco_unitario;
             }
-            $facturas_data[] = [
+            $facturas_data = [
                 'numero' => $factura->id,
                 'l_anterior' => $factura->l_anterior,
                 'l_actual' => $factura->l_actual,
@@ -243,6 +320,6 @@ class FacturaController extends Controller
                 'obs' => $factura->observacao,
             ];
         }
-
-    return $facturas_data;}
+        return $facturas_data;
+    }
 }

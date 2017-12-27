@@ -45,61 +45,6 @@
                 <!-- main dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <span class="top-label label label-danger">3</span><i class="fa fa-envelope fa-3x"></i>
-                    </a>
-                    <!-- dropdown-messages -->
-                    <ul class="dropdown-menu dropdown-messages">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <!-- adicionar nome do user que enviou mensagem-->
-                                    <strong><span class=" label label-danger">Pedro</span></strong>
-                                    <span class="pull-right text-muted">
-                                        <!-- adicionar variavel do dia que enviou mensagem -->
-                                        <em>Ontem</em>
-                                    </span>
-                                </div>
-                                <div>Aqui vem o assunto da mensagem</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong><span class=" label label-info">Peter</span></strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Hoje</em>
-                                    </span>
-                                </div>
-                                <div>Venha a minha casa</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong><span class=" label label-success">Pedro Peter</span></strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Ontem</em>
-                                    </span>
-                                </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <!-- adicionar link que direciona a novas mensagens-->
-                            <a class="text-center" href="#">
-                                <strong>Ler todas mensagens</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- end dropdown-messages -->
-                </li>
-
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <span class="top-label label label-success">4</span>  <i class="fa fa-tasks fa-3x"></i>
                     </a>
                     <!-- dropdown para tarefas -->
@@ -286,6 +231,9 @@
                                 <a href="{{route('agua.index')}}">Definir preco da agua</a>
                             </li>
                             <li>
+                                <a href="{{route('factura.operacoes')}}">Operacoes sobre as facturas</a>
+                            </li>
+                            <li>
                                 <a href="{{route('produto.index')}}">Gerir Produtos</a>
                             </li>
                             <li>
@@ -308,16 +256,16 @@
                         <!-- second-level-items -->
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-wrench fa-fw"></i>Pedidos<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-wrench fa-fw"></i>Pedidos/Operacoes<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="panels-wells.blade.php">Diversos</a>
+                                <a href="{{route('casa.link')}}">Casas conectadas a pontos de distribuicao</a>
                             </li>
                             <li>
                                 <a href="{{route('user.index')}}">Novos clientes</a>
                             </li>
                             <li>
-                                <a href="{{route('cliente.index')}}">Contractos</a>
+                                <a href="{{route('cliente.index')}}">Clientes</a>
                             </li>
                         </ul>
                         <!-- second-level-items -->
@@ -337,25 +285,8 @@
                         </ul>
                         <!-- second-level-items -->
                     </li>
-
                     <li>
-                        <a href=""><i class="fa fa-flask fa-fw"></i>Reclamações </a>
-                    </li>
-
-                    <li>
-                        <a href="#"><i class="fa fa-wrench fa-fw"></i>SMS<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="panels-wells.blade.php">Enviar SMS</a>
-                            </li>
-                            <li>
-                                <a href="buttons.blade.php">SMS recebidas</a>
-                            </li>
-                            <li>
-                                <a href="buttons.blade.php">Pagamentos por SMS</a>
-                            </li>
-                        </ul>
-                        <!-- second-level-items -->
+                        <a href="{{route('clientes.situacao')}}"><i class="fa fa-wrench fa-fw"></i>Situacao dos clientes<span class="fa arrow"></span></a>
                     </li>
                     <li >
                         <a href="{{route('estatisticas')}}"><i class="fa fa-files-o fa-fw"></i>Estatísticas <span ></span></a>
@@ -388,6 +319,9 @@
                 <div class="col-lg-12">
                     <h1 class="page-header">Página Administrativa </h1>
                 </div>
+                <br><br>
+                <br><br>
+                <br><br>
                 @yield('content')
 
                 <!--End Page Header -->
