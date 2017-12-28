@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Factura;
+use App\FacturaOperacoes;
 use Illuminate\Console\Command;
 
 class MultarFacturas extends Command
@@ -38,11 +39,13 @@ class MultarFacturas extends Command
      */
     public function handle()
     {
-
         $facturas = Factura::where('paga', false)->get();
         foreach ($facturas as $factura) {
-            $factura->num_multa+=$factura->num_multa;
-            $factura->save();
+            $factura->num_multa++;
+            $val_pagar = $factura->val_pagar + $factura->val_multa;
+            $percentagem_multa = FacturaOperacoes::all()->first()->percentagem;
+            $val_multa = $val_pagar * ($percentagem_multa / 100);
+            $factura->val_multa = $factura->val_pagar + $val_multa;
         }
 
     }

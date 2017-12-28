@@ -19,6 +19,7 @@ class FacturaController extends Controller
 {
     private $facturasOperacoestable = 'facturaOperacoes';
 
+
     /**
      * Display a listing of the resource.
      *
@@ -40,7 +41,7 @@ class FacturaController extends Controller
                 }
             }
             $agua = Agua::first();
-            $preco_minimo = $agua->metros_cubicos_minimos * $agua->preco_unitario;
+            $preco_minimo = $this->agua_preco_minimo();
             $facturas = Factura::where([
                 ['updated_at', '>=', $last_leitura_day], ['paga', '=', false]
             ])->get();
@@ -205,8 +206,17 @@ class FacturaController extends Controller
         } else {
             $input = $request->all();
             $factura = Factura::find($id);
+            $p_unit = $factura->leitura->agua->preco_unitario;
             $factura->l_actual = $input['l_actual'];
-            $factura->val_pagarl = $factura->l_actual - $factura->l_anterior;
+            $metros_cubicos = $factura->l_actual - $factura->l_anterior;
+            $agua = Agua::first();
+            $preco_minimo = $this->agua_preco_minimo();
+            if ($metros_cubicos <= $agua->metros_cubicos_minimos) {
+                $val_pagar = $preco_minimo;
+            } else {
+                $val_pagar = ($factura->l_actual - $factura->l_anterior) * $p_unit;
+            }
+            $factura->val_pagar = $val_pagar;
             $factura->observacao = $input['observacao'];
             $factura->save();
             return redirect()->route('factura.index');
@@ -240,6 +250,12 @@ class FacturaController extends Controller
         ];
     }
 
+    /**
+     * Show specified resource from storage.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
     public function factura($id)
     {
         $factura = \App\Factura::find($id);
@@ -261,11 +277,9 @@ class FacturaController extends Controller
         $recibo->factura()->associate($factura);
         $nome = $factura->leitura->casa->cliente->user->nome;
         $apelido = $factura->leitura->casa->cliente->user->apelido;
-        $p_unit = $factura->leitura->agua->preco_unitario;
-        $total = ($factura->l_actual - $factura->l_anterior) * $p_unit;
+        $total = $factura->val_pagar + $factura->val_multa;
         $time = Carbon::now()->format('d/m/Y');
         $factura->save();
-        $factura->val_pagar = $total;
         $recibo->save();
         $data = [
             'numero' => $recibo->id,
@@ -300,17 +314,10 @@ class FacturaController extends Controller
 
     public function factura_geral($bol)
     {
-        $agua = Agua::first();
-        $preco_minimo = $agua->metros_cubicos_minimos * $agua->preco_unitario;
         $facturas = Factura::where('paga', $bol)->get();
         $facturas_data = array();
         foreach ($facturas as $factura) {
-            $metros_cubicos = $factura->l_actual - $factura->l_anteriro;
-            if ($metros_cubicos <= $agua->metros_cubicos_minimos) {
-                $val_pagar = $preco_minimo;
-            } else {
-                $val_pagar = ($factura->l_actual - $factura->l_anterior) * $agua->preco_unitario;
-            }
+            $val_pagar = $factura->val_pagar;
             $facturas_data = [
                 'numero' => $factura->id,
                 'l_anterior' => $factura->l_anterior,
@@ -319,7 +326,29 @@ class FacturaController extends Controller
                 'val_pagar' => $val_pagar,
                 'obs' => $factura->observacao,
             ];
+            //adicionando o valor da multa
+            if ($factura->num_multas > 0) {
+                $facturas_data = [
+                    'meses_atrasados' => $factura->num_multas,
+                    'val_multa' => $factura->val_multa,
+                    'val_total' => $val_pagar + $factura->val_multa,
+                ];
+            }
         }
         return $facturas_data;
+    }
+
+    public function agua_preco_minimo()
+    {
+        $agua = Agua::first();
+        $preco_minimo = $agua->metros_cubicos_minimos * $agua->preco_unitario;
+        return $preco_minimo;
+    }
+
+    public function agua_preco_unitario()
+    {
+        $agua = Agua::first();
+        $preco_unitario = $agua->preco_unitario;
+        return $preco_unitario;
     }
 }

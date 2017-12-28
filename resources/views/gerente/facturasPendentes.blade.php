@@ -23,7 +23,10 @@
                             <th>Leitura anterior</th>
                             <th>Leitura actual</th>
                             <th>Metros cubicos</th>
-                            <th>Valor a pagar</th>
+                            <th>Valor inicial</th>
+                            <th>Numero Meses de pagamento de entraso</th>
+                            <th>Valor da multa</th>
+                            <th>Total a pagar</th>
                             <th>Observacao</th>
                             <th>Operacao</th>
                         </tr>
@@ -45,6 +48,15 @@
                             </td>
                             <td>
                                 {{$factura['val_pagar']}}
+                            </td
+                            <td>
+                                {{$factura['meses_atraso']}}
+                            </td>
+                            <td>
+                                {{$factura['val_multa']}}
+                            </td>
+                            <td>
+                                {{$factura['val_total'] }}
                             </td>
                             <td>
                                 {{$factura['obs']}}
