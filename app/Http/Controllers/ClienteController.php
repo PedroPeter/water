@@ -41,7 +41,8 @@ class ClienteController extends Controller
         }
         return view('gerente.clienteIndex')->with('message', $message);
     }
-/**
+
+    /**
      * Display a listing of active the resource situation.
      *
      * @return \Illuminate\Http\Response
@@ -50,15 +51,49 @@ class ClienteController extends Controller
     public function situacao()
     {
         $clientes = Cliente::where('activo', true)->get();
-        $data=array();
+        $data = array();
         if (count((array)$clientes) > 0) {
+            foreach ($clientes as $cliente) {
+                $casa = $cliente->casa()->first();
+                if (!is_null($casa)) {
+                    $leituras = $casa->leituras;
+                    $pagas = 0;
+                    $n_pagas = 0;
+                    $multa_acomulada = 0;
+                    if (count($leituras) > 0) {
 
-            return View::make('gerente.clienteSituacao')->with('clientes', $clientes);
-        }else{
+                        foreach ($leituras as $leitura) {
+                            $factura = $leitura->factura;
+                            if (!is_null($factura)) {
+
+                                if ($factura->paga) {
+                                    $pagas++;
+                                } else {
+                                    $n_pagas++;
+                                    $multa_acomulada += $leitura->factura->val_multas;
+                                }
+                            }
+                        }
+                    }
+                    $data[] = [
+                        'id' => $cliente->id,
+                        'nome' => $cliente->user->nome,
+                        'apelido' => $cliente->user->apelido,
+                        'celular1' => $cliente->user->celular1,
+                        'celular2' => $cliente->user->celular2,
+                        'email' => $cliente->user->email,
+                        'facturas_pagas' => $pagas,
+                        'facturas_nao_pagas' => $n_pagas,
+                        'multa_acumulada' => $multa_acomulada,
+                    ];
+                }
+                return View::make('gerente.clienteSituacao')->with('data', $data);
+
+            }
+        } else {
             return view('gerente.clienteSituacao')->with('message', "Nao ha clientes activos.");
         }
     }
-
 
 
     /**
@@ -66,7 +101,8 @@ class ClienteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public
+    function create($id)
     {
         return View::make('gerente.cliente')->with('id', $id);
     }
@@ -77,7 +113,8 @@ class ClienteController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public
+    function store(Request $request)
     {
         $validate = Validator::make($request->all(), $this->rules(), $this->message());
         if ($validate->fails()) {
@@ -109,7 +146,8 @@ class ClienteController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public
+    function show($id)
     {
         $user = User::findOrFail($id);
         return View::make('gerente.clienteShow', compact('user'));
@@ -121,7 +159,8 @@ class ClienteController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public
+    function edit($id)
     {
         //
     }
@@ -133,7 +172,8 @@ class ClienteController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public
+    function update(Request $request, $id)
     {
 
         $validator = Validator::make($request->all(), $this->rules(), $this->message());
@@ -153,7 +193,8 @@ class ClienteController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public
+    function destroy($id)
     {
         $c = \App\Cliente::find($id);
         $c->activo = false;
@@ -162,7 +203,8 @@ class ClienteController extends Controller
     }
 
 
-    public function saveFile($destination, $file)
+    public
+    function saveFile($destination, $file)
     {
         $extension = $file->getClientOriginalExtension();
         $fileName = rand(11111111, 99999999) . '.' . $extension; // renameing image
@@ -170,7 +212,8 @@ class ClienteController extends Controller
         return $fileName;
     }
 
-    public function rules()
+    public
+    function rules()
     {
         return [
             'doc.required' => 'requiered',
@@ -178,7 +221,8 @@ class ClienteController extends Controller
         ];
     }
 
-    public function message()
+    public
+    function message()
     {
         return [
             'doc.required' => 'O documeno é obrigatório. ',

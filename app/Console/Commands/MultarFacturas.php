@@ -41,11 +41,12 @@ class MultarFacturas extends Command
     {
         $facturas = Factura::where('paga', false)->get();
         foreach ($facturas as $factura) {
-            $factura->num_multa++;
-            $val_pagar = $factura->val_pagar + $factura->val_multa;
+            $factura->num_multas++;
+            $val_pagar = $factura->val_pagar + $factura->val_multas;
             $percentagem_multa = FacturaOperacoes::all()->first()->percentagem;
             $val_multa = $val_pagar * ($percentagem_multa / 100);
-            $factura->val_multa = $factura->val_pagar + $val_multa;
+            $factura->val_multas =  $val_multa;
+            $factura->save();
         }
 
     }

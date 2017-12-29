@@ -24,7 +24,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($clientes as $cliente)
+                        @foreach($data as $cliente)
                         <tr>
                             <td>
                                 {{$cliente['cliente_nome']}}
@@ -51,19 +51,17 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($cliente['casa'] as $casa)
                                         <tr>
-                                            <td>{{ $casa['casa_bairro']}}</td>
-                                            <td>{{ $casa['casa_rua']}}</td>
-                                            <td>{{ $casa['casa_numero']}}</td>
-                                            <td>{{ $casa['casa_descricao']}}</td>
+                                            <td>{{ $cliente['casa_bairro']}}</td>
+                                            <td>{{ $cliente['casa_rua']}}</td>
+                                            <td>{{ $cliente['casa_numero']}}</td>
+                                            <td>{{ $cliente['casa_descricao']}}</td>
                                             <td>
                                                 {!! Form::open(array('route'=>['leitura.show',$cliente['id']], 'method'=>'GET'))!!}
                                                 <button class="btn btn-success" type="submit">Efectuar Leitura </button>
                                                 {!! Form::close() !!}
                                             </td>
                                         </tr>
-                                    @endforeach
                                     </tbody>
                                 </table>
                             </td>

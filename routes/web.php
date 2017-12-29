@@ -59,11 +59,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('dashboard/casa/add/{cliente_id}', function ($id) {
         return View::make('gerente.clientecasa')->with('id', $id);
     })->name('addCasa');
-    Route::post('dashboard/factura/imprimir/{id}', 'FacturaController@factura')->name('invoice.imprimir');
     Route::post('dashboard/factura/definir/operacoes/', 'FacturaController@operacoes')->name('factura.operacoes');
     Route::put('dashboard/factura/definir/operacoes/', 'FacturaController@operacoesUpdate')->name('factura.operacoes');
     Route::get('dashboard/factura/definir/operacoes/update', 'FacturaController@create')->name('facturaOperacoes.update');
     Route::get('dashboard/factura/definir/operacoes', 'FacturaController@operacoesCreate')->name('factura.operacoes');
+    Route::post('dashboard/factura/imprimir/{id}', 'FacturaController@factura')->name('invoice.imprimir');
     Route::post('dashboard/recibo/imprimir/{id}', 'FacturaController@recibo')->name('recibo.imprimir');
 
     Route::get('cliente/{user_id}', 'ClienteController@create')->name('create.cliente');

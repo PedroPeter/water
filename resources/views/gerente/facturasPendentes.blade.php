@@ -24,7 +24,7 @@
                             <th>Leitura actual</th>
                             <th>Metros cubicos</th>
                             <th>Valor inicial</th>
-                            <th>Numero Meses de pagamento de entraso</th>
+                            <th>Numero Meses de pagamento em atraso</th>
                             <th>Valor da multa</th>
                             <th>Total a pagar</th>
                             <th>Observacao</th>
@@ -48,9 +48,9 @@
                             </td>
                             <td>
                                 {{$factura['val_pagar']}}
-                            </td
+                            </td>
                             <td>
-                                {{$factura['meses_atraso']}}
+                                {{$factura['meses_atrasados']}}
                             </td>
                             <td>
                                 {{$factura['val_multa']}}
@@ -66,11 +66,11 @@
                                 <button class="btn btn-success" type="submit">Alterar dados </button>
                                 {!! Form::close() !!}
                                 <br>
-                                {!! Form::open(array('route'=>['invoice.imprimir',$factura['numero']], 'method'=>'GET'))!!}
+                                {!! Form::open(array('route'=>['invoice.imprimir',$factura['numero']], 'method'=>'POST'))!!}
                                 <button class="btn btn-success" type="submit">Imprimir </button>
                                 {!! Form::close() !!}
                                 <br>
-                                {!! Form::open(array('route'=>['recibo.imprimir',$factura['numero']], 'method'=>'GET'))!!}
+                                {!! Form::open(array('route'=>['recibo.imprimir',$factura['numero']], 'method'=>'POST'))!!}
                                 <button class="btn btn-success" type="submit">Pagar </button>
                                 {!! Form::close() !!}
 

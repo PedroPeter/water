@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Agua;
 use App\Factura;
 use App\Leitura;
 use Validator;
@@ -72,6 +73,17 @@ class LeiturasController extends Controller
             $leitura->save();
             $factura = new Factura();
             $factura->l_actual = $input['consumo'];
+            $factura->l_anterior = $this->leitura_anterior($leitura->casa->id);
+            $agua = Agua::first();
+            $p_unit = $agua->preco_unitario;
+            $metros_cubicos = $factura->l_actual - $factura->l_anterior;
+            $preco_minimo = $agua->metros_cubicos_minimos * $agua->preco_unitario;
+            if ($metros_cubicos <= $agua->metros_cubicos_minimos) {
+                $val_pagar = $preco_minimo;
+            } else {
+                $val_pagar = ($factura->l_actual - $factura->l_anterior) * $p_unit;
+            }
+            $factura->val_pagar = $val_pagar;
             $factura->leitura()->associate($leitura);
             $factura->save();
             return redirect()->route('leitura.index');
@@ -131,20 +143,19 @@ class LeiturasController extends Controller
      */
     public function pendentes()
     {
-        $data = array();
         $leitura_cliente = Leitura::where('efectuado', '=', false)->get();
         if (count($leitura_cliente) < 1) {
             return View::make('gerente.leiturasPendentes')->with('message', 'Nenhuma leitura pendente.');
         }
         foreach ($leitura_cliente as $lc) {
             //casa
-            $data[] = [
+            $data [] = [
                 'casa_bairro' => $lc->casa->bairro,
                 'casa_rua' => $lc->casa->rua_avenida,
                 'casa_numero' => $lc->casa->numero_casa,
                 'casa_descricao' => $lc->casa->descricao,
                 'cliente_nome' => $lc->casa->cliente->user->nome,
-                'id' => $lc->id
+                'id' => $lc->id,
             ];
         }
         return View::make('gerente.leiturasPendentes')->with('data', $data);
@@ -164,10 +175,15 @@ class LeiturasController extends Controller
         ];
     }
 
-    /**
-     * Prepars resource from storage to the Moth_reader.
-     *
-     * @return the number of the reader
-     */
-
+    public function leitura_anterior($casa_id){
+        $casa = \App\Casa::find($casa_id);
+        $leituras = $casa->leituras;
+        if(count($leituras)>1){
+            $leituras->pop();
+            $ultima_leitura=$leituras->last();
+            return $ultima_leitura->consumo;
+        }else{
+            return 0;
+        }
+    }
 }

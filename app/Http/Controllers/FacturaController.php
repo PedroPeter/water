@@ -294,7 +294,7 @@ class FacturaController extends Controller
 
     public function pendentes()
     {
-        $facturas_data = $this->factura_geral(false);
+        $facturas_data []= $this->factura_geral(false);
         if (count((array)$facturas_data) > 0) {
             return View::make('gerente.facturaspendentes')->with('facturas_data', $facturas_data);
         } else {
@@ -318,6 +318,21 @@ class FacturaController extends Controller
         $facturas_data = array();
         foreach ($facturas as $factura) {
             $val_pagar = $factura->val_pagar;
+            if ($factura->num_multas > 0) {
+                $facturas_data = [
+                    'numero' => $factura->id,
+                    'l_anterior' => $factura->l_anterior,
+                    'l_actual' => $factura->l_actual,
+                    'metros_cubicos' => $factura->l_actual - $factura->l_anterior,
+                    'val_pagar' => $val_pagar,
+                    'obs' => $factura->observacao,
+                    'meses_atrasados' => $factura->num_multas,
+                    'val_multa' => $factura->val_multas,
+                    'val_total' => $val_pagar + $factura->val_multas,
+                ];
+
+
+            }else{
             $facturas_data = [
                 'numero' => $factura->id,
                 'l_anterior' => $factura->l_anterior,
@@ -325,13 +340,6 @@ class FacturaController extends Controller
                 'metros_cubicos' => $factura->l_actual - $factura->l_anterior,
                 'val_pagar' => $val_pagar,
                 'obs' => $factura->observacao,
-            ];
-            //adicionando o valor da multa
-            if ($factura->num_multas > 0) {
-                $facturas_data = [
-                    'meses_atrasados' => $factura->num_multas,
-                    'val_multa' => $factura->val_multa,
-                    'val_total' => $val_pagar + $factura->val_multa,
                 ];
             }
         }
@@ -351,4 +359,6 @@ class FacturaController extends Controller
         $preco_unitario = $agua->preco_unitario;
         return $preco_unitario;
     }
+
+
 }
