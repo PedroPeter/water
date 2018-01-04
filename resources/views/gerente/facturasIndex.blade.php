@@ -16,7 +16,7 @@
             <div class="row">
                 <div class="col-sm-12" style="background-color:lightgray;">
                     <h3> Facturas </h3>
-                    <table class="table table-bordered">
+                    <table class="table table-bordered table-responsive">
                         <thead>
                         <tr>
                             <th>Numero da factura</th>

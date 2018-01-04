@@ -17,6 +17,11 @@ class FontenariaController extends Controller
     public function index()
     {
         $fontenarias = Fontenaria::all();
+        foreach ($fontenarias as $fontenaria) {
+            if (count($fontenaria->casas) > 0) {
+                $fontenaria->num_casas = count($fontenaria->casas);
+            }
+        }
         if (count($fontenarias) > 0) {
             return View::make('gerente.fontenariaIndex')->with('fontenarias', $fontenarias);
         } else {
@@ -38,17 +43,17 @@ class FontenariaController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $validator=Validator::make($request->all(),$this->rules(),$this->menssages());
-        if($validator->fails()){
+        $validator = Validator::make($request->all(), $this->rules(), $this->menssages());
+        if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
-        }else{
-            $input=$request->all();
-            $fontenaria=new Fontenaria();
+        } else {
+            $input = $request->all();
+            $fontenaria = new Fontenaria();
             $fontenaria->create($input);
             return redirect()->route('fontenaria.index');
         }
@@ -57,7 +62,7 @@ class FontenariaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -69,7 +74,7 @@ class FontenariaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -80,8 +85,8 @@ class FontenariaController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -106,7 +111,7 @@ class FontenariaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -116,37 +121,42 @@ class FontenariaController extends Controller
 
     }
 
-    public function links(){
-        $data=array();
-        $fontenarias=Fontenaria::all();
-        foreach($fontenarias as $fontenaria){
-            $data[]=[
-                'nome'=>$fontenaria->nome,
-                'numero_clientes'=>count($fontenaria->casas),
-                'max_clientes'=>$fontenaria->max_clientes,
+    public function links()
+    {
+        $data = array();
+        $fontenarias = Fontenaria::all();
+        foreach ($fontenarias as $fontenaria) {
+            $data[] = [
+                'nome' => $fontenaria->nome,
+                'numero_clientes' => count($fontenaria->casas),
+                'max_clientes' => $fontenaria->max_clientes,
             ];
         }
         return View::make('gerente.fontenariaDetalhes')->with('data', $data);
 
     }
-    public function rules(){
+
+    public function rules()
+    {
         return [
-            'nome'=>'required',
-            'bairro'=>'required',
-            'rua_avenida'=>'required',
-            'numero'=>'required',
-            'max_clientes'=>'required',
-            'descricao'=>'required',
+            'nome' => 'required',
+            'bairro' => 'required',
+            'rua_avenida' => 'required',
+            'numero' => 'required',
+            'max_clientes' => 'required',
+            'descricao' => 'required',
         ];
     }
-    public function menssages(){
+
+    public function menssages()
+    {
         return [
-            'nome.required'=>'O Nome é obrigatório. ',
-            'bairro.required'=>'O Bairro é obrigatório. ',
-            'rua_avenida.required'=>'A Rua/Avenida é obrigatório. ',
-            'numero.required'=>'O numero é obrigatório. ',
-            'max_clientes.required'=>'O numero maximo de clientes é obrigatório. ',
-            'descricao.required'=>'A descricao é obrigatório. ',
+            'nome.required' => 'O Nome é obrigatório. ',
+            'bairro.required' => 'O Bairro é obrigatório. ',
+            'rua_avenida.required' => 'A Rua/Avenida é obrigatório. ',
+            'numero.required' => 'O numero é obrigatório. ',
+            'max_clientes.required' => 'O numero maximo de clientes é obrigatório. ',
+            'descricao.required' => 'A descricao é obrigatório. ',
         ];
     }
 }

@@ -4,7 +4,7 @@
     <div class="container">
         @if(count($data["dataNotLinked"])>0)
             <div class="alert-info"><h3>Casa de clientes nao conectadas a pontos de distribuicao</h3></div>
-            <table class="table-bordered" style="width: 1000px; height: 400%">
+            <table class="table-bordered table-responsive" style="width: 1000px; height: 400%">
                 <thead>
                 <tr>
                     <th>

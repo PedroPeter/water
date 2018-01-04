@@ -19,7 +19,7 @@
                             </div>
                         @endif
                     </h3>
-                        <table class="table table-bordered">
+                        <table class="table table-bordered table-responsive">
                             <thead>
                             <tr>
                                 <th>Nome</th>
@@ -27,6 +27,7 @@
                                 <th>Rua/Avenida</th>
                                 <th>Numero </th>
                                 <th>Numero maximo de clientes</th>
+                                <th>Clientes conectados</th>
                                 <th>Descricao</th>
                                 <th colspan="2">Acções </th>
                             </tr>
@@ -39,6 +40,7 @@
                                 <td>{{ $fontenaria->rua_avenida}}</td>
                                 <td>{{ $fontenaria->numero}}</td>
                                 <td>{{ $fontenaria->max_clientes}}</td>
+                                <td>{{ $fontenaria->num_casas}}</td>
                                 <td>{{ $fontenaria->descricao}}</td>
 
                                 <td>

@@ -51,7 +51,7 @@
                     </div>
                     <!-- Numero da casa-->
                     <div class="form-group">
-                        <label class="col-md-4 control-label">Numero:</label>
+                        <label class="col-md-4 control-label">Número:</label>
                         <div class="col-md-4 inputGroupContainer">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
@@ -61,7 +61,7 @@
                     </div>
                 <!-- Numero da casa-->
                     <div class="form-group">
-                        <label class="col-md-4 control-label">Numero maximo de clientes:</label>
+                        <label class="col-md-4 control-label">Número máximo de clientes:</label>
                         <div class="col-md-4 inputGroupContainer">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
@@ -71,7 +71,7 @@
                     </div>
                     <!-- Descricao-->
                     <div class="form-group">
-                        <label class="col-md-4 control-label">Descricao da localizacao</label>
+                        <label class="col-md-4 control-label">Descrição da localização</label>
                         <div class="col-md-4 inputGroupContainer">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
@@ -82,7 +82,7 @@
                     <div class="input-group">
                         <label class="col-md-4 control-label"></label>
                         <div class="col-md-4">
-                            <button type="submit" class="btn btn-success" >Registar Fontenaria <span class="glyphicon glyphicon-send"></span></button>
+                            <button type="submit" class="btn btn-success" >Registar <span class="glyphicon glyphicon-send"></span></button>
                         </div>
                     </div>
 

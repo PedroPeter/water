@@ -30,7 +30,7 @@
 
         <div class="row">
             {!! Form::open(array('route'=>['factura.operacoes'], 'method'=>'POST'))!!}
-            <legend>Definicao da Multa para facturas nao pagas</legend>
+            <legend>Multa para facturas não pagas</legend>
             <div class="col-sm-12" style="background-color:darkgray;">
                 <!-- Number input-->
                 <br>
@@ -53,11 +53,11 @@
 
                 <!-- Number input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label">Ultimo dia de pagamento</label>
+                    <label class="col-md-4 control-label">Último dia de pagamento</label>
                     <div class="col-md-4 inputGroupContainer">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                            <input name="ultimo_dia" placeholder="Ultimo dia de pagamento da factura"
+                            <input name="ultimo_dia" placeholder="Último dia de pagamento da factura"
                                    class="form-control" type="number">
                         </div>
                         <br>

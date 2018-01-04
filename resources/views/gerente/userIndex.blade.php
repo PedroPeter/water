@@ -19,7 +19,7 @@
                             </div>
                         @endif
                     </h3>
-                        <table class="table table-bordered">
+                        <table class="table table-bordered table-responsive">
                             <thead>
                             <tr>
                                 <th>Nome</th>

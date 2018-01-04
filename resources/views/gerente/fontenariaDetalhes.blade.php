@@ -4,7 +4,7 @@
     <div class="container" xmlns="http://www.w3.org/1999/html">
         <div class="row">
             <div class="col-sm-12" style="background-color:lightgray;">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered table-responsive">
                             <thead>
                             <tr>
                                 <th>Nome da fontenaria</th>

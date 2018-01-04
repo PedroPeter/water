@@ -8,7 +8,7 @@
 <body>
 <div class="container">
     <div class="head" style="border: 1px solid #dddddd;">
-        <table class="table">
+        <table class="table table-responsive">
             <tbody>
             <tr>
                 <td colspan="2" rowspan="3"><img src="{{asset('img/logo.png')}}" style="width: 100px; height: 100px;" /></td>

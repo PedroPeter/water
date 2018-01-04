@@ -100,13 +100,9 @@ class LoginController extends Controller
         if ($validate->fails()) {
             return redirect()->back()->withInput()->exceptInput('password')->withErrors($validate);
         } elseif (Auth::attempt(['username' => $username, 'password' => $password])) {
-            /*$user = Auth::user();*/
-            /*if (strcmp($user->cargo, 'Gerente') || strcmp($user->cargo, 'admin')) {*/
-            return redirect()->route('dashboard')->with('username', $username);
-            /* }*/
-            /*else {
-                return redirect()->route('cliente.dashboard')->with('username', $username);
-            }*/
+            $user = Auth::user();
+            $permissao = $user->cargo;
+            return redirect()->route('dashboard')->with(['username'=> $username, 'permissao'=>$permissao]);
         } else {
             return redirect()->back()->with('message', "Usuario nao registado no sistema!")->withInput()->exceptInput('password');
         }

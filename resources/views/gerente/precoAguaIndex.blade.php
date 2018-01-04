@@ -13,7 +13,7 @@
                     </div>
                     <br>
                 {!! Form::open(array('route'=>['agua.store'], 'method'=>'POST'))!!}
-                <legend>Cadastro de Precos de agua</legend>
+                <legend>Cadastro de Preços de agua</legend>
                 @if (count($errors) > 0)
                     <div class="alert alert-danger">
                         <ul>
@@ -32,11 +32,11 @@
                      <!-- Number input-->
 
                 <div class="form-group">
-                    <label class="col-md-4 control-label" >Metros cubicos minimos</label>
+                    <label class="col-md-4 control-label" >Metros cúbicos minimos</label>
                     <div class="col-md-4 inputGroupContainer">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                            <input name="metros_cubicos_minimos"  placeholder="Metros Cubicos minimos" class="form-control"  type="number">
+                            <input name="metros_cubicos_minimos"  placeholder="Metros cúbicos minimos" class="form-control"  type="number">
                         </div>
                         <br>
                     </div>
@@ -49,11 +49,11 @@
 
                 <!-- Number input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label">Preco por metro cubico</label>
+                    <label class="col-md-4 control-label">Preço por metro cúbico</label>
                     <div class="col-md-4 inputGroupContainer">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                            <input name="preco_unitario" placeholder="Preco unitario" class="form-control"  type="number">
+                            <input name="preco_unitario" placeholder="Preço unitario" class="form-control"  type="number">
                         </div>
                         <br>
                     </div>
@@ -65,7 +65,7 @@
                 <div class="input-group">
                     <label class="col-md-4 control-label"></label>
                     <div class="col-md-4">
-                        <button type="submit" class="btn btn-success" >Definir precos</button>
+                        <button type="submit" class="btn btn-success" >Definir</button>
                     </div>
                     <br>
                 </div>
@@ -75,12 +75,12 @@
         @else
         <div class="row">
                 <div class="col-sm-12" style="background-color:lightgray;">
-                    <h3> Preco da agua</h3>
+                    <h3> Preço da agua</h3>
                         <table class="table table-bordered">
                             <thead>
                             <tr>
-                                <th>Metros cubicos minimos</th>
-                                <th>Preco por metro cubico</th>
+                                <th>Metros cúbicos minimos</th>
+                                <th>Preço por metro cúbico</th>
                             </tr>
                             </thead>
                             <tbody>

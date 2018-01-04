@@ -28,7 +28,7 @@ class LeiturasController extends Controller
             ['numero_leitura', '=', $numero_leitura], ['updated_at', '>=', $time], ['efectuado', '=', false]
         ])->get();
         if (count($leitura_cliente) < 1) {
-            return View::make('gerente.leiturasIndex')->with('message', 'Leituras de todos clientes efectuados para o presente mes.');
+            return View::make('gerente.leiturasIndex')->with('message', 'Leituras de todos clientes efectuados para o presente mês.');
         }
         foreach ($leitura_cliente as $lc) {
             //data

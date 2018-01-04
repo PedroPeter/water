@@ -136,7 +136,7 @@ class ClienteController extends Controller
             /*$user->username=$user->nome.$user->apelido;
             $user->password=bcrypt($user->apelido.$user->nome);*/
             $user->save();
-            return View::make('gerente.clientecasa'); /*->with('id', $user->cliente->id);*/
+            return View::make('gerente.clientecasa')->with('id', $user->cliente->id);
         }
     }
 

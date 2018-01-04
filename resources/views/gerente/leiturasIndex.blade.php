@@ -19,7 +19,7 @@
             <div class="row">
                 <div class="col-sm-12" style="background-color:lightgray;">
                     <h3> Leituras pendentes</h3>
-                    <table class="table table-bordered">
+                    <table class="table table-bordered table-responsive">
                         <thead>
                         <tr>
                             <th>Nome</th>

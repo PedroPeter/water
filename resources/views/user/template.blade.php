@@ -23,7 +23,7 @@
                 <a class="nav-link" href="{{route('paginainicial')}}" >Pagina Inicial</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="{{route('createuser')}}"><span class="glyphicon glyphicon-user"></span>Criar conta/Tornar-se Cliente</a>
+                <a class="nav-link " href="{{route('createuser')}}"><span class="glyphicon glyphicon-user"></span>Tornar-se Cliente</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{route('login.create')}}" ><span class="glyphicon glyphicon-log-in"></span>Entrar</a>

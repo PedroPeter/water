@@ -8,13 +8,14 @@
 <body>
 <div class="container">
     <div class="head" style="border: 1px solid #dddddd;">
-        <table class="table">
+        <table class="table table-responsive">
             <tbody>
             <tr>
-                <td colspan="2" rowspan="3"><img src="{{asset('img/logo.png')}}" style="width: 100px; height: 100px;" /></td>
+                <td colspan="2" rowspan="3"><img src="{{asset('img/logo.png')}}" style="width: 100px; height: 100px;"/>
+                </td>
                 <td>Bairro Machava-Km 18 <br>
-                Cel: 84 463 8344<br>
-                MATOLA-MOÇAMBIQUE<br>
+                    Cel: 84 463 8344<br>
+                    MATOLA-MOÇAMBIQUE<br>
                 </td>
                 <td></td>
                 <td></td>
@@ -25,10 +26,8 @@
             </tr>
             <tr>
                 <td></td>
-                <td></td>
                 <td>Nome do consumidor:</td>
-                <td>{{$nome}}</td>
-                <td>{{$apelido}}</td>
+                <td colspan="3">{{$nome}}  {{$apelido}}</td>
             </tr>
             </tbody>
             <table class="table table-hover">
@@ -37,8 +36,8 @@
                     <th>L-actual</th>
                     <th>L-anterior</th>
                     <th>Consumo do Mês</th>
-                    <th>Valor por mestros Cúbicos </th>
-                    <th>Valor a pagar </th>
+                    <th>Valor por mestros Cúbicos</th>
+                    <th>Valor a pagar</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -51,10 +50,8 @@
                 </tr>
                 <tr>
                     <td>Observação:</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="3"> {{$factura->observacao}} </td>
+
                 </tr>
                 <tr>
                     <td>Outros encargos:</td>
@@ -70,13 +67,17 @@
                     <td></td>
                     <td></td>
                 </tr>
-                <tr >
-                    <td colspan="2" >Pagável até dia 10 de cada mês.<br>
-                        A falta de pagamento de tarifas de água dentro do prazo por parte do cliente implicará corte imediato e pagamento de uma multa de 25% do valor em divida.<br>
+                <tr>
+                    <td colspan="2">Pagável até dia {{$ultimo_dia}} de cada mês.<br>
+                        A falta de pagamento de tarifas de água dentro do prazo por parte do cliente implicará corte
+                        imediato e pagamento de uma multa de {{$multa}}% do valor em divida.<br>
                         Atendimento ao público de segunda a sábado das 7:00h às 17h:00h.
                     </td>
                     <td></td>
-                    <td colspan="2"><hr width="400" align="left"> <br>(Assinatura e Carimbo)</td>
+                    <td colspan="2">
+                        <hr width="400" align="left">
+                        <br>(Assinatura e Carimbo)
+                    </td>
                     <td></td>
                 </tr>
                 </tbody>
