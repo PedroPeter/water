@@ -73,7 +73,7 @@ class LeiturasController extends Controller
             $leitura->save();
             $factura = new Factura();
             $factura->l_actual = $input['consumo'];
-            $factura->l_anterior = $this->leitura_anterior($leitura->casa->id);
+            $factura->l_anterior =  100;/*$this->leitura_anterior($leitura->casa->id)*/;
             $agua = Agua::first();
             $p_unit = $agua->preco_unitario;
             $metros_cubicos = $factura->l_actual - $factura->l_anterior;

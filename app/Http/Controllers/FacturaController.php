@@ -28,6 +28,7 @@ class FacturaController extends Controller
     public function index()
     {
         $time = Carbon::now()->startOfMonth();
+        $facturas_data=[];
         $last_leitura_day = Leitura::all()->max('created_at');
         $numero_leitura = Leitura::all()->max('numero_leitura');
         $casas = Casa::all();

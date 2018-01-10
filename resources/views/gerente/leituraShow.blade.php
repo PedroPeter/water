@@ -2,10 +2,10 @@
 @extends('gerente.template')
 
 @section('content')
-    @section('script')
+    {{--@section('script')
     @parent
 
-    @stop
+    @stop--}}
 
     <div class="container">
         <h1>Leitura</h1>

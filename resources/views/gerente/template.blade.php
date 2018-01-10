@@ -1,11 +1,8 @@
 <!DOCTYPE html>
-{{--@if(!\Illuminate\Support\Facades\Auth::check())
-    {{ redirect()->route('paginainicial')}}
-@endif--}}
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Area Administrativa - Aguas Zavala | Admin Dashboad</title>
+    <title>Area Administrativa - Aguas XYZ | Admin Dashboad</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Core CSS - Include with every page -->
     {{ Html::style('plugins/bootstrap/bootstrap.css')}}
@@ -179,12 +176,12 @@
             <br><br>
             <br><br>
             <br><br>
-            @if(isset($permissao))
+            @if(\Illuminate\Support\Facades\Session::has('permissao'))
                 <div class="row">
                     <div class="col-sm-12" style="background-color:darkgray;">
                         <div class="alert alert-danger">
                             <ul>
-                                <li>{{ $permissao }}</li>
+                                <li>{{ \Illuminate\Support\Facades\Session::get('permissao') }}</li>
                                 <br>
                             </ul>
                         </div>

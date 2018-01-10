@@ -7,6 +7,7 @@ use View;
 use Illuminate\Http\Request;
 use Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -93,7 +94,6 @@ class LoginController extends Controller
 
     public function check(Request $request)
     {
-
         $validate = Validator::make($request->all(), $this->rules(), $this->message());
         $username = $request->username;
         $password = $request->password;
@@ -102,9 +102,11 @@ class LoginController extends Controller
         } elseif (Auth::attempt(['username' => $username, 'password' => $password])) {
             $user = Auth::user();
             $permissao = $user->cargo;
-            return redirect()->route('dashboard')->with(['username'=> $username, 'permissao'=>$permissao]);
+            session()->put(['username'=> $username, 'permissao'=>$permissao]);
+            return redirect('dashboard')->with(['username'=> $username, 'permissao'=>$permissao]);
         } else {
-            return redirect()->back()->with('message', "Usuario nao registado no sistema!")->withInput()->exceptInput('password');
+            session()->put('message', 'Usuario nao registado no sistema!');
+            return redirect()->back()->withInput()->exceptInput('password');
         }
     }
 

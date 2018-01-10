@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class OnlyAdmin
 {
@@ -19,7 +20,8 @@ class OnlyAdmin
         $user = Auth::user();
         $permissao = $user->cargo;
         if ($permissao == "Gerente") {
-            return redirect()->route('dashboard')->with("permissao", "Nao tem permissao para aceder a essa funcionalidade! Somente o administrador pode o fazer.");
+            Session::put("permissao", "Nao tem permissao para aceder a essa funcionalidade! Somente o administrador pode o fazer.");
+            return redirect()->route('dashboard');
         }
         return $next($request);
     }

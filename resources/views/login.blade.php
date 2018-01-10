@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Aguas Guessane</title>
+    <title>Login - Aguas XYZ</title>
     <!-- Core CSS - Include with every page -->
     <link href="{{asset('plugins/bootstrap/bootstrap.css')}}" rel="stylesheet"/>
     <link href="{{asset('font-awesome/css/font-awesome.css')}}" rel="stylesheet"/>
@@ -18,11 +18,6 @@
 <div class="container">
 
     <div class="row">
-        @if(isset($message))
-            <div class="alert-info" style="font-size: 72px; text-align: center;">
-                {{$message}}
-            </div>
-        @endif
         @if (count($errors) > 0)
             <div class="alert alert-danger">
                 <ul>
@@ -30,6 +25,10 @@
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
+            </div>
+        @else {{--if(\Illuminate\Support\Facades\Session::has('message'))--}}
+            <div class="alert-info" style="font-size: 72px; text-align: center;">
+                {{Session::get('message')}}
             </div>
         @endif
         <div class="col-md-4 col-md-offset-4 text-center logo-margin ">
@@ -45,8 +44,7 @@
                     {!! Form::open(['id'=>'contact_form','class'=>'well form-horizontal','route'=>'login.check','role'=>'form'])!!}
                     <fieldset>
                         <div class="form-group">
-                            <input class="form-control" placeholder="Nome do usuario" name="username" type="text"
-                                   autofocus>
+                            <input class="form-control" placeholder="Nome do usuario" name="username" type="text" autofocus>
                         </div>
                         <div class="form-group">
                             <input class="form-control" placeholder="Password" name="password" type="password">

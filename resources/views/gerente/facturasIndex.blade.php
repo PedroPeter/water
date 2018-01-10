@@ -1,18 +1,7 @@
 @extends('gerente.template')
 @section('content')
     <div class="container" xmlns="http://www.w3.org/1999/html">
-        @if(isset($message))
-        <div class="row">
-            <div class="col-sm-12" style="background-color:darkgray;">
-                    <div class="alert alert-danger">
-                        <ul>
-                            <li>{{ $message }}</li>
-                        </ul>
-                    </div>
-                    <br>
-            </div>
-        </div>
-        @else
+
             <div class="row">
                 <div class="col-sm-12" style="background-color:lightgray;">
                     <h3> Facturas </h3>

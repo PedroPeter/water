@@ -14,7 +14,7 @@
                 <td colspan="2" rowspan="3"><img src="{{asset('img/logo.png')}}" style="width: 100px; height: 100px;"/>
                 </td>
                 <td>Bairro Machava-Km 18 <br>
-                    Cel: 84 463 8344<br>
+                    Cel: 84 463 8520<br>
                     MATOLA-MOÇAMBIQUE<br>
                 </td>
                 <td></td>

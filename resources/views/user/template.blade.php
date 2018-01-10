@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Águas Zavala</title>
+    <title>Águas XYZ</title>
 
     <link rel="stylesheet" href="{{asset('css/bootstrap.css')}}">
     <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
@@ -14,7 +14,7 @@
 </head>
 <body>
 <div class="alert-info" style="font-size: 72px; text-align: center;">
-    Águas Guessane
+    Águas XYZ
 </div>
 <nav class="navbar navbar-inverse  navbar-fixed-top" style="height: 100px; padding-top: 10px; font-size: 40px;">
     <div class="container-fluid">
