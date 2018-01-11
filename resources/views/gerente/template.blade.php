@@ -142,6 +142,9 @@
                         <li>
                             <a href="{{route('facturas.pendentes')}}">Facturas pendentes</a>
                         </li>
+                        <li>
+                            <a href="{{route('search')}}">Pesquisar</a>
+                        </li>
                     </ul>
                     <!-- second-level-items -->
                 </li>

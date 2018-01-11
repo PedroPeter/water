@@ -16,7 +16,7 @@
 <div class="alert-info" style="font-size: 72px; text-align: center;">
     Águas XYZ
 </div>
-<nav class="navbar navbar-inverse  navbar-fixed-top" style="height: 100px; padding-top: 10px; font-size: 40px;">
+<nav class="navbar navbar-inverse  navbar-fixed-top embed-responsive" style="height: 100px; padding-top: 10px; font-size: 40px;">
     <div class="container-fluid">
         <ul class="nav justify-content-center"  >
             <li class="nav-item">

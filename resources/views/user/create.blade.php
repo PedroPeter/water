@@ -10,7 +10,6 @@
             color: #0f0f0f;
         }
     </style>
-    {{--<script src="{{asset('js/cadastro.js')}}"></script>--}}
     <script src="{{asset('js/jquery.inputmask.bundle.min.js')}}"></script>
     <script>
         $(document).ready(function () {

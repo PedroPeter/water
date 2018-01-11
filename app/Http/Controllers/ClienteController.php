@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Casa;
 use App\Cliente;
+use App\Leitura;
 use App\User;
 use Illuminate\Http\Request;
 use View;
 use Validator;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\DB;
 
 class ClienteController extends Controller
 {
@@ -228,5 +233,45 @@ class ClienteController extends Controller
             'doc.required' => 'O documeno é obrigatório. ',
             'contracto.required' => 'O contracto é obrigatório. ',
         ];
+    }
+
+    /**
+     * Search for a specified resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search()
+    {
+        $keywords = Input::get('keywords');
+        $clientes = Cliente::where('activo', 1)->get();
+        $search = array();
+        $faturas = array();
+        if (!is_null($clientes)) {
+            foreach ($clientes as $cliente) {
+                if (Str::contains(Str::lower($cliente->user->nome.$cliente->user->apelido), Str::lower($keywords))) {
+                    $casa_id= DB::table('casas')->where('cliente_id', $cliente->id)->value('id');
+                    $leituras_id=Leitura::where('casa_id', $casa_id)->pluck('id');
+                    foreach($leituras_id as $id){
+                        $l=Leitura::find($id);
+                        $f=$l->factura;
+                        if(!is_null($f)){
+                            $faturas[]=$l->factura;
+                        }
+                    }
+                    if(!is_null($faturas)){
+                        $search [] = [
+                            'nome' => $cliente->user->nome,
+                            'apelido' => $cliente->user->apelido,
+                            'faturas' =>$faturas
+                        ];
+                    }
+
+                }
+            }
+            if (!is_null($search)) {
+                return view('gerente.searchResults')->with('search',$search);
+            }
+        }
+        return view('gerente.searchResults');
     }
 }

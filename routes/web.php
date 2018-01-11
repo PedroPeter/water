@@ -64,9 +64,12 @@ Route::group(['middleware' => 'auth',], function () {
 
     Route::get('dashboard/admin/contratcto/upload', function () {
         return view('gerente.contracto');})->name('contracto.crt');
+    Route::get('dashboard/clientes/pesquisar', function () {
+        return view('gerente.pesquisar');})->name('search');
 
     Route::get('leitura/{user_id}', 'LeiturasController@create')->name('leitura.create');
     Route::post('dashboard/contracto/upload', 'GerenteController@contracto')->name('contracto.up');
+    Route::post('dashboard/clientes/pesquisar', 'ClienteController@search')->name('cliente.search');
     Route::get('dashboard/leitura/pendente', 'LeiturasController@pendentes')->name('leituras.pendentes');
     Route::get('dashboard/factura/pendente', 'FacturaController@pendentes')->name('facturas.pendentes');
     Route::get('dashboard/factura/emitidas', 'FacturaController@emetidas')->name('facturas.emetidas');

@@ -14,6 +14,12 @@
 
                 {!! Form::open(['id'=>'contact_form','class'=>'well form-horizontal','route'=>'leitura.store'])!!}
                 <fieldset>
+                    @if(isset($message))
+                        <div class="alert alert-danger">
+                            {{ $message }}
+                        </div>
+                    @endif
+
                     @if (count($errors) > 0)
                         <div class="alert alert-danger">
                             <ul>

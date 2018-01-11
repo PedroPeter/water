@@ -7,9 +7,6 @@
                     <div class="alert alert-danger">
                         <ul>
                             <li>{{ $message }}</li> <br>
-                            <a href="{{route('leituras.pendentes')}}">
-                                <button>Ver leituras pendentes</button>
-                            </a>
                         </ul>
                     </div>
                     <br>

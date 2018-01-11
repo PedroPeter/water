@@ -27,8 +27,7 @@ class FacturaController extends Controller
      */
     public function index()
     {
-        $time = Carbon::now()->startOfMonth();
-        $facturas_data=[];
+        $facturas_data = [];
         $last_leitura_day = Leitura::all()->max('created_at');
         $numero_leitura = Leitura::all()->max('numero_leitura');
         $casas = Casa::all();
@@ -46,7 +45,7 @@ class FacturaController extends Controller
             $facturas = Factura::where([
                 ['updated_at', '>=', $last_leitura_day], ['paga', '=', false]
             ])->get();
-            if (!is_null($factura)) {
+            if (!is_null($facturas)) {
                 foreach ($facturas as $factura) {
                     $metros_cubicos = $factura->l_actual - $factura->l_anterior;
                     if ($metros_cubicos <= $agua->metros_cubicos_minimos) {
@@ -145,11 +144,9 @@ class FacturaController extends Controller
 
     }
 
-    /**
+    /*
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
      */
     public
     function operacoesUpdate(Request $request)
@@ -279,9 +276,6 @@ class FacturaController extends Controller
         $apelido = $factura->leitura->casa->cliente->user->apelido;
         $time = Carbon::now()->format('d/m/Y');
         $p_unit = $factura->leitura->agua->preco_unitario;
-        /*$pdf =PDF::loadView('gerente.factura',['factura'=>$factura,'time'=>$time,'apelido'=>$apelido,'nome'=>$nome,'p_unit'=>$p_unit]);
-        //->setPaper('a5', 'landscape')->setWarnings(false)->save('myfile.pdf')
-        return $pdf->stream();*/
         return View('gerente.factura')->with(['factura' => $factura, 'time' => $time, 'apelido' => $apelido, 'nome' => $nome, 'p_unit' => $p_unit, 'multa' => $multa, 'ultimo_dia' => $ultimo_dia]);
     }
 
@@ -335,36 +329,36 @@ class FacturaController extends Controller
     function factura_geral($bol)
     {
         $facturas = Factura::where('paga', $bol)->get();
-        if(count($facturas)>0){
-        foreach ($facturas as $factura) {
-            $val_pagar = $factura->val_pagar;
-            if ($factura->num_multas > 0) {
-                $facturas_data = [
-                    'numero' => $factura->id,
-                    'l_anterior' => $factura->l_anterior,
-                    'l_actual' => $factura->l_actual,
-                    'metros_cubicos' => $factura->l_actual - $factura->l_anterior,
-                    'val_pagar' => $val_pagar,
-                    'obs' => $factura->observacao,
-                    'meses_atrasados' => $factura->num_multas,
-                    'val_multa' => $factura->val_multas,
-                    'val_total' => $val_pagar + $factura->val_multas,
-                ];
+        if (count($facturas) > 0) {
+            foreach ($facturas as $factura) {
+                $val_pagar = $factura->val_pagar;
+                if ($factura->num_multas > 0) {
+                    $facturas_data = [
+                        'numero' => $factura->id,
+                        'l_anterior' => $factura->l_anterior,
+                        'l_actual' => $factura->l_actual,
+                        'metros_cubicos' => $factura->l_actual - $factura->l_anterior,
+                        'val_pagar' => $val_pagar,
+                        'obs' => $factura->observacao,
+                        'meses_atrasados' => $factura->num_multas,
+                        'val_multa' => $factura->val_multas,
+                        'val_total' => $val_pagar + $factura->val_multas,
+                    ];
 
 
-            } else {
-                $facturas_data = [
-                    'numero' => $factura->id,
-                    'l_anterior' => $factura->l_anterior,
-                    'l_actual' => $factura->l_actual,
-                    'metros_cubicos' => $factura->l_actual - $factura->l_anterior,
-                    'val_pagar' => $val_pagar,
-                    'obs' => $factura->observacao,
-                ];
+                } else {
+                    $facturas_data = [
+                        'numero' => $factura->id,
+                        'l_anterior' => $factura->l_anterior,
+                        'l_actual' => $factura->l_actual,
+                        'metros_cubicos' => $factura->l_actual - $factura->l_anterior,
+                        'val_pagar' => $val_pagar,
+                        'obs' => $factura->observacao,
+                    ];
+                }
             }
-        }
-        return $facturas_data;
-        }else{
+            return $facturas_data;
+        } else {
             return null;
         }
     }

@@ -1,7 +1,10 @@
 @extends('user.template')
 
 @section('content')
-    <img src="{{URL::asset('/img/water_desktop_wallpaper.jpg')}}" alt="profile Pic" height="400" width="1250">
+    <p class="row">
+        <img class="img-responsive" src="{{URL::asset('/img/water_desktop_wallpaper.jpg')}}" alt="profile Pic" height="400px" width="100%">
+
+    </p>
     <div style="color: white">
         <p>
             As águas Zavala, SA, é uma empresa que se dedica na distribuição de água nas Áreas da Machava, Km-18, desde 2016.

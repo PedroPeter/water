@@ -21,14 +21,11 @@ class LeiturasController extends Controller
      */
     public function index()
     {
-        $time = Carbon::now()->startOfMonth();
-        $numero_leitura = Leitura::all()->max('numero_leitura');
+
         $data = array();
-        $leitura_cliente = Leitura::where([
-            ['numero_leitura', '=', $numero_leitura], ['updated_at', '>=', $time], ['efectuado', '=', false]
-        ])->get();
+        $leitura_cliente = Leitura::where( ['efectuado', '=', false])->get();
         if (count($leitura_cliente) < 1) {
-            return View::make('gerente.leiturasIndex')->with('message', 'Leituras de todos clientes efectuados para o presente mês.');
+            return View::make('gerente.leiturasIndex')->with('message', 'Leituras de todos clientes efectuadas.');
         }
         foreach ($leitura_cliente as $lc) {
             //data
@@ -70,10 +67,12 @@ class LeiturasController extends Controller
             $leitura = Leitura::find($input['id']);
             $leitura->efectuado = true;
             $leitura->consumo = $input['consumo'];
-            $leitura->save();
             $factura = new Factura();
             $factura->l_actual = $input['consumo'];
-            $factura->l_anterior =  100;/*$this->leitura_anterior($leitura->casa->id)*/;
+            $factura->l_anterior = $this->leitura_anterior($leitura->casa->id);
+            if (is_null($factura->l_anterior)) {
+                return redirect()->back()->with('message', 'Ocorreu um erro durante a gravacao da leitua, o cliente ainda tem leituras pendentes!');
+            }
             $agua = Agua::first();
             $p_unit = $agua->preco_unitario;
             $metros_cubicos = $factura->l_actual - $factura->l_anterior;
@@ -84,10 +83,16 @@ class LeiturasController extends Controller
                 $val_pagar = ($factura->l_actual - $factura->l_anterior) * $p_unit;
             }
             $factura->val_pagar = $val_pagar;
+            $leitura->save();
             $factura->leitura()->associate($leitura);
             $factura->save();
-            return redirect()->route('leitura.index');
+            $factura->metros_cubicos=$metros_cubicos;
+            $factura->preco_unitario=$p_unit;
+            return view('gerente.facturaEspecifica')->with('factura',$factura);
         }
+        return redirect()->back()->with('message', 'Ocorreu um erro durante a gravacao da leitua!');
+
+
     }
 
     /**
@@ -96,7 +101,8 @@ class LeiturasController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public
+    function show($id)
     {
         return View::make('gerente.leituraShow')->with('id', $id);
     }
@@ -107,7 +113,8 @@ class LeiturasController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public
+    function edit($id)
     {
         //
     }
@@ -119,7 +126,8 @@ class LeiturasController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public
+    function update(Request $request, $id)
     {
         //
     }
@@ -130,7 +138,8 @@ class LeiturasController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public
+    function destroy($id)
     {
         //
     }
@@ -141,7 +150,8 @@ class LeiturasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function pendentes()
+    public
+    function pendentes()
     {
         $leitura_cliente = Leitura::where('efectuado', '=', false)->get();
         if (count($leitura_cliente) < 1) {
@@ -161,28 +171,32 @@ class LeiturasController extends Controller
         return View::make('gerente.leiturasPendentes')->with('data', $data);
     }
 
-    public function rules()
+    public
+    function rules()
     {
         return [
             'consumo' => 'required|numeric'
         ];
     }
 
-    public function message()
+    public
+    function message()
     {
         return [
             'consumo.required' => 'O consumo é obrigatório.'
         ];
     }
 
-    public function leitura_anterior($casa_id){
+    public
+    function leitura_anterior($casa_id)
+    {
         $casa = \App\Casa::find($casa_id);
         $leituras = $casa->leituras;
-        if(count($leituras)>1){
+        if (count($leituras) > 1) {
             $leituras->pop();
-            $ultima_leitura=$leituras->last();
+            $ultima_leitura = $leituras->last();
             return $ultima_leitura->consumo;
-        }else{
+        } else {
             return 0;
         }
     }
