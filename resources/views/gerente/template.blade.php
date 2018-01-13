@@ -71,13 +71,13 @@
                         <div class="user-section-inner">
                             <img src="{{asset('img/user.jpg')}}" alt="">
                         </div>
+                        <div class="user-section-inner">
+                        </div>
                         <div class="user-info">
-                            @if(isset($username))
-                                <div><strong>{{$username}}</strong></div>
-                                <div class="user-text-online">
-                                    <span class="user-circle-online btn btn-success btn-circle "></span>&nbsp;Online
-                                </div>
-                            @endif
+
+                            <div class="user-text-online">
+                                <span class="user-circle-online btn btn-success btn-circle "></span>&nbsp;Online
+                            </div>
                         </div>
                     </div>
                     <!--end user image section-->
@@ -179,22 +179,9 @@
             <br><br>
             <br><br>
             <br><br>
-            @if(\Illuminate\Support\Facades\Session::has('permissao'))
-                <div class="row">
-                    <div class="col-sm-12" style="background-color:darkgray;">
-                        <div class="alert alert-danger">
-                            <ul>
-                                <li>{{ \Illuminate\Support\Facades\Session::get('permissao') }}</li>
-                                <br>
-                            </ul>
-                        </div>
-                        <br>
-                    </div>
-                </div>
-            @endif
-            @yield('content')
+                @yield('content')
 
-            <!--End Page Header -->
+                        <!--End Page Header -->
         </div>
 
 

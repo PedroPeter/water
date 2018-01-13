@@ -7,16 +7,8 @@ Author: http://binarytheme.com
 ======================================*/
 
 $(function () {
-    // tooltip demo
-    $('.tooltip-demo').tooltip({
-        selector: "[data-toggle=tooltip]",
-        container: "body"
-    });
 
-    // popover demo
-    $("[data-toggle=popover]")
-        .popover();
-    ///calling side menu
+
 
     $('#side-menu').metisMenu();
 
@@ -27,6 +19,7 @@ $(function () {
         x.open('GET', "" + time, true);
         x.send();
     }
+
     load(20);
     load(100);
     load(500);

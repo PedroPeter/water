@@ -18,7 +18,10 @@
 <div class="container">
 
     <div class="row">
-        @if (count($errors) > 0)
+        <div class="col-md-4 col-md-offset-4 text-center logo-margin ">
+            <img src="{{asset('img/user.jpg')}}" alt=""/>
+        </div>
+        @if (count(Session::get('errors')) > 0)
             <div class="alert alert-danger">
                 <ul>
                     @foreach ($errors->all() as $error)
@@ -26,18 +29,18 @@
                     @endforeach
                 </ul>
             </div>
-        @else {{--if(\Illuminate\Support\Facades\Session::has('message'))--}}
+        @endif
+
+        @if(isset($message))
             <div class="alert-info" style="font-size: 72px; text-align: center;">
-                {{Session::get('message')}}
+                {{$message}}
             </div>
         @endif
-        <div class="col-md-4 col-md-offset-4 text-center logo-margin ">
-            <img src="{{asset('img/user.jpg')}}" alt=""/>
-        </div>
+
         <div class="col-md-4 col-md-offset-4">
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Please Sign In</h3>
+                    <h3 class="panel-title">Insera suas credenciais.</h3>
                 </div>
                 <div class="panel-body">
 
@@ -63,8 +66,8 @@
 </div>
 
 <!-- Core Scripts - Include with every page -->
-<script src="{{assets('plugins/jquery-1.10.2.js')}}"></script>
-<script src="{{assets('plugins/bootstrap/bootstrap.min.js')}}"></script>
+<script src="{{asset('plugins/jquery-1.10.2.js')}}"></script>
+<script src="{{asset('plugins/bootstrap/bootstrap.min.js')}}"></script>
 <script src="{{asset('plugins/metisMenu/jquery.metisMenu.js')}}"></script>
 
 </body>

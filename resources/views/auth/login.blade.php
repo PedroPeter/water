@@ -2,6 +2,7 @@
 @section('content')
     <div class="container">
         <div class="row">
+
             @if (count($errors) > 0)
                 <div class="alert alert-danger">
                     <ul>

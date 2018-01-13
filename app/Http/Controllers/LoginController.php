@@ -33,7 +33,7 @@ class LoginController extends Controller
      */
     public function create()
     {
-        return view("auth.login");
+        return view("login");
     }
 
     /**
@@ -94,18 +94,15 @@ class LoginController extends Controller
 
     public function check(Request $request)
     {
-        $validate = Validator::make($request->all(), $this->rules(), $this->message());
         $username = $request->username;
         $password = $request->password;
+        $validate = Validator::make($request->all(), $this->rules(), $this->message());
         if ($validate->fails()) {
-            return redirect()->back()->withInput()->exceptInput('password')->withErrors($validate);
+            Session::flash('errors',$validate->errors);
+            return redirect()->back()->withErrors($validate);
         } elseif (Auth::attempt(['username' => $username, 'password' => $password])) {
-            $user = Auth::user();
-            $permissao = $user->cargo;
-            session()->put(['username'=> $username, 'permissao'=>$permissao]);
-            return redirect('dashboard')->with(['username'=> $username, 'permissao'=>$permissao]);
+            return redirect('dashboard');
         } else {
-            session()->put('message', 'Usuario nao registado no sistema!');
             return redirect()->back()->withInput()->exceptInput('password');
         }
     }
@@ -115,7 +112,8 @@ class LoginController extends Controller
     {
         return $rules = [
             'username' => 'required',
-            'password' => 'required'];
+            'password' => 'required'
+        ];
 
     }
 

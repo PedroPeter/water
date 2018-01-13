@@ -49,7 +49,7 @@ Route::group(['middleware' => 'auth',], function () {
     })->name('cliente.dashboard');
 
     Route::get('login/out/true', function () {
-        Auth::logout(); redirect()->route('paginainicial');})->name('login.out');
+        Auth::logout(); return view('user.index');})->name('login.out');
 
     Route::get('dashboard/user', 'UserController@index')->name('user.index');
 
