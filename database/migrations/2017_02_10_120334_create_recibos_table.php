@@ -28,6 +28,7 @@ class CreateRecibosTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('recibos');
+
     }
 }

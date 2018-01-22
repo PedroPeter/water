@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateContractoTable extends Migration
+class CreateFacturaOperacoesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateContractoTable extends Migration
      */
     public function up()
     {
-        Schema::create('contracto', function (Blueprint $table) {
+        Schema::create('facturaOperacoes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('ctr');
+            $table->smallInteger('percentagem');
+            $table->smallInteger('ultimo_dia');
             $table->timestamps();
         });
     }
@@ -27,7 +28,6 @@ class CreateContractoTable extends Migration
      */
     public function down()
     {
-        Schema::drop('contracto');
-
+        Schema::drop('facturaOperacoes');
     }
 }

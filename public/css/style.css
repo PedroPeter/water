@@ -22,8 +22,10 @@ limitations under the License.*/
 /* ------------------------------- */
 
  body {
-    background-color: #f8f8f8;
-}
+    background-color: rgb(209, 212, 216);
+   /*  background-image:url("images/background.jpg");*/
+
+ }
 
 /* Wrappers */
 

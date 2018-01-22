@@ -21,22 +21,24 @@ class LeiturasController extends Controller
      */
     public function index()
     {
-
-        $data = array();
-        $leitura_cliente = Leitura::where( ['efectuado', '=', false])->get();
-        if (count($leitura_cliente) < 1) {
+        $leituras_clientes = Leitura::where('efectuado', false)->get();
+        if (count($leituras_clientes) < 1) {
             return View::make('gerente.leiturasIndex')->with('message', 'Leituras de todos clientes efectuadas.');
         }
-        foreach ($leitura_cliente as $lc) {
-            //data
-            $data[] = [
-                'casa_bairro' => $lc->casa->bairro,
-                'casa_rua' => $lc->casa->rua_avenida,
-                'casa_numero' => $lc->casa->numero_casa,
-                'casa_descricao' => $lc->casa->descricao,
-                'cliente_nome' => $lc->casa->cliente->user->nome,
-                'id' => $lc->id,
-            ];
+        $data = array();
+        foreach ($leituras_clientes as $leitura_cliente) {
+            $casa=$leitura_cliente->casa;
+            if(!is_null($casa)){
+                $data[] = [
+                    'casa_bairro' => $casa['bairro'],
+                    'casa_rua' => $casa['rua_avenida'],
+                    'casa_numero' => $casa['numero_casa'],
+                    'casa_descricao' => $casa['descricao'],
+                    'cliente_nome' => $casa->cliente->user['nome'],
+                    'id' => $leitura_cliente->id,
+                ];
+            }
+
         }
         return View::make('gerente.leiturasIndex')->with('data', $data);
 
@@ -86,9 +88,9 @@ class LeiturasController extends Controller
             $leitura->save();
             $factura->leitura()->associate($leitura);
             $factura->save();
-            $factura->metros_cubicos=$metros_cubicos;
-            $factura->preco_unitario=$p_unit;
-            return view('gerente.facturaEspecifica')->with('factura',$factura);
+            $factura->metros_cubicos = $metros_cubicos;
+            $factura->preco_unitario = $p_unit;
+            return view('gerente.facturaEspecifica')->with('factura', $factura);
         }
         return redirect()->back()->with('message', 'Ocorreu um erro durante a gravacao da leitua!');
 

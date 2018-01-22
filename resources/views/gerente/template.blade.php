@@ -32,7 +32,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.blade.php">
+            <a class="navbar-brand" href="{{route('paginainicial')}}">
                 <img src="{{asset('img/logo.png')}}" alt=""/>
             </a>
         </div>

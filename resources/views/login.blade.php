@@ -10,7 +10,6 @@
     <link href="{{asset('font-awesome/css/font-awesome.css')}}" rel="stylesheet"/>
     <link href="{{asset('plugins/pace/pace-theme-big-counter.css')}}" rel="stylesheet"/>
     <link href="{{asset('css/style.css')}}" rel="stylesheet"/>
-    <link href="{{asset('css/main-style.css')}}" rel="stylesheet"/>
 </head>
 
 <body class="body-Login-back">
@@ -47,7 +46,8 @@
                     {!! Form::open(['id'=>'contact_form','class'=>'well form-horizontal','route'=>'login.check','role'=>'form'])!!}
                     <fieldset>
                         <div class="form-group">
-                            <input class="form-control" placeholder="Nome do usuario" name="username" type="text" autofocus>
+                            <input class="form-control" placeholder="Nome do usuario" name="username" type="text"
+                                   autofocus>
                         </div>
                         <div class="form-group">
                             <input class="form-control" placeholder="Password" name="password" type="password">

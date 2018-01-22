@@ -19,9 +19,8 @@ class LoginController extends Controller
     public function index()
     {
         if (User::all()->count() > 0) {
-            return View::make('login');
+            return $this->create();
         }
-
         return View::make('admin.admin');
 
     }

@@ -29,6 +29,6 @@ class CreateAguasTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('aguas');
     }
 }

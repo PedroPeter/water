@@ -29,6 +29,7 @@ class CreateCasaFontenariaTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('casa_fontenarias');
+
     }
 }

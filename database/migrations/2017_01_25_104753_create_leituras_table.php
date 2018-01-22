@@ -33,6 +33,6 @@ class CreateLeiturasTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('leituras');
     }
 }

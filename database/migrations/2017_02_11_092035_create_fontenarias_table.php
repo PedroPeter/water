@@ -32,6 +32,7 @@ class CreateFontenariasTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('fontenarias');
+
     }
 }

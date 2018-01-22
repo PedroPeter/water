@@ -32,6 +32,6 @@ class CreateCasasTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('casas');
     }
 }

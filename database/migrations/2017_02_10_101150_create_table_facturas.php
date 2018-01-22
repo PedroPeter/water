@@ -37,6 +37,6 @@ class CreateTableFacturas extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('facturas');
     }
 }

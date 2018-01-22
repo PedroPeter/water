@@ -15,7 +15,7 @@ class Cliente extends Model
     }
     public function casa()
     {
-        return $this->belongsTo('App\Casa');
+        return $this->hasOne('App\Casa');
     }
 
 }

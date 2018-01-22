@@ -12,7 +12,7 @@ class TimeForLeitura extends Command
      *
      * @var string
      */
-    protected $signature = 'leitura:do';
+    protected $signature = 'leituras:do';
 
     /**
      * The console command description.
@@ -38,12 +38,16 @@ class TimeForLeitura extends Command
      */
     public function handle()
     {
-        $agua = App\Agua::all()->first();
-        $cliente = App\Cliente::where('activo', 1)->get();
-        $leitura = App\Leitura::all()->max('numero_leitura');
-        $numero_leitura = $leitura + 1;
-        foreach ($cliente as $clt) {
-            foreach ($clt->casa as $casa) {
+        $clientes = App\Cliente::where('activo', 1)->get();
+        if (count($clientes) > 0) {
+            $agua = App\Agua::all()->first();
+            $leitura = App\Leitura::all()->max('numero_leitura');
+            if (is_null($leitura)) {
+                $numero_leitura = 1;
+            }
+            $numero_leitura = $leitura + 1;
+            foreach ($clientes as $cliente) {
+                $casa = $cliente->casa;
                 $leitura = new App\Leitura();
                 $leitura->casa()->associate($casa);
                 $leitura->agua()->associate($agua);
