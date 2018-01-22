@@ -486,7 +486,6 @@
 
                 while (--position > 0 && !isMask(position)) {
                 }
-                ;
                 return position;
             }
 
@@ -877,9 +876,6 @@
                 }
                 return end - (lengthBefore - buffer.length); //return new start position
             }
-
-            ;
-
 
             function HandleRemove(input, k, pos) {
                 if (opts.numericInput || isRTL) {
@@ -1491,8 +1487,7 @@
                         return isComplete(getActiveBuffer());
                 }
             }
-        };
-
+        }
         $.inputmask = {
             //options default
             defaults: {
@@ -2592,8 +2587,7 @@ Allows for using regular expressions as a mask
 
                             if (currentToken.matches.length > 0)
                                 opts.regexTokens.push(currentToken);
-                        };
-
+                        }
                         function validateRegexToken(token, fromGroup) {
                             var isvalid = false;
                             if (fromGroup) {

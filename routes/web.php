@@ -12,30 +12,43 @@
 */
 
 
-//no middlewares neccessary
+//no middlewares neccessary // Guest page
 Route::get('/', function () {
-    return view('user.index');
+    return view('home.index');
 });
 Route::get('/index', function () {
-    return view('user.index');
+    return view('home.index');
 })->name('paginainicial');
 
+Route::get('/createuser', function () {
+    return view('home.create');
+})->name('createuser');
 Route::get('/user/resposta', function () {
-    return view('user.createR');
+    return view('home.createR');
 })->name('replyUser');
 
 Route::get('/contracto', function () {
-    return view('user.contracto');
+    return view('home.contracto');
 })->name('contracto');
-
-Route::get('/createuser', function () {
-    return view('user.create');
-})->name('createuser');
 Route::resource('sistema/login', 'LoginController');
 Route::post('sistema/login/check/', 'LoginController@check')->name('login.check');
 
+// user routs
 
-//middlewares necessary
+Route::group(['namespace' => 'cliente/gestao'],function(){
+    Route::get('cliente/gestao', function () {
+        return view('user.template');
+    });
+
+});
+
+
+
+
+
+
+
+// admin routs ->middlewares necessary
 
 Route::group(['middleware' => 'auth',], function () {
     Route::get('dashboard/cadastro', function () {

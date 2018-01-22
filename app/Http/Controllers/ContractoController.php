@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use View;
+
 class ContractoController extends Controller
 {
     /**

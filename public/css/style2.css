@@ -1,7 +1,6 @@
 @font-face { 
-  font-family: PacificoRegular; 
-    src: url('../fonts/Pacifico-webfont.eot'); 
-    src: local("PacificoRegular"), url('../fonts/Pacifico-webfont.ttf'); 
+  font-family: "Times New Roman";
+
 } 
 
 html

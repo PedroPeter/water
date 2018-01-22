@@ -2,10 +2,7 @@
 @extends('gerente.template')
 
 @section('content')
-    @section('script')
-    @parent
 
-    @stop
 
     <div class="container">
         <h1>Actualizacao da Factura</h1>

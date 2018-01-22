@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Agua;
-use View;
 use Illuminate\Http\Request;
 use Validator;
+use View;
 
 class AguaController extends Controller
 {

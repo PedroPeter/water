@@ -6,14 +6,13 @@ use App\Agua;
 use App\Casa;
 use App\Factura;
 use App\FacturaOperacoes;
+use App\Leitura;
 use App\Recibo;
-use PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Leitura;
-use View;
+use PDF;
 use Validator;
-use Illuminate\Support\Facades\DB;
+use View;
 
 class FacturaController extends Controller
 {
@@ -268,7 +267,7 @@ class FacturaController extends Controller
     public
     function factura($id)
     {
-        $factura = \App\Factura::find($id);
+        $factura = Factura::find($id);
         $facturaOp = FacturaOperacoes::all()->first();
         $multa = $facturaOp->percentagem;
         $ultimo_dia = $facturaOp->ultimo_dia;
@@ -282,7 +281,7 @@ class FacturaController extends Controller
     public
     function recibo($id)
     {
-        $factura = \App\Factura::find($id);
+        $factura = Factura::find($id);
         $factura->paga = true;
         $recibo = new Recibo();
         $recibo->factura()->associate($factura);

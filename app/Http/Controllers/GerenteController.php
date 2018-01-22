@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Gerente;
 use App\User;
-use Illuminate\Http\Request;
 use DB;
-use View;
+use Illuminate\Http\Request;
 use Validator;
+use View;
 
 class GerenteController extends Controller
 {

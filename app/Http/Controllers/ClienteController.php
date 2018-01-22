@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Casa;
 use App\Cliente;
 use App\Leitura;
 use App\User;
 use Illuminate\Http\Request;
-use View;
-use Validator;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Str;
+use Validator;
+use View;
 
 class ClienteController extends Controller
 {
@@ -201,7 +200,7 @@ class ClienteController extends Controller
     public
     function destroy($id)
     {
-        $c = \App\Cliente::find($id);
+        $c = Cliente::find($id);
         $c->activo = false;
         $c->save();
         return redirect('cliente.index');

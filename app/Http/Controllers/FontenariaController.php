@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Fontenaria;
 use Illuminate\Http\Request;
-use View;
 use Validator;
+use View;
 
 class FontenariaController extends Controller
 {

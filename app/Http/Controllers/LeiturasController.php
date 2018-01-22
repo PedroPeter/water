@@ -6,10 +6,9 @@ namespace App\Http\Controllers;
 use App\Agua;
 use App\Factura;
 use App\Leitura;
-use Validator;
 use Illuminate\Http\Request;
+use Validator;
 use View;
-use Carbon\Carbon;
 
 class LeiturasController extends Controller
 {
@@ -192,7 +191,7 @@ class LeiturasController extends Controller
     public
     function leitura_anterior($casa_id)
     {
-        $casa = \App\Casa::find($casa_id);
+        $casa = Casa::find($casa_id);
         $leituras = $casa->leituras;
         if (count($leituras) > 1) {
             $leituras->pop();

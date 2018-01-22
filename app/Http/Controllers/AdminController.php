@@ -6,9 +6,8 @@ use App\Agua;
 use App\Cliente;
 use App\Factura;
 use App\Produtos;
-use App\Sms;
-use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {

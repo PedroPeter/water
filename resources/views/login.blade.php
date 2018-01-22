@@ -9,14 +9,13 @@
     <link href="{{asset('plugins/bootstrap/bootstrap.css')}}" rel="stylesheet"/>
     <link href="{{asset('font-awesome/css/font-awesome.css')}}" rel="stylesheet"/>
     <link href="{{asset('plugins/pace/pace-theme-big-counter.css')}}" rel="stylesheet"/>
-    <link href="{{asset('css/style.css')}}" rel="stylesheet"/>
 </head>
 
-<body class="body-Login-back">
+<body class="body-Login-back" style="background: transparent url(../images/background.jpg) no-repeat;">
 
 <div class="container">
 
-    <div class="row">
+    <div class="row" style="margin-top: 15%;">
         <div class="col-md-4 col-md-offset-4 text-center logo-margin ">
             <img src="{{asset('img/user.jpg')}}" alt=""/>
         </div>
@@ -37,7 +36,7 @@
         @endif
 
         <div class="col-md-4 col-md-offset-4">
-            <div class="login-panel panel panel-default">
+            <div class="login-panel panel panel-default" >
                 <div class="panel-heading">
                     <h3 class="panel-title">Insera suas credenciais.</h3>
                 </div>

@@ -3,10 +3,9 @@
 namespace App\Console;
 
 use App\Console\Commands\MultarFacturas;
-use App\FacturaOperacoes;
+use App\Console\Commands\TimeForLeitura;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use App\Console\Commands\TimeForLeitura;
 
 class Kernel extends ConsoleKernel
 {
@@ -29,11 +28,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('leituras:do')->monthlyOn(20);
-        $facturas = FacturaOperacoes::all();
-        if(count($facturas)>0){
-            $last_day_factura = $facturas->first()->ultimo_dia;
-            $schedule->command('factura:multar')->monthlyOn($last_day_factura + 1);
-        }
+       /* $facturas = FacturaOperacoes::all();*/
+        /*if(count($facturas)>0){*/
+            /*$last_day_factura = $facturas->first()->ultimo_dia;*/
+            $schedule->command('factura:multar')->monthlyOn(11);
+        /*}*/
     }
 
     /**

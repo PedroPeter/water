@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use  Illuminate\Http\Request;
-use View;
-use Validator;
+use Illuminate\Http\Request;
 use Route;
+use Validator;
+use View;
 
 class UserController extends Controller
 {

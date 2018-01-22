@@ -2,11 +2,6 @@
 @extends('gerente.template')
 
 @section('content')
-    @section('script')
-    @parent
-
-    @stop
-
     <div class="container">
         <h1>Cadastro de Clientes</h1>
         <div class="row">
