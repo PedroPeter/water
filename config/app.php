@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'Aguas Guessane',
+    'name' => 'Aguas XYZ',
 
     /*
     |--------------------------------------------------------------------------
@@ -163,7 +163,6 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
-
         /*
          * Package Service Providers...
          */

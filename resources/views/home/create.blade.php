@@ -94,15 +94,6 @@
     </div>
 @stop
 @section('hMais')
-    <style>
-        #success_message {
-            display: none;
-        }
-
-        body {
-            color: #0f0f0f;
-        }
-    </style>
     <script src="{{asset('js/jquery.inputmask.bundle.min.js')}}"></script>
     <script>
         $(document).ready(function () {

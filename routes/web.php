@@ -41,11 +41,7 @@ Route::group(['namespace' => 'cliente/gestao'],function(){
     });
 
 });
-
-
-
-
-
+Route::resource('dashboard/user', 'UserController@store');
 
 
 // admin routs ->middlewares necessary
@@ -92,7 +88,7 @@ Route::group(['middleware' => 'auth',], function () {
         'as' => 'casa.linkar', 'uses' => 'CasaController@linkar'
     ]);
     Route::resource('dashboard/leitura', 'LeiturasController');
-    Route::resource('dashboard/user', 'UserController');
+    Route::resource('dashboard/user', 'UserController',['except' => 'store']);
     Route::resource('dashboard/fontenaria', 'FontenariaController');
     Route::resource('dashboard/factura', 'FacturaController');
     Route::resource('dashboard/contracto', 'ContractoController');

@@ -21,7 +21,7 @@ class OnlyAdmin
         $permissao = $user->cargo;
         if ($permissao == "Gerente") {
             Session::put("permissao", "Nao tem permissao para aceder a essa funcionalidade! Somente o administrador pode o fazer.");
-            return redirect()->route('dashboard');
+            return route('dashboard');
         }
         return $next($request);
     }
