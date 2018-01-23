@@ -9,7 +9,7 @@
         "laravel/framework": "5.3.*",
         "laravelcollective/html": "^5.3",
         "barryvdh/laravel-dompdf": "^0.7.1",
-        "fadion/maneuver": "2.1.*"
+        "ext-pdo_sqlite": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
