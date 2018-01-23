@@ -19,7 +19,7 @@
         <div class="col-md-4 col-md-offset-4 text-center logo-margin ">
             <img src="{{asset('img/user.jpg')}}" alt=""/>
         </div>
-        @if (count(Session::get('errors')) > 0)
+        @if (isset($errors))
             <div class="alert alert-danger">
                 <ul>
                     @foreach ($errors->all() as $error)
