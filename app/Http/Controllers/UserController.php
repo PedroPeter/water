@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Route;
 use Validator;
 use View;
@@ -90,20 +92,26 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), $this->rules(), $this->message());
-        if ($validator->fails()) {
-            return redirect()->back()->withInput()->withErrors($validator);
+        $user = User::find($id);
+        if (Hash::check($request->password, $user->password)) {
+            $validator = Validator::make($request->all(), $this->rules(), $this->message());
+            if ($validator->fails()) {
+                return redirect()->back()->withInput()->withErrors($validator);
+            } else {
+                $user->username = $request->username;
+                $user->celular1 = $request->celular1;
+                $user->celular2 = $request->celular2;
+                $user->email = $request->email;
+                $user->password = bcrypt($request->passwordN);
+                $user->save();
+                return redirect()->back()->with('message','Alteracao efectuada com sucesso');
+            }
         } else {
-            $user = \App\User::findOrFail($id);
-            $input = $request->all();
-            $user->nome = $input['nome'];
-            $user->apelido = $input['apelido'];
-            $user->celular1 = $input['celular1'];
-            $user->celular2 = $input['celular2'];
-            $user->email = $input['email'];
-            $user->save();
-            return redirect()->route('user.index');
+            $errors=array();
+            $errors[]='O passaword actual introduzido e incorrecto.';
+            return redirect()->back()->withInput()->with(json_encode($errors));
         }
+
     }
 
     /**
@@ -118,24 +126,29 @@ class UserController extends Controller
         return redirect()->route('user.index')->with('message', 'Usuario removido com sucesso');
     }
 
-    public function rules(){
-    return [
-        'nome' => 'required',
-        'apelido' => 'required',
-        'celular1' => 'required',
-        'celular2' => 'required',
-        'email' => 'required',
-    ];
+    public function rules()
+    {
+
+        return [
+            'username' => 'required',
+            'celular1' => 'required',
+            'celular2' => 'required',
+            'email' => 'required',
+            'passwordN' => 'required|between:6,20',
+            'passwordNR' => 'required|same:passwordN'
+        ];
 
     }
 
-    public function message(){
+    public function message()
+    {
         return [
-            'nome.required' => 'O nome é obrigatório. ',
-            'apelido.required' => 'O apelido é obrigatório. ',
+            'username.required' => 'O nome é obrigatório. ',
             'celular1.required' => 'O celular principal é obrigatório. ',
             'celular2.required' => 'O celular secundario é obrigatório. ',
             'email.required' => 'O email é obrigatório. ',
+            'passwordN.required' => 'O novo password deve conter pelo menos 7 caracteres.',
+            'passwordNR.required' => 'O password repetido nao coincidem',
         ];
     }
 }

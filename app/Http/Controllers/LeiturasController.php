@@ -4,9 +4,15 @@ namespace App\Http\Controllers;
 
 
 use App\Agua;
+use App\Casa;
+use App\Cliente;
 use App\Factura;
 use App\Leitura;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Str;
 use Validator;
 use View;
 
@@ -26,8 +32,8 @@ class LeiturasController extends Controller
         }
         $data = array();
         foreach ($leituras_clientes as $leitura_cliente) {
-            $casa=$leitura_cliente->casa;
-            if(!is_null($casa)){
+            $casa = $leitura_cliente->casa;
+            if (!is_null($casa)) {
                 $data[] = [
                     'casa_bairro' => $casa['bairro'],
                     'casa_rua' => $casa['rua_avenida'],
@@ -42,6 +48,7 @@ class LeiturasController extends Controller
         return View::make('gerente.leiturasIndex')->with('data', $data);
 
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -200,5 +207,45 @@ class LeiturasController extends Controller
         } else {
             return 0;
         }
+    }
+
+    /**
+     * Search for a specified resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public
+    function search()
+    {
+        $keywords = Input::get('keywords');
+        $clientes = Cliente::where('activo', 1)->get();
+        $search = array();
+        $faturas = array();
+        if (!is_null($clientes)) {
+            foreach ($clientes as $cliente) {
+                if (Str::contains(Str::lower($cliente->user->nome . $cliente->user->apelido), Str::lower($keywords))) {
+                    $casa_id = DB::table('casas')->where('cliente_id', $cliente->id)->value('id');
+                    $leituras_id = Leitura::where('casa_id', $casa_id)->pluck('id');
+                    foreach ($leituras_id as $id) {
+                        $l = Leitura::find($id);
+                        $casa = $l->casa;
+                        if (!is_null($casa)) {
+                            $search[] = [
+                                'casa_bairro' => $casa['bairro'],
+                                'casa_rua' => $casa['rua_avenida'],
+                                'casa_numero' => $casa['numero_casa'],
+                                'casa_descricao' => $casa['descricao'],
+                                'cliente_nome' => $casa->cliente->user['nome'],
+                                'id' => $l->id,
+                            ];
+                        }
+                    }
+                }
+            }
+            if (!is_null($search)) {
+                return view('gerente.leiturasResults')->with('search', $search);
+            }
+        }
+        return view('gerente.leiturasResults');
     }
 }

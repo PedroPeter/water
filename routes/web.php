@@ -13,10 +13,8 @@
 
 
 //no middlewares neccessary // Guest page
+
 Route::get('/', function () {
-    return view('home.index');
-});
-Route::get('/index', function () {
     return view('home.index');
 })->name('paginainicial');
 
@@ -30,23 +28,30 @@ Route::get('/user/resposta', function () {
 Route::get('/contracto', function () {
     return view('home.contracto');
 })->name('contracto');
+Route::get('/cliente/contracto', function () {
+    return view('user.contracto');
+})->name('cliente.contracto');
 Route::resource('sistema/login', 'LoginController');
 Route::post('sistema/login/check/', 'LoginController@check')->name('login.check');
 
-// user routs
-
-Route::group(['namespace' => 'cliente/gestao'],function(){
-    Route::get('cliente/gestao', function () {
-        return view('user.template');
-    });
-
-});
 Route::resource('dashboard/user', 'UserController@store');
 
 
 // admin routs ->middlewares necessary
 
 Route::group(['middleware' => 'auth',], function () {
+
+    // client routs
+    Route::get('cliente/gestao', function () {
+        return view('user.template');
+    })->name('cliente.dashboard');
+    Route::get('cliente/gestao/info/all', 'ClienteController@info')->name('cliente.info');
+
+
+
+
+
+    //admin routers
     Route::get('dashboard/cadastro', function () {
         return view('gerente.cadastro');
     });
@@ -58,7 +63,7 @@ Route::group(['middleware' => 'auth',], function () {
     })->name('cliente.dashboard');
 
     Route::get('login/out/true', function () {
-        Auth::logout(); return view('user.index');})->name('login.out');
+        Auth::logout(); return view('home.index');})->name('login.out');
 
     Route::get('dashboard/user', 'UserController@index')->name('user.index');
 
@@ -70,6 +75,10 @@ Route::group(['middleware' => 'auth',], function () {
     Route::post('dashboard/recibo/imprimir/{id}', 'FacturaController@recibo')->name('recibo.imprimir');
 
     Route::get('cliente/{user_id}', 'ClienteController@create')->name('create.cliente');
+    Route::get('cliente/gestao/editar', function(){
+        $user = Auth::user();
+        return View::make('user.userShow', compact('user'));
+    })->name('cliente.edit');
 
     Route::get('dashboard/admin/contratcto/upload', function () {
         return view('gerente.contracto');})->name('contracto.crt');
@@ -79,8 +88,11 @@ Route::group(['middleware' => 'auth',], function () {
     Route::get('leitura/{user_id}', 'LeiturasController@create')->name('leitura.create');
     Route::post('dashboard/contracto/upload', 'GerenteController@contracto')->name('contracto.up');
     Route::post('dashboard/clientes/pesquisar', 'ClienteController@search')->name('cliente.search');
+    Route::post('dashboard/clientes/pesquisar/clientes', 'ClienteController@search2')->name('cliente.search2');
+    Route::post('dashboard/leituras/pesquisar', 'LeiturasController@search')->name('leitura.search');
     Route::get('dashboard/leitura/pendente', 'LeiturasController@pendentes')->name('leituras.pendentes');
     Route::get('dashboard/factura/pendente', 'FacturaController@pendentes')->name('facturas.pendentes');
+    Route::get('cliente/factura/pendentes', 'FacturaController@cliente_pendentes')->name('cliente.facturas.pendentes');
     Route::get('dashboard/factura/emitidas', 'FacturaController@emetidas')->name('facturas.emetidas');
     Route::get('dashboard/admin/casa/link', 'CasaController@link')->name('casa.link');
     Route::get('dashboard/admin/fontenarias/detalhes', 'FontenariaController@links')->name('fontenaria.detalhes');
@@ -95,6 +107,7 @@ Route::group(['middleware' => 'auth',], function () {
     Route::resource('dashboard/cliente', 'ClienteController', ['only' => ['index', 'show', 'store']]);
     Route::get('dashboard/clientes/inactivos/', 'ClienteController@index2')->name('cliente.index2');
     Route::get('dashboard/clientes/situacao/', 'ClienteController@situacao')->name('clientes.situacao');
+    Route::get('cliente/gestao/situacao/', 'ClienteController@situacao_individual')->name('cliente.situacao');
     Route::resource('dashboard/admin/casa', 'CasaController');
 
     Route::group(['middleware' => 'onlyAdmin', 'prefix'=>'admin'], function () {

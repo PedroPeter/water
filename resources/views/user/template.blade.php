@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Area Administrativa - Aguas XYZ </title>
+    <title>Cliente das Aguas XYZ </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Core CSS - Include with every page -->
     {{ Html::style('plugins/bootstrap/bootstrap.css')}}
@@ -18,7 +18,6 @@
     {{ Html::script('scripts/siminta.js')}}
     @yield('hMais')
 </head>
-
 <body>
 <!--  wrapper -->
 <div id="wrapper">
@@ -83,82 +82,41 @@
                     <!--end user image section-->
                 </li>
                 <li class="">
-                    <a href="{{route('dashboard')}}"><i class="fa fa-dashboard fa-fw"></i>Administração</a>
+                    <a href="{{route('cliente.dashboard')}}"><i class="fa fa-dashboard fa-fw"></i>Gestão das suas
+                        Operações </a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-bitcoin fa-fw"></i>Recursos<span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <!--Preco da agua-->
-                        <li>
-                            <a href="{{route('agua.index')}}">Definir preço da Água</a>
-                        </li>
-                        <li>
-                            <a href="{{route('factura.operacoes')}}">Operações sobre as Facturas</a>
-                        </li>
-                        <li>
-                            <a href="{{route('contracto.crt')}}">Submeter contracto</a>
-                        </li>
-                    </ul>
-                    <!-- second-level-items -->
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-sun-o fa-fw"></i>Fontenária<span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a href="{{route('fontenaria.create')}}">Registar</a>
-                        </li>
-                        <li>
-                            <a href="{{route('fontenaria.index')}}">Mais operações</a>
-                        </li>
-
-                    </ul>
-                    <!-- second-level-items -->
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-wrench fa-fw"></i>Pedidos/Operações<span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-
-                        <li>
-                            <a href="{{route('user.index')}}">Novos clientes</a>
-                        </li>
-                        <li>
-                            <a href="{{route('casa.link')}}">Casas e pontos de distribuição</a>
-                        </li>
-                        <li>
-                            <a href="{{route('cliente.index')}}">Clientes</a>
-                        </li>
-                    </ul>
-                    <!-- second-level-items -->
-                </li>
-                <li>
-                    <a href="{{route('leitura.index')}}"><i class="fa fa-edit fa-fw"></i>Leituras</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-edit fa-fw"></i>Facturas<span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a href="{{route('factura.index')}}">Emitir</a>
-                        </li>
-                        <li>
-                            <a href="{{route('facturas.pendentes')}}">Facturas pendentes</a>
-                        </li>
-                        <li>
-                            <a href="{{route('search')}}">Pesquisar</a>
-                        </li>
-                    </ul>
-                    <!-- second-level-items -->
-                </li>
-                <li>
-                    <a href="{{route('clientes.situacao')}}"><i class="fa fa-warning fa-fw"></i>Situação dos
-                        clientes<span></span></a>
-                </li>
-                <li>
-                    <a href="{{route('estatisticas')}}"><i class="fa fa-bar-chart-o fa-fw"></i>Estatísticas
+                    <a href="{{route('cliente.info')}}"><i class="fa fa-edit fa-fw"></i>Informações
                         <span></span></a>
                     <!-- second-level-items -->
                 </li>
                 <li>
-                    <a href="{{route('gerente.create')}}"><i class="fa fa-edit fa-fw"></i>Gerir gerentes
+                    <a href="{{route('cliente.contracto')}}"><i class="fa fa-edit fa-fw"></i>Visualizar Contracto
+                        <span></span></a>
+                    <!-- second-level-items -->
+                </li>
+                <li>
+                    <a href="{{route('cliente.situacao')}}"><i class="fa fa-sun-o fa-fw"></i>Sua Situação<span ></span></a>
+
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-wrench fa-fw"></i>Pedidos/Notificacoes<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+
+                        <li>
+                            <a href="{{route('user.index')}}">Cencelar Contracto</a>
+                        </li>
+                        <li>
+                            <a href="{{route('casa.link')}}">Alterar Contracto</a>
+                        </li>
+                        <li>
+                            <a href="{{route('cliente.index')}}">Outros</a>
+                        </li>
+                    </ul>
+                    <!-- second-level-items -->
+                </li>
+                <li>
+                    <a href="{{route('cliente.edit')}}"><i class="fa fa-edit fa-fw"></i>Gestão da Conta
                         <span></span></a>
                     <!-- second-level-items -->
                 </li>
@@ -174,13 +132,12 @@
         <div class="row">
             <!-- Page Header -->
             <div class="col-lg-12">
-                <h1 class="page-header">Página Administrativa </h1>
+                <h1 class="page-header">Mantenha-se informado sobre suas Operações </h1>
             </div>
             <br><br>
             <br><br>
             <br><br>
             @yield('content')
-
                     <!--End Page Header -->
         </div>
 

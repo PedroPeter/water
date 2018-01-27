@@ -10,6 +10,7 @@ use App\Leitura;
 use App\Recibo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use PDF;
 use Validator;
 use View;
@@ -305,7 +306,8 @@ class FacturaController extends Controller
     public
     function pendentes()
     {
-        $facturas_data [] = $this->factura_geral(false);
+        $facturas_data = $this->factura_geral(false);
+        dump($facturas_data);
         if (!is_null($facturas_data)) {
             return View::make('gerente.facturasPendentes')->with('facturas_data', $facturas_data);
         } else {
@@ -314,9 +316,49 @@ class FacturaController extends Controller
     }
 
     public
+    function cliente_pendentes()
+    {
+        $user = Auth::user();
+        $cliente = $user->cliente;
+        $casa = $cliente->casa;
+        if (count($casa) > 0) {
+            $leituras = $casa->leituras;
+            if (count($leituras) > 0) {
+                foreach ($leituras as $leitura) {
+                    $factura = $leitura->factura;
+                    if (count($factura) > 0) {
+                        if (!$factura->paga) {
+                            $val_pagar = $factura->val_pagar;
+                            $facturas_data []= [
+                                'numero' => $factura->id,
+                                'l_anterior' => $factura->l_anterior,
+                                'l_actual' => $factura->l_actual,
+                                'metros_cubicos' => $factura->l_actual - $factura->l_anterior,
+                                'meses_atrasados' => $factura->num_multas,
+                                'val_multa' => $factura->val_multas,
+                                'val_pagar' => $val_pagar,
+                                'val_total' => $val_pagar + $factura->val_multas,
+                                'obs' => $factura->observacao,
+                            ];
+                        }
+                    }
+
+                }
+                if (!is_null($facturas_data)) {
+                    return View::make('user.facturasPendentes')->with('facturas_data', $facturas_data);
+                }
+            } else {
+                return View::make('user.facturasPendentes')->with('message', 'Ainda nao possui facturas processadas.');
+            }
+        } else {
+            return View::make('user.facturasPendentes')->with('message', 'Ainda nao possui facturas processadas.');
+        }
+    }
+
+    public
     function emetidas()
     {
-        $facturas_data[] = $this->factura_geral(true);
+        $facturas_data = $this->factura_geral(true);
         if (!is_null($facturas_data)) {
             return View::make('gerente.facturasEmitidas')->with('facturas_data', $facturas_data);
         } else {
@@ -332,7 +374,7 @@ class FacturaController extends Controller
             foreach ($facturas as $factura) {
                 $val_pagar = $factura->val_pagar;
                 if ($factura->num_multas > 0) {
-                    $facturas_data = [
+                    $facturas_data []= [
                         'numero' => $factura->id,
                         'l_anterior' => $factura->l_anterior,
                         'l_actual' => $factura->l_actual,
@@ -346,12 +388,15 @@ class FacturaController extends Controller
 
 
                 } else {
-                    $facturas_data = [
+                    $facturas_data [] = [
                         'numero' => $factura->id,
                         'l_anterior' => $factura->l_anterior,
                         'l_actual' => $factura->l_actual,
                         'metros_cubicos' => $factura->l_actual - $factura->l_anterior,
+                        'meses_atrasados' => $factura->num_multas,
+                        'val_multa' => $factura->val_multas,
                         'val_pagar' => $val_pagar,
+                        'val_total' => $val_pagar + $factura->val_multas,
                         'obs' => $factura->observacao,
                     ];
                 }

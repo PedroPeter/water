@@ -95,7 +95,7 @@
                             <div class="col-md-4 inputGroupContainer">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
-                                    <input name="username" id="celular2" placeholder="User name" class="form-control" type="text">
+                                    <input name="username" id="username" placeholder="Username" class="form-control" type="text">
                                 </div>
                             </div>
                         </div>

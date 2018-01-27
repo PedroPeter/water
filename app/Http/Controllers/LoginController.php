@@ -97,9 +97,12 @@ class LoginController extends Controller
         $password = $request->password;
         $validate = Validator::make($request->all(), $this->rules(), $this->message());
         if ($validate->fails()) {
-            Session::flash('errors',$validate->errors);
             return redirect()->back()->withErrors($validate);
         } elseif (Auth::attempt(['username' => $username, 'password' => $password])) {
+            $user=Auth::user();
+            if($user->cargo=='Cliente'){
+                return redirect()->route('cliente.dashboard');
+            }
             return redirect('dashboard');
         } else {
             return redirect()->back()->withInput()->exceptInput('password');

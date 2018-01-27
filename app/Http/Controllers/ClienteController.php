@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Agua;
 use App\Cliente;
 use App\Leitura;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Str;
@@ -14,12 +17,14 @@ use View;
 
 class ClienteController extends Controller
 {
+    private $CARGO = "Cliente";
+
+
     /**
      * Display a listing of active the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    private $CARGO = "Cliente";
 
     public function index()
     {
@@ -27,17 +32,57 @@ class ClienteController extends Controller
     }
 
     /**
+     * Display a listing of active the resources.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function info()
+    {
+        $agua = Agua::all()->first();
+        $user = Auth::user();
+        $faturas = array();
+        $leituras = $user->cliente->casa->leituras;
+        $casa = $user->cliente->casa;
+        $casa = [
+            "nome" => $casa->cliente->user->nome,
+            "apelido" => $casa->cliente->user->apelido,
+            "celular1" => $casa->cliente->user->celular1,
+            "celular2" => $casa->cliente->user->celular2,
+            "num_casa" => $casa->numero_casa,
+            "bairro" => $casa->bairro,
+            "rua_avenida" => $casa->rua_avenida,
+            "fontenaria_nome" => $casa->fontenarias()->get()->first()->nome,
+            "fontenaria_bairro" => $casa->fontenarias()->get()->first()->bairro,
+            "fontenaria_avenida" => $casa->fontenarias()->get()->first()->rua_avenida,
+            "fontenaria_descricao" => $casa->fontenarias()->get()->first()->descricao
+        ];
+        if (count($leituras) > 0) {
+            foreach ($leituras as $leitura) {
+                if (count($leitura->factura) > 0) {
+                    $faturas[] = $leitura->factura;
+                }
+            }
+            $faturas = new LengthAwarePaginator($faturas, count($faturas), 5);
+            return View::make('user.info')->with('agua', $agua)->with('faturas', $faturas)->with('casa', $casa);
+        }
+        return View::make('user.info')->with('message', 'Ainda nao possui facturas processadas.');
+    }
+
+    /**
      * Display a listing of active the resource.
      *
      * @return \Illuminate\Http\Response
      */
 
-    public function index2()
+    public
+    function index2()
     {
         return $this->indexGeral(false, 'Nenhum Cliente cancelou contracto.');
     }
 
-    public function indexGeral($bol, $message)
+    public
+    function indexGeral($bol, $message)
     {
         $clientes = Cliente::where('activo', $bol)->get();
         if (count((array)$clientes) > 0) {
@@ -47,12 +92,13 @@ class ClienteController extends Controller
     }
 
     /**
-     * Display a listing of active the resource situation.
+     * Display a listing of active associated resource situation.
      *
      * @return \Illuminate\Http\Response
      */
 
-    public function situacao()
+    public
+    function situacao()
     {
         $clientes = Cliente::where('activo', true)->get();
         $data = array();
@@ -99,6 +145,56 @@ class ClienteController extends Controller
         }
     }
 
+    /**
+     * Display a listing of active associated resource situation.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public
+    function situacao_individual()
+    {
+        $user = Auth::user();
+        $cliente = $user->cliente;
+        $casa = $cliente->casa;
+        if (count($casa)>0) {
+            $leituras = $casa->leituras;
+            $pagas = 0;
+            $n_pagas = 0;
+            $multa_acomulada = 0;
+            if (count($leituras) > 0) {
+                foreach ($leituras as $leitura) {
+                    $factura = $leitura->factura;
+                    if (count($factura)>0) {
+                        if ($factura->paga) {
+                            $pagas++;
+                        } else {
+                            $n_pagas++;
+                            $multa_acomulada += $leitura->factura->val_multas;
+                        }
+                    }
+                }
+                $data['id'] = $cliente->id;
+                $data['nome'] = $cliente->user->nome;
+                $data['apelido'] = $cliente->user->apelido;
+                $data['celular1'] = $cliente->user->celular1;
+                $data['celular2'] = $cliente->user->celular2;
+                $data['email'] = $cliente->user->email;
+                $data['facturas_pagas'] = $pagas;
+                $data['facturas_nao_pagas'] = $n_pagas;
+                $data['multa_acumulada'] = $multa_acomulada;
+                return View::make('user.clienteSituacao')->with('data', $data);
+            } else {
+                return View::make('user.clienteSituacao')->with('message', 'Ainda nao possui Faturas Processadas.');
+            }
+        }else{
+            return View::make('user.clienteSituacao')->with('message', 'Ainda nao possui Faturas Processadas.');
+
+        }
+
+
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -132,13 +228,13 @@ class ClienteController extends Controller
             $fileNameContracto = $this->saveFile($destinationPath, $pathContracto); // renameing image
             $user = \App\User::findOrFail($input['id']);
             $user->cargo = $this->CARGO;
+            $user->username = Str::lower($user->nome);
+            $user->password = bcrypt(Str::lower($user->nome . $user->nome));
             $user->cliente()->create([
                 'dataNascimento' => $input['dataNascimento'],
                 'contracto' => $fileNameContracto,
                 'doc' => $fileNameDoc,
             ]);
-            /*$user->username=$user->nome.$user->apelido;
-            $user->password=bcrypt($user->apelido.$user->nome);*/
             $user->save();
             return View::make('gerente.clientecasa')->with('id', $user->cliente->id);
         }
@@ -154,7 +250,7 @@ class ClienteController extends Controller
     function show($id)
     {
         $user = User::findOrFail($id);
-        return View::make('gerente.clienteShow', compact('user'));
+        return View::make('user.userShow', compact('user'));
     }
 
     /**
@@ -185,7 +281,7 @@ class ClienteController extends Controller
             return redirect()->back()->withInput()->withErrors($validator);
         } else {
             $input = $request->all();
-            $user = \App\User::find($input['id']);
+            $user = Auth::user();
             $user->cliente()->create([$input
             ]);
         }
@@ -222,6 +318,7 @@ class ClienteController extends Controller
         return [
             'doc.required' => 'requiered',
             'contracto.required' => 'requiered',
+
         ];
     }
 
@@ -239,7 +336,8 @@ class ClienteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function search()
+    public
+    function search()
     {
         $keywords = Input::get('keywords');
         $clientes = Cliente::where('activo', 1)->get();
@@ -247,30 +345,62 @@ class ClienteController extends Controller
         $faturas = array();
         if (!is_null($clientes)) {
             foreach ($clientes as $cliente) {
-                if (Str::contains(Str::lower($cliente->user->nome.$cliente->user->apelido), Str::lower($keywords))) {
-                    $casa_id= DB::table('casas')->where('cliente_id', $cliente->id)->value('id');
-                    $leituras_id=Leitura::where('casa_id', $casa_id)->pluck('id');
-                    foreach($leituras_id as $id){
-                        $l=Leitura::find($id);
-                        $f=$l->factura;
-                        if(!is_null($f)){
-                            $faturas[]=$l->factura;
+                if (Str::contains(Str::lower($cliente->user->nome . $cliente->user->apelido), Str::lower($keywords))) {
+                    $casa_id = DB::table('casas')->where('cliente_id', $cliente->id)->value('id');
+                    $leituras_id = Leitura::where('casa_id', $casa_id)->pluck('id');
+                    foreach ($leituras_id as $id) {
+                        $l = Leitura::find($id);
+                        $f = $l->factura;
+                        if (!is_null($f)) {
+                            $faturas[] = $l->factura;
                         }
                     }
-                    if(!is_null($faturas)){
+                    if (!is_null($faturas)) {
                         $search [] = [
                             'nome' => $cliente->user->nome,
                             'apelido' => $cliente->user->apelido,
-                            'faturas' =>$faturas
+                            'faturas' => $faturas
                         ];
                     }
 
                 }
             }
             if (!is_null($search)) {
-                return view('gerente.searchResults')->with('search',$search);
+                return view('gerente.searchResults')->with('search', $search);
             }
         }
         return view('gerente.searchResults');
+    }
+
+    /**
+     * Search for a specified resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public
+    function search2()
+    {
+        $keywords = Input::get('keywords');
+        $clientes = Cliente::where('activo', 1)->get();
+        $search = array();
+        $faturas = array();
+        if (!is_null($clientes)) {
+            foreach ($clientes as $cliente) {
+                if (Str::contains(Str::lower($cliente->user->nome . $cliente->user->apelido), Str::lower($keywords))) {
+                    $search [] = [
+                        'id' => $cliente->id,
+                        'nome' => $cliente->user->nome,
+                        'apelido' => $cliente->user->apelido,
+                        'celular1' => $cliente->user->celular1,
+                        'celular2' => $cliente->user->celular2,
+                        'email' => $cliente->user->email,
+                    ];
+                }
+            }
+            if (!is_null($search)) {
+                return view('gerente.clienteResults')->with('search', $search);
+            }
+        }
+        return view('gerente.clienteResults');
     }
 }

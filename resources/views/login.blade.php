@@ -15,11 +15,8 @@
 
 <div class="container">
 
-    <div class="row" style="margin-top: 15%;">
-        <div class="col-md-4 col-md-offset-4 text-center logo-margin ">
-            <img src="{{asset('img/user.jpg')}}" alt=""/>
-        </div>
-        @if (isset($errors))
+    <div style="padding-top: 20px">
+        @if (count($errors)>0)
             <div class="alert alert-danger">
                 <ul>
                     @foreach ($errors->all() as $error)
@@ -28,15 +25,22 @@
                 </ul>
             </div>
         @endif
-
         @if(isset($message))
             <div class="alert-info" style="font-size: 72px; text-align: center;">
                 {{$message}}
             </div>
         @endif
+    </div>
+
+    <div class="row" style="margin-top: 15%;">
+
+
+        <div class="col-md-4 col-md-offset-4 text-center logo-margin ">
+            <img src="{{asset('img/user.jpg')}}" alt=""/>
+        </div>
 
         <div class="col-md-4 col-md-offset-4">
-            <div class="login-panel panel panel-default" >
+            <div class="login-panel panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Insera suas credenciais.</h3>
                 </div>

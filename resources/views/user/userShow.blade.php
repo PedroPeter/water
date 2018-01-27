@@ -1,9 +1,9 @@
-@extends('gerente.template')
+@extends('user.template')
 
 @section('content')
 
     <div class="container">
-        <legend>Actualizacao dos dados do Cliente <br>
+        <legend>Actualizacao dos dados <br>
             @if (count($errors) > 0)
                 <div class="alert alert-danger">
                     <ul>
@@ -17,11 +17,9 @@
                 <div class="alert alert-info">
                     <h4>{{$message}}</h4>
                 </div>
-                @endi
+            @endif
         </legend>
         {{ Form::open(array('method' => 'PUT','class'=>'well form-horizontal','route' => array('user.update', $user->id)))}}
-
-        <!-- Text input-->
         <!-- Text input-->
         <div class="form-group">
             <label class="control-label">E-Mail</label>
@@ -120,6 +118,7 @@
                 </button>
             </div>
         </div>
+
 
         {!! Form::close() !!}
         <script src="{{asset('js/jquery.inputmask.bundle.min.js')}}"></script>
