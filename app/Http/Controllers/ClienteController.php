@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Str;
 use Validator;
-use View;
+use View;use Illuminate\Support\Facades\Log;
+
 
 class ClienteController extends Controller
 {
@@ -100,6 +101,7 @@ class ClienteController extends Controller
     public
     function situacao()
     {
+        Log::info('Visualizacao da situacao dos clientes efectuado por'.Auth::user()->nome);
         $clientes = Cliente::where('activo', true)->get();
         $data = array();
         if (count((array)$clientes) > 0) {
@@ -236,6 +238,7 @@ class ClienteController extends Controller
                 'doc' => $fileNameDoc,
             ]);
             $user->save();
+            Log::info('Cadastro de um novo Cliente efectuado com sucesso por '.Auth::user()->nome);
             return View::make('gerente.clientecasa')->with('id', $user->cliente->id);
         }
     }
@@ -299,6 +302,7 @@ class ClienteController extends Controller
         $c = Cliente::find($id);
         $c->activo = false;
         $c->save();
+        Log::info('Remocao de cliente efectuado com sucesso por'.Auth::user()->nome);
         return redirect('cliente.index');
     }
 
@@ -332,7 +336,7 @@ class ClienteController extends Controller
     }
 
     /**
-     * Search for a specified resource.
+     * Search for a user and invoice data.
      *
      * @return \Illuminate\Http\Response
      */
@@ -373,7 +377,7 @@ class ClienteController extends Controller
     }
 
     /**
-     * Search for a specified resource.
+     * Search for a user resource.
      *
      * @return \Illuminate\Http\Response
      */
@@ -383,7 +387,6 @@ class ClienteController extends Controller
         $keywords = Input::get('keywords');
         $clientes = Cliente::where('activo', 1)->get();
         $search = array();
-        $faturas = array();
         if (!is_null($clientes)) {
             foreach ($clientes as $cliente) {
                 if (Str::contains(Str::lower($cliente->user->nome . $cliente->user->apelido), Str::lower($keywords))) {
@@ -402,5 +405,43 @@ class ClienteController extends Controller
             }
         }
         return view('gerente.clienteResults');
+    }
+
+    /**
+     * Search for a invoice based on his number.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public
+    function search3()
+    {
+        $keywords = Input::get('keywords');
+        $cliente = Auth::user()->cliente;
+        $leituras = $cliente->casa->leituras;
+            foreach ($leituras as $leitura) {
+                if ($leitura->factura->id==$keywords) {
+                    return view('user.invoiceSearchByNumberResults')->with('factura', $leitura->factura);
+                }
+            }
+        return view('user.invoiceSearchByNumberResults');
+    }/**
+     * Search for a invoice based on the date.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public
+    function search4()
+    {
+        $keywords = Input::get('keywords');
+        $cliente = Auth::user()->cliente;
+        $leituras = $cliente->casa->leituras;
+        foreach ($leituras as $leitura) {
+                if (Str::contains($leitura->factura->created_at,$keywords)) {
+                    return view('user.invoiceSearchByNumberResults')->with('factura', $leitura->factura);
+                }
+            }
+        return view('user.invoiceSearchByNumberResults');
     }
 }

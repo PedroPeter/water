@@ -94,7 +94,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         if (Hash::check($request->password, $user->password)) {
-            $validator = Validator::make($request->all(), $this->rules(), $this->message());
+            $validator = Validator::make($request->all(), $this->rules2(), $this->message2());
             if ($validator->fails()) {
                 return redirect()->back()->withInput()->withErrors($validator);
             } else {
@@ -126,7 +126,7 @@ class UserController extends Controller
         return redirect()->route('user.index')->with('message', 'Usuario removido com sucesso');
     }
 
-    public function rules()
+    public function rules2()
     {
 
         return [
@@ -140,15 +140,39 @@ class UserController extends Controller
 
     }
 
-    public function message()
+    public function message2()
     {
         return [
-            'username.required' => 'O nome é obrigatório. ',
+            'username.required' => 'O username é obrigatório. ',
             'celular1.required' => 'O celular principal é obrigatório. ',
             'celular2.required' => 'O celular secundario é obrigatório. ',
             'email.required' => 'O email é obrigatório. ',
             'passwordN.required' => 'O novo password deve conter pelo menos 7 caracteres.',
             'passwordNR.required' => 'O password repetido nao coincidem',
+        ];
+    } public function rules()
+    {
+
+        return [
+            'nome' => 'required',
+            'apelido' => 'required',
+            'celular1' => 'required',
+            'celular2' => 'required',
+            'email' => 'required',
+
+        ];
+
+    }
+
+    public function message()
+    {
+        return [
+            'nome.required' => 'O nome é obrigatório. ',
+            'apelido.required' => 'O apelido é obrigatório. ',
+            'celular1.required' => 'O celular principal é obrigatório. ',
+            'celular2.required' => 'O celular secundario é obrigatório. ',
+            'email.required' => 'O email é obrigatório. ',
+
         ];
     }
 }

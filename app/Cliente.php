@@ -17,5 +17,9 @@ class Cliente extends Model
     {
         return $this->hasOne('App\Casa');
     }
+    public function mensagem()
+    {
+        return $this->hasMany('App\Casa');
+    }
 
 }

@@ -48,7 +48,7 @@
                             <div class="col-md-4 inputGroupContainer">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                                    <textarea name="observacao" class="form-control" ></textarea>
+                                    <textarea value="Nenhuma observação feita." name="observacao"  class="form-control" ></textarea>
                                 </div>
                             </div>
                         </div>

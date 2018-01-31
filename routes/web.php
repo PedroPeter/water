@@ -34,7 +34,7 @@ Route::get('/cliente/contracto', function () {
 Route::resource('sistema/login', 'LoginController');
 Route::post('sistema/login/check/', 'LoginController@check')->name('login.check');
 
-Route::resource('dashboard/user', 'UserController@store');
+Route::post('cliente/cadastrar', 'UserController@store')->name('user.store');
 
 
 // admin routs ->middlewares necessary
@@ -52,9 +52,6 @@ Route::group(['middleware' => 'auth',], function () {
 
 
     //admin routers
-    Route::get('dashboard/cadastro', function () {
-        return view('gerente.cadastro');
-    });
 
     Route::get('dashboard', function () {
         return view('gerente.template');})->name('dashboard');
@@ -79,15 +76,19 @@ Route::group(['middleware' => 'auth',], function () {
         $user = Auth::user();
         return View::make('user.userShow', compact('user'));
     })->name('cliente.edit');
+    Route::get('/cliente/gestao/pesquisar', function () {
+        return view('user.pesquisar');})->name('cliente.pesquisar');
 
     Route::get('dashboard/admin/contratcto/upload', function () {
         return view('gerente.contracto');})->name('contracto.crt');
     Route::get('dashboard/clientes/pesquisar', function () {
         return view('gerente.pesquisar');})->name('search');
 
-    Route::get('leitura/{user_id}', 'LeiturasController@create')->name('leitura.create');
+   /* Route::get('leitura/{user_id}', 'LeiturasController@create')->name('leitura.create');*/
     Route::post('dashboard/contracto/upload', 'GerenteController@contracto')->name('contracto.up');
     Route::post('dashboard/clientes/pesquisar', 'ClienteController@search')->name('cliente.search');
+    Route::post('cliente/pesquisar/resultados/factura', 'ClienteController@search3')->name('cliente.pesquisar.numerofactura');
+    Route::post('cliente/pesquisar/resultados/data', 'ClienteController@search4')->name('cliente.pesquisar.data');
     Route::post('dashboard/clientes/pesquisar/clientes', 'ClienteController@search2')->name('cliente.search2');
     Route::post('dashboard/leituras/pesquisar', 'LeiturasController@search')->name('leitura.search');
     Route::get('dashboard/leitura/pendente', 'LeiturasController@pendentes')->name('leituras.pendentes');
@@ -101,7 +102,7 @@ Route::group(['middleware' => 'auth',], function () {
     ]);
     Route::resource('dashboard/leitura', 'LeiturasController');
     Route::resource('dashboard/user', 'UserController',['except' => 'store']);
-    Route::resource('dashboard/fontenaria', 'FontenariaController');
+    Route::resource('dashboard/fontenaria', 'FontenariaController',['except' => 'update']);
     Route::resource('dashboard/factura', 'FacturaController');
     Route::resource('dashboard/contracto', 'ContractoController');
     Route::resource('dashboard/cliente', 'ClienteController', ['only' => ['index', 'show', 'store']]);
@@ -109,8 +110,14 @@ Route::group(['middleware' => 'auth',], function () {
     Route::get('dashboard/clientes/situacao/', 'ClienteController@situacao')->name('clientes.situacao');
     Route::get('cliente/gestao/situacao/', 'ClienteController@situacao_individual')->name('cliente.situacao');
     Route::resource('dashboard/admin/casa', 'CasaController');
+    Route::resource('dashboard/admin/mensagens', 'MensagemController');
 
     Route::group(['middleware' => 'onlyAdmin', 'prefix'=>'admin'], function () {
+        Route::get('dashboard/cadastro', function () {
+            return view('gerente.cadastro');
+        });
+
+        Route::resource('dashboard/fontenaria', 'FontenariaController',['only' => 'update']);
         Route::resource('dashboard/gerente', 'GerenteController');
         Route::get('dashboard/admin/estatisticas', 'AdminController@estatisticas')->name('estatisticas');
         Route::resource('dashboard/admin', 'AdminController');

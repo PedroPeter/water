@@ -39,6 +39,10 @@
                     <td> {{$factura}} </td>
                     <td colspan="3">de que passamos o presente recibo.</td>
                 </tr>
+            <tr>
+                    <td>Observacoes feitas:</td>
+                    <td colspan="4"> {{$obs}} </td>
+                </tr>
                 <tr >
                     <td colspan="4">(Assinatura e Carimbo) <br> <br> <hr width="400" align="left"></td>
                     <td>Data: {{$data}}</td>

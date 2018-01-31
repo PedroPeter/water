@@ -73,9 +73,9 @@
         <div class="slideshow">
             <ul class="slideshow">
                 <li class="show i"><img width="680" height="250" src="{{asset('images/home_1.jpg')}}"
-                                        alt="&quot;O melhor da agua para ti&quot;"/></li>
+                                        alt="O melhor da agua para si."/></li>
                 <li><img width="680" height="250" src="{{asset('images/home_2.jpg')}}"
-                         alt="&quot;Preocupamo-nos em lhe trazer a melhor água e melhores serviços. ;"/></li>
+                         alt="Preocupamo-nos em lhe trazer a melhor água e melhores serviços."/></li>
             </ul>
         </div>
         @yield('content')

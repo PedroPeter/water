@@ -28,11 +28,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('leituras:do')->monthlyOn(20);
-       /* $facturas = FacturaOperacoes::all();*/
-        /*if(count($facturas)>0){*/
-            /*$last_day_factura = $facturas->first()->ultimo_dia;*/
-            $schedule->command('factura:multar')->monthlyOn(11);
-        /*}*/
+        $schedule->command('factura:multar')->monthlyOn(11);
     }
 
     /**

@@ -57,7 +57,36 @@
                                     {!! Form::close() !!}
                                     <br>
                                     {!! Form::open(array('route'=>['recibo.imprimir',$factura['numero']], 'method'=>'POST'))!!}
-                                    <button class="btn btn-success" type="submit">Pagar</button>
+                                    <div class="dropdown">
+                                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Pagar
+                                            <span class="caret"></span></button>
+                                        <ul class="dropdown-menu">
+                                            <li><button class="btn btn-secondary" type="submit">Valor completo </button></li>
+                                            <li>
+                                                <button type="button" class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#myModal">Valor Parcial</button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- Modal -->
+                                    <div id="myModal" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Introduza o valor parcial</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <input type="number" name="valor_parcial">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button class="btn btn-secondary" type="submit">Submeter</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
                                     {!! Form::close() !!}
 
                                 </td>

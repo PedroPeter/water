@@ -8,6 +8,7 @@ use App\Factura;
 use App\Produtos;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
@@ -43,6 +44,7 @@ class AdminController extends Controller
     {
         $validator = \Validator::make($request->all(), $this->rules(), $this->message());
         if ($validator->fails()) {
+            Log::error("Administrador tentando criar mais um administrador");
             return redirect()->back()->withInput()->withErrors($validator);
         }
         $input = $request->all();
@@ -50,6 +52,7 @@ class AdminController extends Controller
         $user = new User($input);
         $user->cargo = $this->CARGO;
         $user->save();
+        Log::info('Administrador criou mais um novo administrador');
         return redirect()->route('gerente.create');
     }
 
@@ -116,6 +119,7 @@ class AdminController extends Controller
             'val_total' => Factura::where('paga', true)->sum('val_pagar'),
             'val_pendente' => Factura::where('paga', false)->sum('val_pagar'),
         ];
+        Log::info('Administrador visualizando as estatisticas.');
         return view('gerente.estatisticas')->with('data', $data);
     }
 

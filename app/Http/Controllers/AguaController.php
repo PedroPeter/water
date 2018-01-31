@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Agua;
 use Illuminate\Http\Request;
-use Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use View;
+use Illuminate\Support\Facades\Log;
+
 
 class AguaController extends Controller
 {
@@ -16,6 +19,7 @@ class AguaController extends Controller
      */
     public function index()
     {
+        Log::info("Visuazando o preco da Agua");
         $agua= Agua::all()->first();
         if(count((array)$agua)>0){
             return View::make('gerente.precoAguaIndex')->with('agua',$agua);
@@ -53,9 +57,11 @@ class AguaController extends Controller
         ];
         $validate=Validator::make($request->all(),$rules,$message);
         if($validate->fails()){
+            Log::error('Tentava de definir o preco da Agua.');
             return redirect()->back()->withInput()->withErrors($validate);
         }else{
-            \App\Agua::create($request->all());
+            Agua::create($request->all());
+            Log::info('Definicao do preco da agua efectuada com sucesso');
             return $this->index();
         }
     }
@@ -80,6 +86,7 @@ class AguaController extends Controller
     public function edit($id)
     {
         $agua=Agua::find($id);
+        Log::info('Mostrando formulario para alterao do preco da agua.');
         return View::make('gerente.precoAguaEdit')->with('agua',$agua);
     }
 
@@ -102,6 +109,7 @@ class AguaController extends Controller
         ];
         $validate=Validator::make($request->all(),$rules,$message);
         if($validate->fails()){
+            Log::error('Tentativa de alteracao do preco da agua.');
             return redirect()->back()->withInput()->withErrors($validate);
         }else{
             $input=$request->all();
@@ -109,6 +117,7 @@ class AguaController extends Controller
             $agua->metros_cubicos_minimos=$input['metros_cubicos_minimos'];
             $agua->preco_unitario=$input['preco_unitario'];
             $agua->save();
+            Log::info('Alteracao do preco da agua efectuada com sucesso');
             return $this->index();
         }
     }

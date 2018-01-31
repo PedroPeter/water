@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Str;
 use Validator;
-use View;
+use View;use Illuminate\Support\Facades\Log;
+
 
 class LeiturasController extends Controller
 {
@@ -77,6 +78,9 @@ class LeiturasController extends Controller
             $leitura->consumo = $input['consumo'];
             $factura = new Factura();
             $factura->l_actual = $input['consumo'];
+            if(!is_null($input['observacao'])){
+                $factura->observacao = $input['observacao'];
+            }
             $factura->l_anterior = $this->leitura_anterior($leitura->casa->id);
             if (is_null($factura->l_anterior)) {
                 return redirect()->back()->with('message', 'Ocorreu um erro durante a gravacao da leitua, o cliente ainda tem leituras pendentes!');
@@ -90,12 +94,19 @@ class LeiturasController extends Controller
             } else {
                 $val_pagar = ($factura->l_actual - $factura->l_anterior) * $p_unit;
             }
-            $factura->val_pagar = $val_pagar;
+            if(is_null($this->factura_anterior($leitura->casa->id))){
+                $factura->val_pagar = $val_pagar;
+            }else{
+                $pendente=factura_anterior($leitura->casa->id)->val_pendente;
+                $factura->val_pagar = $val_pagar + $pendente;
+                $factura->observacao = "O valor actual foi incrementado ".$pendente." meticais pendente da fatura anterior.";
+            }
             $leitura->save();
             $factura->leitura()->associate($leitura);
             $factura->save();
             $factura->metros_cubicos = $metros_cubicos;
             $factura->preco_unitario = $p_unit;
+            Log::info('Leitura efectuado com sucesso por '.Auth::user()->nome);
             return view('gerente.facturaEspecifica')->with('factura', $factura);
         }
         return redirect()->back()->with('message', 'Ocorreu um erro durante a gravacao da leitua!');
@@ -204,6 +215,20 @@ class LeiturasController extends Controller
             $leituras->pop();
             $ultima_leitura = $leituras->last();
             return $ultima_leitura->consumo;
+        } else {
+            return null;
+        }
+    }
+    public
+    function factura_anterior($casa_id)
+    {
+        $casa = Casa::find($casa_id);
+        $leituras = $casa->leituras;
+        if (count($leituras) > 1) {
+            $leituras->pop();
+            $ultima_leitura = $leituras->last();
+            $ultima_factura = $ultima_leitura->factura;
+            return $ultima_factura;
         } else {
             return 0;
         }

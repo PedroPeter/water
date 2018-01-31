@@ -110,7 +110,6 @@
                         <li>
                             <a href="{{route('fontenaria.index')}}">Mais operações</a>
                         </li>
-
                     </ul>
                     <!-- second-level-items -->
                 </li>

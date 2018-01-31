@@ -7,7 +7,8 @@ use App\User;
 use DB;
 use Illuminate\Http\Request;
 use Validator;
-use View;
+use View;use Illuminate\Support\Facades\Log;
+
 
 class GerenteController extends Controller
 {
@@ -51,6 +52,7 @@ class GerenteController extends Controller
             $user = new User($input);
             $user->cargo = $this->CARGO;
             $user->save();
+            Log::info('Novo gerente cadastrado. Operacao efectuada por'. Auth::user()->nome);
             return redirect()->route('gerente.create');
         }
     }

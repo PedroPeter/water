@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Casa;
 use App\Fontenaria;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use View;
+use Illuminate\Support\Facades\Log;
+
 
 class CasaController extends Controller
 {
@@ -46,6 +49,7 @@ class CasaController extends Controller
             $cliente = \App\Cliente::findOrFail($input['id']);
             $cliente->casa()->create($input);
             $cliente->save();
+            Log::info('Cadastro da casa do Cliente efectuado com sucesso por '.Auth::user()->nome);
             return redirect()->route('casa.link');
         }
     }
@@ -154,6 +158,7 @@ class CasaController extends Controller
     {
         $casa = Casa::find($id1);
         $casa->fontenarias()->attach($id2);
+        Log::info('Associacao da casa do Cliente e ponto de Distribuicao efectuado com sucesso por '.Auth::user()->nome);
         return redirect()->back();
     }
 }

@@ -86,34 +86,33 @@
                         Operações </a>
                 </li>
                 <li>
-                    <a href="{{route('cliente.info')}}"><i class="fa fa-edit fa-fw"></i>Informações
+                    <a href="{{route('cliente.info')}}"><i class="fa fa-info fa-fw"></i>Informações
                         <span></span></a>
                     <!-- second-level-items -->
                 </li>
                 <li>
-                    <a href="{{route('cliente.contracto')}}"><i class="fa fa-edit fa-fw"></i>Visualizar Contracto
+                    <a href="{{route('cliente.contracto')}}"><i class="fa fa-archive fa-fw"></i>Visualizar Contracto
                         <span></span></a>
                     <!-- second-level-items -->
                 </li>
                 <li>
-                    <a href="{{route('cliente.situacao')}}"><i class="fa fa-sun-o fa-fw"></i>Sua Situação<span ></span></a>
+                    <a href="{{route('cliente.pesquisar')}}"><i class="fa fa-search fa-fw"></i>Pesquisar<span ></span></a>
 
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-wrench fa-fw"></i>Pedidos/Notificacoes<span class="fa arrow"></span></a>
+                    <a href="{{route('cliente.situacao')}}"><i class="fa fa-info fa-fw"></i>Sua Situação<span ></span></a>
+
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-phone fa-fw"></i>Contacte os fornecedores<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-
                         <li>
-                            <a href="{{route('user.index')}}">Cencelar Contracto</a>
+                            <a href="#">Enviar mensagem</a>
                         </li>
                         <li>
-                            <a href="{{route('casa.link')}}">Alterar Contracto</a>
-                        </li>
-                        <li>
-                            <a href="{{route('cliente.index')}}">Outros</a>
+                            <a href="#">Mais</a>
                         </li>
                     </ul>
-                    <!-- second-level-items -->
                 </li>
                 <li>
                     <a href="{{route('cliente.edit')}}"><i class="fa fa-edit fa-fw"></i>Gestão da Conta

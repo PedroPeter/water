@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Fontenaria;
 use Illuminate\Http\Request;
 use Validator;
-use View;
+use View;use Illuminate\Support\Facades\Log;
+
 
 class FontenariaController extends Controller
 {
@@ -55,6 +56,7 @@ class FontenariaController extends Controller
             $input = $request->all();
             $fontenaria = new Fontenaria();
             $fontenaria->create($input);
+            Log::info("Cadastro duma fontenaria efectuado com sucesso.Operacao efectuada por ".Auth::user()->nome);
             return redirect()->route('fontenaria.index');
         }
     }
@@ -104,6 +106,7 @@ class FontenariaController extends Controller
             $fontenaria->max_clientes = $input['max_clientes'];
             $fontenaria->descricao = $input['descricao'];
             $fontenaria->save();
+            Log::info("Alteracao dos dados duma fontenaria efectuado com sucesso.Operacao efectuada por ".Auth::user()->nome);
             return redirect()->route('fontenaria.index');
         }
     }

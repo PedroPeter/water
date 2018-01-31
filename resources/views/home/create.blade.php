@@ -20,10 +20,10 @@
         </h3>
         <br>
         <legend>Cadastro do Cliente</legend>
+        <br>
         <!-- Text input-->
         <div class="form-group">
-            <label class="col-md-8 control-label">Nome</label>
-
+            <label class="col-md-2 control-label">Nome</label>
             <div class="col-md-8 inputGroupContainer">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
@@ -33,7 +33,7 @@
         </div>
         <!-- Text input-->
         <div class="form-group">
-            <label class="col-md-8 control-label">Apelido</label>
+            <label class="col-md-2 control-label">Apelido</label>
 
             <div class="col-md-8 inputGroupContainer">
                 <div class="input-group">
@@ -45,7 +45,7 @@
 
         <!-- Text input-->
         <div class="form-group">
-            <label class="col-md-8 control-label">E-Mail</label>
+            <label class="col-md-2 control-label">E-Mail</label>
 
             <div class="col-md-8 inputGroupContainer">
                 <div class="input-group">
@@ -59,7 +59,7 @@
         <!-- Text input-->
 
         <div class="form-group">
-            <label class="col-md-8 control-label">Celular Principal</label>
+            <label class="col-md-2 control-label">Celular Principal</label>
 
             <div class="col-md-8 inputGroupContainer">
                 <div class="input-group">
@@ -71,8 +71,7 @@
         <!-- Text input-->
 
         <div class="form-group">
-            <label class="col-md-8 control-label">Celular secundario</label>
-
+            <label class="col-md-2 control-label">Celular secundario</label>
             <div class="col-md-8 inputGroupContainer">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
@@ -82,7 +81,7 @@
         </div>
 
         <div class="form-group">
-            <label class="col-md-8 control-label"></label>
+            <label class="col-md-2 control-label"></label>
 
             <div class="col-md-8">
                 <button type="submit" class="btn btn-warning">Cadastrar-se <span

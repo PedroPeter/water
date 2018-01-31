@@ -14,10 +14,11 @@ use Illuminate\Support\Facades\Auth;
 use PDF;
 use Validator;
 use View;
+use Illuminate\Support\Facades\Log;
+
 
 class FacturaController extends Controller
 {
-    private $facturasOperacoestable = 'facturaOperacoes';
 
 
     /**
@@ -139,6 +140,7 @@ class FacturaController extends Controller
             $facturaOp->percentagem = $request->percentagem;
             $facturaOp->ultimo_dia = $request->ultimo_dia;
             $facturaOp->save();
+            Log::info('Definicao das operacoes sobre as facturas efectuado com sucesso por ' . Auth::user()->nome);
             return view('gerente.FacturaOperacoes')->with("message", "Operação efectuada com sucesso.");
         }
 
@@ -167,6 +169,7 @@ class FacturaController extends Controller
             $facturaOp->percentagem = $request->percentagem;
             $facturaOp->ultimo_dia = $request->ultimo_dia;
             $facturaOp->save();
+            Log::info('Alteracao das operacoes sobre as facturas efectuado com sucesso por ' . Auth::user()->nome);
             return redirect()->route('factura.operacoes')->with("message", "Definicoes alteradas com sucesso.");
         }
 
@@ -225,6 +228,7 @@ class FacturaController extends Controller
             $factura->val_pagar = $val_pagar;
             $factura->observacao = $input['observacao'];
             $factura->save();
+            Log::info('Alteracao das infoemacoes das facturas efectuado com sucesso por ' . Auth::user()->nome);
             return redirect()->route('factura.index');
         }
     }
@@ -279,17 +283,34 @@ class FacturaController extends Controller
         return View('gerente.factura')->with(['factura' => $factura, 'time' => $time, 'apelido' => $apelido, 'nome' => $nome, 'p_unit' => $p_unit, 'multa' => $multa, 'ultimo_dia' => $ultimo_dia]);
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
     public
-    function recibo($id)
+    function recibo(Request $request, $id)
     {
         $factura = Factura::find($id);
         $factura->paga = true;
-        $recibo = new Recibo();
-        $recibo->factura()->associate($factura);
+        $total = $factura->val_pagar + $factura->val_multa;
+        if (isset($request->valor_parcial)) {
+            if ($request->valor_parcial > 0 && $request->valor_parcial < $total) {
+                $factura->pagamento_parcial = true;
+                $factura->val_pago = $request->valor_parcial;
+                $factura->val_pendente = $total - $request->valor_parcial;
+                $factura->observacao = "A factura foi paga parcialmete. Valor pendente: " . $factura->val_pendente;
+            }
+        } else {
+            $factura->val_pago = $total;
+        }
         $nome = $factura->leitura->casa->cliente->user->nome;
         $apelido = $factura->leitura->casa->cliente->user->apelido;
-        $total = $factura->val_pagar + $factura->val_multa;
         $time = Carbon::now()->format('d/m/Y');
+        $recibo = new Recibo();
+        $recibo->factura()->associate($factura);
         $factura->save();
         $recibo->save();
         $data = [
@@ -297,9 +318,11 @@ class FacturaController extends Controller
             'factura' => $factura->id,
             'nome' => $nome,
             'apelido' => $apelido,
-            'total' => $total,
+            'total' => $factura->val_pago,
+            'obs' => $factura->observacao,
             'data' => $time
         ];
+        Log::info('Pagamento da fatura efectuado com sucesso. Operacao efectuada por ' . Auth::user()->username);
         return View('gerente.recibo')->with($data);
     }
 
@@ -307,7 +330,6 @@ class FacturaController extends Controller
     function pendentes()
     {
         $facturas_data = $this->factura_geral(false);
-        dump($facturas_data);
         if (!is_null($facturas_data)) {
             return View::make('gerente.facturasPendentes')->with('facturas_data', $facturas_data);
         } else {
@@ -329,7 +351,7 @@ class FacturaController extends Controller
                     if (count($factura) > 0) {
                         if (!$factura->paga) {
                             $val_pagar = $factura->val_pagar;
-                            $facturas_data []= [
+                            $facturas_data [] = [
                                 'numero' => $factura->id,
                                 'l_anterior' => $factura->l_anterior,
                                 'l_actual' => $factura->l_actual,
@@ -374,7 +396,7 @@ class FacturaController extends Controller
             foreach ($facturas as $factura) {
                 $val_pagar = $factura->val_pagar;
                 if ($factura->num_multas > 0) {
-                    $facturas_data []= [
+                    $facturas_data [] = [
                         'numero' => $factura->id,
                         'l_anterior' => $factura->l_anterior,
                         'l_actual' => $factura->l_actual,

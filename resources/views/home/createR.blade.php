@@ -3,7 +3,7 @@
 @section('content')
     <div id="content" >
         <br>
-        <p class="alert alert-success" role="alert">
+        <p class="alert alert-success">
             <h2> Cadastro efectuado com sucesso!</h2>
         </p>
 
