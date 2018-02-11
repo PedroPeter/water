@@ -10,7 +10,8 @@
         "laravelcollective/html": "^5.3",
         "barryvdh/laravel-dompdf": "^0.7.1",
         "ext-pdo_sqlite": "*",
-        "arcanedev/log-viewer": "^4.3"
+        "arcanedev/log-viewer": "^4.3",
+        "pusher/pusher-php-server": "^3.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

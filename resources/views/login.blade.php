@@ -59,6 +59,18 @@
                         <div class="form-group">
                             <button class="btn btn-info" type="submit">Login</button>
                         </div>
+                        <div >
+
+                            <div class="form-group">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : ''}}>
+                                            Remember Me
+                                        </label>
+                                    </div>
+                            </div>
+
+                        </div>
 
                     </fieldset>
                     {!! Form::close() !!}

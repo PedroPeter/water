@@ -37,7 +37,7 @@ class User extends Authenticatable
      */
     public function sms()
     {
-        return $this->belongsTo('App\Sms');
+        return $this->hasMany('App\Sms');
     }
 
 }

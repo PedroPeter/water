@@ -157,6 +157,10 @@
                     <!-- second-level-items -->
                 </li>
                 <li>
+                    <a href="{{route('chat.index')}}"><i class="fa fa-edit fa-fw"></i>Chat com Clientes
+                        <span></span></a>
+                    <!-- second-level-items -->
+                </li><li>
                     <a href="{{route('gerente.create')}}"><i class="fa fa-edit fa-fw"></i>Gerir gerentes
                         <span></span></a>
                     <!-- second-level-items -->

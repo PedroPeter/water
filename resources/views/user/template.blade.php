@@ -104,15 +104,7 @@
 
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-phone fa-fw"></i>Contacte os fornecedores<span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a href="#">Enviar mensagem</a>
-                        </li>
-                        <li>
-                            <a href="#">Mais</a>
-                        </li>
-                    </ul>
+                    <a href="{{route('cliente.chat')}}"><i class="fa fa-phone fa-fw"></i>Contacte os fornecedores</a>
                 </li>
                 <li>
                     <a href="{{route('cliente.edit')}}"><i class="fa fa-edit fa-fw"></i>Gestão da Conta

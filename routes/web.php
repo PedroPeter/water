@@ -45,6 +45,9 @@ Route::group(['middleware' => 'auth',], function () {
     Route::get('cliente/gestao', function () {
         return view('user.template');
     })->name('cliente.dashboard');
+    Route::get('cliente/gestao/conversa', function () {
+        return view('user.mensagem');
+    })->name('cliente.chat');
     Route::get('cliente/gestao/info/all', 'ClienteController@info')->name('cliente.info');
 
 
@@ -91,6 +94,8 @@ Route::group(['middleware' => 'auth',], function () {
     Route::post('cliente/pesquisar/resultados/data', 'ClienteController@search4')->name('cliente.pesquisar.data');
     Route::post('dashboard/clientes/pesquisar/clientes', 'ClienteController@search2')->name('cliente.search2');
     Route::post('dashboard/leituras/pesquisar', 'LeiturasController@search')->name('leitura.search');
+    Route::post('dashboard/leituras/pesquisar/filtrando', 'LeiturasController@index_filtro')->name('leitura.filtrar');
+    Route::post('dashboard/leituras/pesquisar/semFiltro', 'LeiturasController@index_todas')->name('leitura.sem_filtro');
     Route::get('dashboard/leitura/pendente', 'LeiturasController@pendentes')->name('leituras.pendentes');
     Route::get('dashboard/factura/pendente', 'FacturaController@pendentes')->name('facturas.pendentes');
     Route::get('cliente/factura/pendentes', 'FacturaController@cliente_pendentes')->name('cliente.facturas.pendentes');
@@ -110,7 +115,11 @@ Route::group(['middleware' => 'auth',], function () {
     Route::get('dashboard/clientes/situacao/', 'ClienteController@situacao')->name('clientes.situacao');
     Route::get('cliente/gestao/situacao/', 'ClienteController@situacao_individual')->name('cliente.situacao');
     Route::resource('dashboard/admin/casa', 'CasaController');
-    Route::resource('dashboard/admin/mensagens', 'MensagemController');
+    Route::get('dashboard/clientes/chat', 'MensagemController@index')->name('chat.index');
+    Route::get('dashboard/clientes/chat/{id}', 'MensagemController@show')->name('chat.show');
+    Route::post('dashboard/clientes/chat/getChat/{id}', 'MensagemController@getChat');
+    Route::post('dashboard/clientes/chat/sendChat', 'MensagemController@sendChat');
+
 
     Route::group(['middleware' => 'onlyAdmin', 'prefix'=>'admin'], function () {
         Route::get('dashboard/cadastro', function () {

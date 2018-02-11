@@ -349,7 +349,7 @@ class ClienteController extends Controller
         $faturas = array();
         if (!is_null($clientes)) {
             foreach ($clientes as $cliente) {
-                if (Str::contains(Str::lower($cliente->user->nome . $cliente->user->apelido), Str::lower($keywords))) {
+                if (Str::contains(Str::lower($cliente->user->nome . $cliente->user->apelido),str_ireplace(' ','',Str::lower($keywords)) )) {
                     $casa_id = DB::table('casas')->where('cliente_id', $cliente->id)->value('id');
                     $leituras_id = Leitura::where('casa_id', $casa_id)->pluck('id');
                     foreach ($leituras_id as $id) {
@@ -389,7 +389,7 @@ class ClienteController extends Controller
         $search = array();
         if (!is_null($clientes)) {
             foreach ($clientes as $cliente) {
-                if (Str::contains(Str::lower($cliente->user->nome . $cliente->user->apelido), Str::lower($keywords))) {
+                if (Str::contains(Str::lower($cliente->user->nome . $cliente->user->apelido), str_ireplace(' ','',Str::lower($keywords)))) {
                     $search [] = [
                         'id' => $cliente->id,
                         'nome' => $cliente->user->nome,

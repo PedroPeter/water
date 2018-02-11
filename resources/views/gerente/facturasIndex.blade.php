@@ -58,7 +58,7 @@
                                     <br>
                                     {!! Form::open(array('route'=>['recibo.imprimir',$factura['numero']], 'method'=>'POST'))!!}
                                     <div class="dropdown">
-                                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Pagar
+                                        <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">Pagar
                                             <span class="caret"></span></button>
                                         <ul class="dropdown-menu">
                                             <li><button class="btn btn-secondary" type="submit">Valor completo </button></li>

@@ -14,16 +14,16 @@ class CreateMensagemsTable extends Migration
     public function up()
     {
         Schema::create('mensagems', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('cliente_id');
-            $table->foreign('cliente_id')->references('id')->on('clientes')->onDelete('cascade');
-            $table->string('assunto');
-            $table->string('mensagem');
-            $table->string('resposta')->default('Messagem ainda nao visualizada!Por favor, aguarde pacientimente.');
+                $table->increments('id');
+                $table->integer('cliente_id')->unsigned();
+                $table->integer('gerente_id')->unsigned();
+                $table->text('chat');
+                $table->timestamps();
+            });
             $table->timestamps();
             $table->rememberToken();
-        });
     }
+
 
     /**
      * Reverse the migrations.

@@ -8,13 +8,15 @@ use App\Casa;
 use App\Cliente;
 use App\Factura;
 use App\Leitura;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Str;
-use Validator;
-use View;use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+use View;
+use Illuminate\Support\Facades\Log;
 
 
 class LeiturasController extends Controller
@@ -29,9 +31,25 @@ class LeiturasController extends Controller
     {
         $leituras_clientes = Leitura::where('efectuado', false)->get();
         if (count($leituras_clientes) < 1) {
-            return View::make('gerente.leiturasIndex')->with('message', 'Leituras de todos clientes efectuadas.');
+            return View::make('gerente.leiturasIndex')->with('data', 'Leituras de todos clientes efectuadas.');
         }
+        $bairros = Casa::all()->pluck('bairro');
+        $rua_avenidas = Casa::all()->pluck('rua_avenida');
+        return View::make('gerente.leiturasIndex')->with('bairros', $bairros)->with('rua_avenidas', $rua_avenidas);
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index_todas()
+    {
         $data = array();
+
+        $leituras_clientes = Leitura::where('efectuado', false)->get();
+        if (count($leituras_clientes) < 1) {
+            return View::make('gerente.leiturasFiltroResults')->with('message', 'Leituras de todos clientes efectuadas.');
+        }
         foreach ($leituras_clientes as $leitura_cliente) {
             $casa = $leitura_cliente->casa;
             if (!is_null($casa)) {
@@ -46,8 +64,39 @@ class LeiturasController extends Controller
             }
 
         }
-        return View::make('gerente.leiturasIndex')->with('data', $data);
+        return View::make('gerente.leiturasFiltroResults')->with('data', $data);
+    }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index_filtro()
+    {
+        $keywords = Input::get('keywords');
+        $filtro = Input::get('filtro');
+        $leituras_clientes = Leitura::where('efectuado', false)->get();
+        if (count($leituras_clientes) < 1) {
+            return View::make('gerente.leiturasFiltroResults')->with('message', 'Não possui leituras pendentes nesta localização.');
+        }
+        $data = array();
+        foreach ($leituras_clientes as $leitura_cliente) {
+            $casa = $leitura_cliente->casa;
+            if (!is_null($casa)) {
+                if (Str::contains(Str::lower($casa->$filtro), Str::lower($keywords))) {
+                    $data[] = [
+                        'casa_bairro' => $casa['bairro'],
+                        'casa_rua' => $casa['rua_avenida'],
+                        'casa_numero' => $casa['numero_casa'],
+                        'casa_descricao' => $casa['descricao'],
+                        'cliente_nome' => $casa->cliente->user['nome'],
+                        'id' => $leitura_cliente->id,
+                    ];
+                }
+            }
+        }
+        return View::make('gerente.leiturasFiltroResults')->with('data', $data);
     }
 
 
@@ -78,7 +127,7 @@ class LeiturasController extends Controller
             $leitura->consumo = $input['consumo'];
             $factura = new Factura();
             $factura->l_actual = $input['consumo'];
-            if(!is_null($input['observacao'])){
+            if (!is_null($input['observacao'])) {
                 $factura->observacao = $input['observacao'];
             }
             $factura->l_anterior = $this->leitura_anterior($leitura->casa->id);
@@ -94,19 +143,19 @@ class LeiturasController extends Controller
             } else {
                 $val_pagar = ($factura->l_actual - $factura->l_anterior) * $p_unit;
             }
-            if(is_null($this->factura_anterior($leitura->casa->id))){
+            if (is_null($this->factura_anterior($leitura->casa->id))) {
                 $factura->val_pagar = $val_pagar;
-            }else{
-                $pendente=factura_anterior($leitura->casa->id)->val_pendente;
+            } else {
+                $pendente = factura_anterior($leitura->casa->id)->val_pendente;
                 $factura->val_pagar = $val_pagar + $pendente;
-                $factura->observacao = "O valor actual foi incrementado ".$pendente." meticais pendente da fatura anterior.";
+                $factura->observacao = "O valor actual foi incrementado " . $pendente . " meticais pendente da fatura anterior.";
             }
             $leitura->save();
             $factura->leitura()->associate($leitura);
             $factura->save();
             $factura->metros_cubicos = $metros_cubicos;
             $factura->preco_unitario = $p_unit;
-            Log::info('Leitura efectuado com sucesso por '.Auth::user()->nome);
+            Log::info('Leitura efectuado com sucesso por ' . Auth::user()->nome);
             return view('gerente.facturaEspecifica')->with('factura', $factura);
         }
         return redirect()->back()->with('message', 'Ocorreu um erro durante a gravacao da leitua!');
@@ -219,6 +268,7 @@ class LeiturasController extends Controller
             return null;
         }
     }
+
     public
     function factura_anterior($casa_id)
     {
